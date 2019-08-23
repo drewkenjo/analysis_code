@@ -7,7 +7,7 @@ import ROOT
 ff = ROOT.TFile(sys.argv[1])
 f1 = ROOT.TF1('f1', 'gaus(0)+pol0(3)', 0,1)
 
-h1 = ff.Get("ebeam_hebth").ProjectionY()
+h1 = ff.Get("elec_H_elec_mom_vz_S1").ProjectionY()
 f1.SetParameter(1, h1.GetBinCenter(h1.GetMaximumBin()))
 f1.SetParameter(2, h1.GetRMS())
 mu,sig = [f1.GetParameter(i) for i in range(1,3)]
@@ -22,4 +22,4 @@ h1.Fit(f1, 'R')
 c1 = ROOT.TCanvas('c1','c1',1100,800)
 
 h1.Draw()
-c1.Print("ebeam.pdf")
+c1.Print("elec.pdf")
