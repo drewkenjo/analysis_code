@@ -55,7 +55,7 @@ class electron{
       case 5: vnom=-2.316; vstd=4.29
       case 6: vnom=-2.258; vstd=4.29
     }
-    Math.abs(vz-vnom) < vstd
+    Math.abs(vz-vnom) < 2.5*vstd
   }
 
   // momentum cut
