@@ -44,10 +44,24 @@ class electron{
   // }
 
   //8) Vertex-z positon cut
-  static def find_byVZ = {vz ->
-    Math.abs(vz) < 1
+  static def find_byVZ = {vz, sec ->
+    def vnom=0
+    def vstd =0
+    switch(sec){
+      case 1: vnom=-2.202; vstd=4.058
+      case 2: vnom=-2.124; vstd=4.173
+      case 3: vnom=-2.172; vstd=4.313
+      case 4: vnom=-2.159; vstd=4.324
+      case 5: vnom=-2.316; vstd=4.29
+      case 6: vnom=-2.258; vstd=4.29
+    }
+    Math.abs(vz-vnom) < vstd
   }
 
+  // momentum cut
+  // static def find_byMOM = {mom ->
+  //   mom > 1.5
+  // }
 
   static def find_byBANK = {pbank ->
      return (0..pbank.rows())
