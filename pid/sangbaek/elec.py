@@ -23,8 +23,8 @@ c1.Print("elec.pdf(")
 for i in range(0,6):
 	c1.cd(i+1)
 	h1 = ff.Get("elec_H_neg_Sampl_mom_S"+str(i+1))
-	h1.SetTitleX("mom (GeV/c)")
-	h1.SetTitleY("Sampling Fraction")
+	h1.GetXaxis().SetTitle("mom (GeV/c)")
+	h1.GetXaxis().SetTitle("Sampling Fraction")
 	h1.Draw()
 c1.Print("elec.pdf")
 
