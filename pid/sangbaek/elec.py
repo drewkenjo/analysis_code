@@ -16,7 +16,7 @@ for i in range(0,6):
 	h1 = ff.Get("elec_H_elec_Sampl_mom_S"+str(i+1))
 	h1.GetXaxis().SetTitle("mom (GeV/c)")
 	h1.GetYaxis().SetTitle("Sampling Fraction")
-	h1.Draw()
+	h1.Draw("colz")
 c1.Print("elec.pdf(")
 
 
@@ -41,7 +41,7 @@ for i in range(0,6):
 
 	f1.SetRange(mu-2.5*abs(sig), mu+2.5*abs(sig))
 	h1.Fit(f1, 'R')
-	h1.Draw("colz")
+	h1.Draw()
 c1.Print("elec.pdf")
 
 for i in range(0,6):
