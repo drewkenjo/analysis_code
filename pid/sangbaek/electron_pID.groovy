@@ -78,7 +78,7 @@ public void processEvent(DataEvent event) {
 	    e_pcal_E = 0
 	    evc.getInt("pindex").eachWithIndex{ pindex, ind_c ->
 	    	if (pindex==ind){
-	    		det = bank.getInt("layer", ind_c);
+	    		det = evc.getInt("layer", ind_c);
 	    		e_ecal_E+=evc.getFloat("energy",ind_c)
 	    		if (det==1) e_pcal_E+=evc.getFloat("energy",ind_c)
 	    		else if (det==4 || det==7) e_etot_E+=evc.getFloat("energy",ind_c)
@@ -91,8 +91,9 @@ public void processEvent(DataEvent event) {
 	    	H_neg_vz[secs[ind]-1].fill(vz) //vz
 	    	H_neg_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
 	    	H_neg_vz_mom[secs[ind]-1].fill(vz,mom)
-	    	H_neg_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
-	    	H_neg_PCALECAL[secs[ind]-1].fill(e_pcal_e,e_etot_e);
+	    	
+		H_neg_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
+	    	H_neg_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
@@ -110,7 +111,7 @@ public void processEvent(DataEvent event) {
 			H_elec_Sampl[secs[ind]-1].fill(sampl_frac) //electron
 	    	H_elec_vz_mom[secs[ind]-1].fill(vz,mom)
 	    	H_elec_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
-	    	H_elec_PCALECAL[secs[ind]-1].fill(e_pcal_e,e_etot_e);
+	    	H_elec_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
@@ -131,9 +132,7 @@ public void HistoDef(float eb, int binnum){
 	H_elec_vz_mom =(0..<6).collect{new H2F("H_elec_vz_mom_S"+(it+1), "H_elec_vz_mom_S"+(it+1),binnum,0,eb,binnum,-25,25);}
 	H_elec_nphe_mom =(0..<6).collect{new H2F("H_elec_nphe_mom_S"+(it+1), "H_elec_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,100);}
 	H_elec_Sampl_mom =(0..<6).collect{new H2F("H_elec_Sampl_mom_S"+(it+1), "H_elec_Sampl_mom_S"+(it+1),binnum,0,eb,binnum,0,1);}
-	H_elec_PCALECAL[ = (0..6).collect{new H2F(String.format("H_elec_PCALECAL_S%d",s+1),String.format("H_elec_PCALECAL_S%d",s+1),100,0,3,100,0,3);}
-	H_elec_PCALECAL[s].setTitleX("E PCAL (GeV)");
-	H_elec_PCALECAL[s].setTitleY("E ECAL (GeV)");
+	H_elec_PCALECAL = (0..6).collect{new H2F("H_elec_PCALECAL_S"+(it+1),"H_elec_PCALECAL_S"+(it+1),100,0,2,100,0,2);}
 
 	H_neg_vz =(0..<6).collect{new H1F("H_neg_vz_S"+(it+1), "H_neg_vz_S"+(it+1),binnum,-25,25);}
 	H_neg_nphe =(0..<6).collect{new H1F("H_neg_nphe_S"+(it+1), "H_neg_nphe_S"+(it+1),binnum,0,100);}
@@ -141,8 +140,5 @@ public void HistoDef(float eb, int binnum){
 	H_neg_vz_mom =(0..<6).collect{new H2F("H_neg_vz_mom_S"+(it+1), "H_neg_vz_mom_S"+(it+1),binnum,0,eb,binnum,-25,25);}
 	H_neg_nphe_mom =(0..<6).collect{new H2F("H_neg_nphe_mom_S"+(it+1), "H_neg_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,100);}
 	H_neg_Sampl_mom =(0..<6).collect{new H2F("H_neg_Sampl_mom_S"+(it+1), "H_neg_Sampl_mom_S"+(it+1),binnum,0,eb,binnum,0,1);}
-	H_neg_PCALECAL[ = (0..6).collect{new H2F(String.format("H_neg_PCALECAL_S%d",s+1),String.format("H_neg_PCALECAL_S%d",s+1),100,0,3,100,0,3);}
-	H_neg_PCALECAL[s].setTitleX("E PCAL (GeV)");
-	H_neg_PCALECAL[s].setTitleY("E ECAL (GeV)");
-
+	H_neg_PCALECAL = (0..6).collect{new H2F("H_neg_PCALECAL_S"+(it+1), "H_neg_PCALECAL_S"+(it+1),100,0,2,100,0,2);}
 }
