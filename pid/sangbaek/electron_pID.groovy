@@ -89,11 +89,12 @@ public void processEvent(DataEvent event) {
    	    // Negative
    	    if (charge<0){
 	    	H_neg_vz[secs[ind]-1].fill(vz) //vz
-	    	H_neg_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
+	    	if (e_ecal_E>0) {
+	    		H_neg_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
+		    	H_neg_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
+		    }
+	    	if (e_pcal_E>0 && e_etot_E>0) H_neg_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
 	    	H_neg_vz_mom[secs[ind]-1].fill(vz,mom)
-	    	
-		H_neg_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
-	    	H_neg_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
@@ -108,10 +109,12 @@ public void processEvent(DataEvent event) {
     	// Electron
     	if (ind==eleind){
     		H_elec_vz[secs[ind]-1].fill(vz)
-			H_elec_Sampl[secs[ind]-1].fill(sampl_frac) //electron
 	    	H_elec_vz_mom[secs[ind]-1].fill(vz,mom)
-	    	H_elec_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
-	    	H_elec_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
+	    	if (e_ecal_E>0) {
+	    		H_elec_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
+		    	H_elec_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
+		    }
+	    	if (e_pcal_E>0 && e_etot_E>0) H_elec_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
