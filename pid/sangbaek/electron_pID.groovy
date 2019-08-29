@@ -94,14 +94,14 @@ public void processEvent(DataEvent event) {
 		    	H_neg_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
 		    }
 	    	if (e_pcal_E>0 && e_etot_E>0) H_neg_PCALECAL[secs[ind]-1].fill(e_pcal_E,e_etot_E);
-	    	H_neg_vz_mom[secs[ind]-1].fill(vz,mom)
+	    	H_neg_vz_mom[secs[ind]-1].fill(mom,vz)
 	    	if(!event.hasBank("REC::Cherenkov")) return
 	    	def evh = event.getBank("REC::Cherenkov")
 	    	evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
 	    		if(evh.getInt("detector",ind_h)!=15) return
     			if(pindex==ind) {
     				H_neg_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h))
-    				H_neg_nphe_mom[secs[ind]-1].fill(evh.getFloat("nphe",ind_h),mom)
+    				H_neg_nphe_mom[secs[ind]-1].fill(mom,evh.getFloat("nphe",ind_h))
     			}
 	    	}
     	}
@@ -109,7 +109,7 @@ public void processEvent(DataEvent event) {
     	// Electron
     	if (ind==eleind){
     		H_elec_vz[secs[ind]-1].fill(vz)
-	    	H_elec_vz_mom[secs[ind]-1].fill(vz,mom)
+	    	H_elec_vz_mom[secs[ind]-1].fill(mom,vz)
 	    	if (e_ecal_E>0) {
 	    		H_elec_Sampl[secs[ind]-1].fill(sampl_frac) // sampling Fraction
 		    	H_elec_Sampl_mom[secs[ind]-1].fill(mom,sampl_frac)
@@ -121,7 +121,7 @@ public void processEvent(DataEvent event) {
 	    		if(evh.getInt("detector",ind_h)!=15) return
     			if(pindex==ind) {
 					H_elec_nphe[secs[ind]-1].fill(evh.getFloat("nphe",ind_h))
-					H_elec_nphe_mom[secs[ind]-1].fill(evh.getFloat("nphe",ind_h),mom)
+					H_elec_nphe_mom[secs[ind]-1].fill(mom,evh.getFloat("nphe",ind_h))
     			}
 	    	}
     	}
