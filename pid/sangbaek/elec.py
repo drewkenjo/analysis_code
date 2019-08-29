@@ -191,6 +191,14 @@ c1.Print("elec.pdf")
 
 for i in range(0,6):
 	c1.cd(i+1)
+	h1 = ff.Get("elec_H_elec_nphe_mom_S"+str(i+1)).ProjectionY("",0,24,"[-cutg]")
+	h1.SetTitle("Electron, nphe, momentum (0,2.65) GeV/c")
+	h1.Draw()
+c1.Print("elec.pdf")
+
+
+for i in range(0,6):
+	c1.cd(i+1)
 	h1 = ff.Get("elec_H_elec_nphe_mom_S"+str(i+1)).ProjectionY("",25,49,"[-cutg]")
 	h1.SetTitle("Electron, nphe, momentum (2.65,5.3) GeV/c")
 	h1.Draw()
@@ -242,6 +250,8 @@ c1.Print("elec.pdf")
 for i in range(0,6):
 	c1.cd(i+1)
 	h1 = ff.Get("elec_H_elec_PCALECAL_S"+str(i+1))
+	h1.GetXaxis.SetTitle("E PCAL (GeV)")
+	h1.GetYaxis.SetTitle("E ECAL (GeV)")
 	h1.Draw()
 c1.Print("elec.pdf")
 
@@ -250,5 +260,8 @@ for i in range(0,6):
 	c1.cd(i+1)
 	h1 = ff.Get("elec_H_neg_PCALECAL_S"+str(i+1))
 	h1.Draw()
+	h1.GetXaxis.SetTitle("E PCAL (GeV)")
+	h1.GetYaxis.SetTitle("E ECAL (GeV)")
+
 c1.Print("elec.pdf)")
 

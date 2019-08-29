@@ -126,19 +126,19 @@ public void processEvent(DataEvent event) {
 }
 
 public void HistoDef(float eb, int binnum){
-	H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),binnum,-25,25);}
-	H_elec_nphe =(0..<6).collect{new H1F("H_elec_nphe_S"+(it+1), "H_elec_nphe_S"+(it+1),binnum,0,100);}
+	H_elec_vz =(0..<6).collect{new H1F("H_elec_vz_S"+(it+1), "H_elec_vz_S"+(it+1),binnum,-15,15);}
+	H_elec_nphe =(0..<6).collect{new H1F("H_elec_nphe_S"+(it+1), "H_elec_nphe_S"+(it+1),binnum,0,50);}
 	H_elec_Sampl =(0..<6).collect{new H1F("H_elec_Sampl_S"+(it+1), "H_elec_Sampl_S"+(it+1),binnum,0,1);}
-	H_elec_vz_mom =(0..<6).collect{new H2F("H_elec_vz_mom_S"+(it+1), "H_elec_vz_mom_S"+(it+1),binnum,0,eb,binnum,-25,25);}
-	H_elec_nphe_mom =(0..<6).collect{new H2F("H_elec_nphe_mom_S"+(it+1), "H_elec_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,100);}
+	H_elec_vz_mom =(0..<6).collect{new H2F("H_elec_vz_mom_S"+(it+1), "H_elec_vz_mom_S"+(it+1),binnum,0,eb,binnum,-15,15);}
+	H_elec_nphe_mom =(0..<6).collect{new H2F("H_elec_nphe_mom_S"+(it+1), "H_elec_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,50);}
 	H_elec_Sampl_mom =(0..<6).collect{new H2F("H_elec_Sampl_mom_S"+(it+1), "H_elec_Sampl_mom_S"+(it+1),binnum,0,eb,binnum,0,1);}
-	H_elec_PCALECAL = (0..6).collect{new H2F("H_elec_PCALECAL_S"+(it+1),"H_elec_PCALECAL_S"+(it+1),100,0,2,100,0,2);}
+	H_elec_PCALECAL = (0..6).collect{new H2F("H_elec_PCALECAL_S"+(it+1),"H_elec_PCALECAL_S"+(it+1),100,0,1.5,100,0,1.5);}
 
-	H_neg_vz =(0..<6).collect{new H1F("H_neg_vz_S"+(it+1), "H_neg_vz_S"+(it+1),binnum,-25,25);}
-	H_neg_nphe =(0..<6).collect{new H1F("H_neg_nphe_S"+(it+1), "H_neg_nphe_S"+(it+1),binnum,0,100);}
+	H_neg_vz =(0..<6).collect{new H1F("H_neg_vz_S"+(it+1), "H_neg_vz_S"+(it+1),binnum,-15,15);}
+	H_neg_nphe =(0..<6).collect{new H1F("H_neg_nphe_S"+(it+1), "H_neg_nphe_S"+(it+1),binnum,0,50);}
 	H_neg_Sampl =(0..<6).collect{new H1F("H_neg_Sampl_S"+(it+1), "H_neg_Sampl_S"+(it+1),binnum,0,1);}
-	H_neg_vz_mom =(0..<6).collect{new H2F("H_neg_vz_mom_S"+(it+1), "H_neg_vz_mom_S"+(it+1),binnum,0,eb,binnum,-25,25);}
-	H_neg_nphe_mom =(0..<6).collect{new H2F("H_neg_nphe_mom_S"+(it+1), "H_neg_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,100);}
+	H_neg_vz_mom =(0..<6).collect{new H2F("H_neg_vz_mom_S"+(it+1), "H_neg_vz_mom_S"+(it+1),binnum,0,eb,binnum,-15,15);}
+	H_neg_nphe_mom =(0..<6).collect{new H2F("H_neg_nphe_mom_S"+(it+1), "H_neg_nphe_mom_S"+(it+1),binnum,0,eb,binnum,0,50);}
 	H_neg_Sampl_mom =(0..<6).collect{new H2F("H_neg_Sampl_mom_S"+(it+1), "H_neg_Sampl_mom_S"+(it+1),binnum,0,eb,binnum,0,1);}
-	H_neg_PCALECAL = (0..6).collect{new H2F("H_neg_PCALECAL_S"+(it+1), "H_neg_PCALECAL_S"+(it+1),100,0,2,100,0,2);}
+	H_neg_PCALECAL = (0..6).collect{new H2F("H_neg_PCALECAL_S"+(it+1), "H_neg_PCALECAL_S"+(it+1),100,0,1.5,100,0,1.5);}
 }
