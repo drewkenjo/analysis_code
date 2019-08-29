@@ -250,8 +250,8 @@ c1.Print("elec.pdf")
 for i in range(0,6):
 	c1.cd(i+1)
 	h1 = ff.Get("elec_H_elec_PCALECAL_S"+str(i+1))
-	h1.GetXaxis.SetTitle("E PCAL (GeV)")
-	h1.GetYaxis.SetTitle("E ECAL (GeV)")
+	h1.GetXaxis().SetTitle("E PCAL (GeV)")
+	h1.GetYaxis().SetTitle("E ECAL (GeV)")
 	h1.Draw()
 c1.Print("elec.pdf")
 
@@ -260,8 +260,8 @@ for i in range(0,6):
 	c1.cd(i+1)
 	h1 = ff.Get("elec_H_neg_PCALECAL_S"+str(i+1))
 	h1.Draw()
-	h1.GetXaxis.SetTitle("E PCAL (GeV)")
-	h1.GetYaxis.SetTitle("E ECAL (GeV)")
+	h1.GetXaxis().SetTitle("E PCAL (GeV)")
+	h1.GetYaxis().SetTitle("E ECAL (GeV)")
 
 c1.Print("elec.pdf)")
 
