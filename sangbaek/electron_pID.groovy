@@ -14,7 +14,7 @@ import org.jlab.clas.physics.Vector3;
 import org.jlab.clas.physics.LorentzVector;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.graphics.EmbeddedCanvas;
-import electron
+import pid.electron
 
 def run = args[0].toInteger()
 
@@ -67,7 +67,7 @@ public void processEvent(DataEvent event) {
     def evc = event.getBank("REC::Calorimeter")
     def secs = [evc.getShort('pindex')*.toInteger(), evc.getByte('sector')].transpose().collectEntries()
     def evp = event.getBank("REC::Particle")
-    def eleind = electron.find_byBANK(evp)
+    def eleind = find_byBANK(evp)
     evp.getInt("pid").eachWithIndex{pid, ind ->
     	if(secs[ind]==null) return
 	    int charge = evp.getInt("charge",ind)
