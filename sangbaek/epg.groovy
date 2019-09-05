@@ -7,7 +7,9 @@ import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
 import exclusive.EPG
 
-def hmm2 = new H1F("hmm2", "missing mass squared", 200,-2,4)
+def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
+def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
+def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 200,-2,4)
 
 def beam = new Particle(11, 0,0,10.6)//7.546)
 def target = new Particle(2212, 0,0,0)
@@ -26,7 +28,20 @@ while(reader.hasEvent()) {
       epX.combine(ele,-1)
       epX.combine(pro,-1)
 
-      hmm2.fill(epX.mass2())
+      def egX = new Particle(beam)
+      egX.combine(target, 1)
+      egX.combine(ele,-1)
+      egX.combine(gam,-1)
+
+      def epgX = new Particle(beam)
+      epX.combine(target, 1)
+      epgX.combine(ele,-1)
+      epgX.combine(pro,-1)
+      epgX.combine(gam,-1)
+
+      hmm2_ep.fill(epX.mass2())
+      hmm2_eg.fill(egX.mass2())
+      hmm2_epg.fill(epgX.mass2())
     }
   }
 }
@@ -37,5 +52,7 @@ reader.close()
 def out = new TDirectory()
 out.mkdir('/epg')
 out.cd('/epg')
-out.addDataSet(hmm2)
+out.addDataSet(hmm2_ep)
+out.addDataSet(hmm2_epg)
+out.addDataSet(hmm2_eg)
 out.writeFile('epg_out.hipo')
