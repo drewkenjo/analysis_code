@@ -10,8 +10,8 @@ import exclusive.EPG
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 200,-2,4)
-def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 720,-360 ,360)
-
+def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 200,-5 ,75)
+def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 200,-5,75)
 def beam = new Particle(11, 0,0,10.6)//7.546)
 def target = new Particle(2212, 0,0,0)
 
@@ -47,10 +47,14 @@ while(reader.hasEvent()) {
       mom_gam = gam.vector().vect()
       mom_epX = epX.vector().vect()
 
+      norm_ep = ele.vector().vect().cross(pro.vector().vect())
+      norm_eg = ele.vector().vect().cross(gam.vector().vect())
+
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
       hangle_epg.fill(Vangle(mom_gam,mom_epX))
+      hangle_ep_eg.fill(Vangle(norm_ep,norm_eg))
     }
   }
 }
@@ -65,4 +69,5 @@ out.addDataSet(hmm2_ep)
 out.addDataSet(hmm2_epg)
 out.addDataSet(hmm2_eg)
 out.addDataSet(hangle_epg)
+out.addDataSet(hangle_ep_eg)
 out.writeFile('epg_out.hipo')
