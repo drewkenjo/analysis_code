@@ -5,13 +5,13 @@ import org.jlab.clas.physics.Vector3
 import org.jlab.groot.data.H1F
 import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
-import exclusive.EPG
+import sangbaek.exclusive.EPG
 
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 200,-2,4)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 200,-5 ,75)
-def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 360,0,180)
+def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 380,-5,185)
 def beam = new Particle(11, 0,0,10.6)//7.546)
 def target = new Particle(2212, 0,0,0)
 
