@@ -14,7 +14,7 @@ import org.jlab.clas.physics.Vector3;
 import org.jlab.clas.physics.LorentzVector;
 import org.jlab.groot.base.GStyle;
 import org.jlab.groot.graphics.EmbeddedCanvas;
-import sangbaek.pid.electron
+import pid.sangbaek.electron
 
 def run = args[0].toInteger()
 

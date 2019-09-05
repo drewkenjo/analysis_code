@@ -5,7 +5,7 @@ import org.jlab.clas.physics.Vector3
 import org.jlab.groot.data.H1F
 import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
-import sangbaek.exclusive.EPG
+import exclusive.sangbaek.EPG
 
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
