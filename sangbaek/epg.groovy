@@ -24,7 +24,7 @@ while(reader.hasEvent()) {
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
     def (ele, pro, gam) = EPG.getEPG(event)*.particle
     def Vangle = {v1, v2 -> 
-       if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<l1*l2 ) return Math.toDegrees( Math.acos(prod/(v1.mag() * v2.mag()) ) ); 
+       if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(prod/(v1.mag()*v2.mag()) ) ); 
     }
 
     if(ele!=null) {
