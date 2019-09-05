@@ -44,8 +44,8 @@ while(reader.hasEvent()) {
       epgX.combine(pro,-1)
       epgX.combine(gam,-1)
 
-      mom_gam = gam.ele.vector().vect()
-      mom_epX = epX.ele.vector().vect()
+      mom_gam = gam.vector().vect()
+      mom_epX = epX.vector().vect()
 
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
