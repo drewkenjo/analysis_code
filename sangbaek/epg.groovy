@@ -39,7 +39,7 @@ while(reader.hasEvent()) {
       egX.combine(gam,-1)
 
       def epgX = new Particle(beam)
-      epX.combine(target, 1)
+      epgX.combine(target, 1)
       epgX.combine(ele,-1)
       epgX.combine(pro,-1)
       epgX.combine(gam,-1)
