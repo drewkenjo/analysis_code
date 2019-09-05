@@ -60,6 +60,12 @@ class electron{
     Math.abs(vz-vnom) < 2.5*vstd
   }
 
+  // FTOF Hit Response
+  static def find_byFTOF = {evs, ind ->
+    evs.getInt("pindex").each{pindex  ->  if (ind==pindex) return true}
+    return false
+  }
+
   // momentum cut
   static def find_byMOM = {mom, theta ->
     mom > 1.5 && theta>17*(1-mom/7)
