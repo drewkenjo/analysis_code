@@ -3,6 +3,7 @@ package exclusive.sangbaek
 import org.jlab.io.hipo.HipoDataEvent
 import org.jlab.clas.physics.Particle
 import org.jlab.clas.physics.Vector3
+import pid.sangbaek.electron
 
 class EPG {
   static def getEPG(HipoDataEvent event) {
