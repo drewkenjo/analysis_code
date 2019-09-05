@@ -1,3 +1,5 @@
+package pid
+
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
@@ -59,9 +61,9 @@ class electron{
   }
 
   // momentum cut
-  // static def find_byMOM = {mom ->
-  //   mom > 1.5
-  // }
+  static def find_byMOM = {mom, theta ->
+    mom > 1.5 && theta>17*(1-mom/7)
+  }
 
   static def find_byBANK = {pbank ->
      return (0..pbank.rows())
