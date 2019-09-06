@@ -10,18 +10,25 @@ class EPG {
     def partbank = event.getBank("REC::Particle")
     def calbank = event.getBank("REC::Calorimeter")
 
-    def findElectron = { pbank -> (0..<pbank.rows()).find{pbank.getInt('pid',it)==11 && pbank.getShort('status',it)<0} }
-    def findElectron_pid = {pbank -> electron.find_byBANK(pbank)}
-    def findProton = { pbank -> (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
-      .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
+    def findElectron = { event -> 
+      def pbank = event.getBank("REC::Particle")
+      return(0..<pbank.rows()).find{pbank.getInt('pid',it)==11 && pbank.getShort('status',it)<0}
     }
-    def findGamma = { pbank -> (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
-      .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
+    def findElectron_pid = {event -> electron.find_byEVENT(event)}
+    def findProton = { event ->
+      def pbank = event.getBank(("REC::Particle")
+      return (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
+        .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
+    }
+    def findGamma = { event -> 
+      def pbank = event.getBank(("REC::Particle")
+      (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
+        .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
     }
 
     def inds = []
     for(def findPart in [findElectron_pid, findProton, findGamma]) {
-      def ind = findPart(partbank)
+      def ind = findPart(event)
       inds.add(ind)
       if(ind==null)
         return [null, null, null]
