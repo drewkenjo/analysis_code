@@ -13,17 +13,17 @@ class EPG {
     def partbank = event.getBank("REC::Particle")
     def calbank = event.getBank("REC::Calorimeter")
 
-    def findElectron = { event -> 
-      Electron.findElectron(event)
+    def findElectron = { ev -> 
+      Electron.findElectron(ev)
     }
-    def findElectron_pid = {event ->
-      electron.find_byEVENT(event)
+    def findElectron_pid = {ev ->
+      electron.find_byev(ev)
     }
-    def findProton = { event ->
-      Proton.findProton(event)
+    def findProton = { ev ->
+      Proton.findProton(ev)
     }
-    def findGamma = { event -> 
-      gamma.findGamma.(event)
+    def findGamma = { ev -> 
+      gamma.findGamma.(ev)
     }
 
     def inds = []
