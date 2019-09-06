@@ -36,4 +36,11 @@ h1 = ff.Get("epg_hangle_epg")
 h1.SetTitle("Angle between #gamma and epX")
 h1.GetXaxis().SetTitle("Angle between #gamma and epX (deg)")
 h1.Draw("colz")
+
+c1.cd()
+h1 = ff.Get("epg_hangle_ep_eg")
+h1.SetTitle("Angle between two planes, ep and e#gamma")
+h1.GetXaxis().SetTitle("Angle between two planes, ep and e#gamma (deg)")
+h1.Draw("colz")
+
 c1.Print("dvcs.pdf)")
