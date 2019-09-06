@@ -61,9 +61,10 @@ class electron{
   }
 
   // FTOF Hit Response
-  static def find_byFTOF = {evs, ind ->
-    evs.getInt("pindex").each{pindex  ->  if (ind==pindex) return true}
-    return false
+  static def find_byFTOF = {tbank, ind_p ->
+    def res = false
+    tbank.getInt("pindex").each{pindex  ->  if (ind_p==pindex) res = true}
+    return res
   }
 
   // momentum cut
@@ -86,7 +87,9 @@ class electron{
     def pbank = event.getBank("REC::Particle")
     // Default pid, status, charge cut
     if (this.find_byBANK(pbank)==null) return null
-      // kinematics cut
+    if (!event.hasBank("REC::Calorimeter") || !event.hasBank("REC::Cherenkov") || !event.hasBank("REC::Scintillator")) return null
+    
+    // kinematics cut
     def ind = this.find_byBANK(pbank)
     def mom = ['x','y','z'].collect{pbank.getFloat("p"+it,ind)}.sum()
     def pz = pbank.getFloat("pz", ind);
@@ -113,7 +116,10 @@ class electron{
       }
     }
 
-    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySampl(sampl_frac) && this.find_byNPhe(nphe)) return ind
+    def evs = event.getBank("REC::Scintillator")
+
+
+    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySampl(sampl_frac) && this.find_byNPhe(nphe) && this.find_byFTOF(evs,ind)) return ind
     else return null
   }
 }
