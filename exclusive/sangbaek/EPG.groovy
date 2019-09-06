@@ -3,6 +3,9 @@ package exclusive.sangbaek
 import org.jlab.io.hipo.HipoDataEvent
 import org.jlab.clas.physics.Particle
 import org.jlab.clas.physics.Vector3
+import pid.proton.Proton
+import pid.electron.Electron
+import pid.sangbaek.gamma
 import pid.sangbaek.electron
 
 class EPG {
@@ -10,24 +13,21 @@ class EPG {
     def partbank = event.getBank("REC::Particle")
     def calbank = event.getBank("REC::Calorimeter")
 
-    def findElectron = { ev -> 
-      def pbank = ev.getBank("REC::Particle")
-      return(0..<pbank.rows()).find{pbank.getInt('pid',it)==11 && pbank.getShort('status',it)<0}
+    def findElectron = { event -> 
+      Electron.findElectron(event)
     }
-    def findElectron_pid = {ev -> electron.find_byEVENT(event)}
+    def findElectron_pid = {event ->
+      electron.find_byEVENT(event)
+    }
     def findProton = { event ->
-      def pbank = ev.getBank(("REC::Particle")
-      return (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
-        .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
+      Proton.findProton(event)
     }
-    def findGamma = { ev -> 
-      def pbank = ev.getBank(("REC::Particle")
-      (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
-        .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
+    def findGamma = { event -> 
+      gamma.findGamma.(event)
     }
 
     def inds = []
-    for(def findPart in [findElectron_pid, findProton, findGamma]) {
+    for(def findPart in [findElectron, findProton, findGamma]) {
       def ind = findPart(event)
       inds.add(ind)
       if(ind==null)
