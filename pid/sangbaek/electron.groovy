@@ -85,27 +85,27 @@ class electron{
 
     def pbank = event.getBank("REC::Particle")
     // Default pid, status, charge cut
-    if (this.find_byBank(pbank)==null) return null
+    if (this.find_byBANK(pbank)==null) return null
       // kinematics cut
-    def ind = this.find_byBank(pbank)
+    def ind = this.find_byBANK(pbank)
     def mom = ['x','y','z'].collect{pbank.getFloat("p"+it,ind)}.sum()
     def pz = pbank.getFloat("pz", ind);
     def theta = Math.toDegrees(Math.acos(pz/mom))
     def vz = pbank.getFloat("vz",ind)
     def evc = event.getBank("REC::Calorimeter")
-    e_ecal_E = 0
+    def e_ecal_E = 0
 
     //sampling fraction
     evc.getInt("pindex").eachWithIndex{ pindex, ind_c ->
       if (pindex==ind){
-        det = evc.getInt("layer", ind_c);
+        def det = evc.getInt("layer", ind_c);
         e_ecal_E+=evc.getFloat("energy",ind_c)
       }
     }
-    sampl_frac = e_ecal_E/mom
+    def sampl_frac = e_ecal_E/mom
 
     //nphe
-    nphe = 0
+    def nphe = 0
     def evh = event.getBank("REC::Cherenkov")
     evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
       if(evh.getInt("detector",ind_h)==15 && pindex==ind) {
@@ -113,7 +113,7 @@ class electron{
       }
     }
 
-    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySamp(samp_frac) && this.find_byNPhe)) return ind
+    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySampl(sampl_frac) && this.find_byNPhe(nphe)) return ind
     else return null
   }
 }

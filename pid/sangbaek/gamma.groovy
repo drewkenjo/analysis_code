@@ -1,12 +1,11 @@
 package pid.sangbaek
 
-import org.jlab.io.base.DataBank;
-import org.jlab.io.base.DataEvent;
+import org.jlab.clas.physics.Vector3
 
 class gamma{
   static def findGamma = { event ->
     def pbank = event.getBank("REC::Particle")
-    return pbank -> (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
+    return (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
       .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
   }
 }
