@@ -10,18 +10,18 @@ class EPG {
     def partbank = event.getBank("REC::Particle")
     def calbank = event.getBank("REC::Calorimeter")
 
-    def findElectron = { event -> 
-      def pbank = event.getBank("REC::Particle")
+    def findElectron = { ev -> 
+      def pbank = ev.getBank("REC::Particle")
       return(0..<pbank.rows()).find{pbank.getInt('pid',it)==11 && pbank.getShort('status',it)<0}
     }
-    def findElectron_pid = {event -> electron.find_byEVENT(event)}
+    def findElectron_pid = {ev -> electron.find_byEVENT(event)}
     def findProton = { event ->
-      def pbank = event.getBank(("REC::Particle")
+      def pbank = ev.getBank(("REC::Particle")
       return (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
         .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
     }
-    def findGamma = { event -> 
-      def pbank = event.getBank(("REC::Particle")
+    def findGamma = { ev -> 
+      def pbank = ev.getBank(("REC::Particle")
       (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==22}
         .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
     }
