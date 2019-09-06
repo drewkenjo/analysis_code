@@ -12,6 +12,12 @@ def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 200,-2,4)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 200,-5 ,75)
 def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 380,-5,185)
+
+def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 200,0,40, 200, 0, 10.6)
+def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 200,0,120, 200, 0, 10.6)
+def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 200,0,40, 200, 0, 10.6)
+def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
+
 def beam = new Particle(11, 0,0,10.6)//7.546)
 def target = new Particle(2212, 0,0,0)
 
@@ -44,6 +50,15 @@ while(reader.hasEvent()) {
       epgX.combine(pro,-1)
       epgX.combine(gam,-1)
 
+      def GS = new Particle(beam)
+      GS.combine(ele,-1)
+
+      // def VG1 = gam.vector()
+      def VGS = GS.vector()
+      // def VMISS = epgX.vector()
+      // def VmissP = egX.vector()
+      // def VmissG = epX.vector()
+
       mom_gam = gam.vector().vect()
       mom_epX = epX.vector().vect()
 
@@ -55,6 +70,10 @@ while(reader.hasEvent()) {
       hmm2_epg.fill(epgX.mass2())
       hangle_epg.fill(Vangle(mom_gam,mom_epX))
       hangle_ep_eg.fill(Vangle(norm_ep,norm_eg))
+      h_kine_ele.fill(Math.toDegrees(ele.vector().vect().theta()),ele.vector().vect().mag())
+      h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
+      h_kine_gam.fill(Math.toDegrees(gam.vector().vect().theta()),gam.vector().vect().mag())
+      h_Q2_xB.fill(-VGS.mass2()/(2*0.938*VGS.e()),-VGS.mass2());
     }
   }
 }
@@ -70,4 +89,9 @@ out.addDataSet(hmm2_epg)
 out.addDataSet(hmm2_eg)
 out.addDataSet(hangle_epg)
 out.addDataSet(hangle_ep_eg)
+out.addDataSet(h_kine_ele)
+out.addDataSet(h_kine_pro)
+out.addDataSet(h_kine_gam)
+out.addDataSet(h_Q2_xB)
+
 out.writeFile('epg_out.hipo')
