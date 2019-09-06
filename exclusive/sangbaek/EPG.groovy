@@ -17,7 +17,7 @@ class EPG {
       Electron.findElectron(ev)
     }
     def findElectron_pid = {ev ->
-      electron.find_byev(ev)
+      electron.find_byEVENT(ev)
     }
     def findProton = { ev ->
       Proton.findProton(ev)

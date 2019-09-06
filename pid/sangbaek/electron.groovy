@@ -113,7 +113,7 @@ class electron{
       }
     }
 
-    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySamp(samp_frac)) && this.find_byNPhe) return ind
+    if(this.find_byMOM(mom,theta) && this.find_byVZ && this.find_bySamp(samp_frac) && this.find_byNPhe)) return ind
     else return null
   }
 }
