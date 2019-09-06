@@ -20,7 +20,7 @@ class EPG {
     }
 
     def inds = []
-    for(def findPart in [findElectron, findProton, findGamma]) {
+    for(def findPart in [findElectron_pid, findProton, findGamma]) {
       def ind = findPart(partbank)
       inds.add(ind)
       if(ind==null)
