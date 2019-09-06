@@ -11,7 +11,7 @@ class EPG {
     def calbank = event.getBank("REC::Calorimeter")
 
     def findElectron = { pbank -> (0..<pbank.rows()).find{pbank.getInt('pid',it)==11 && pbank.getShort('status',it)<0} }
-    def findElectron_pid = {pbank -> find_byBANK(pbank)}
+    def findElectron_pid = {pbank -> electron.find_byBANK(pbank)}
     def findProton = { pbank -> (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
       .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
     }
