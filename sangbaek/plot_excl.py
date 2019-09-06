@@ -18,13 +18,13 @@ c1.Print("dvcs.pdf(")
 
 c1.cd()
 h1 = ff.Get("epg_hmm2_eg")
-h1.GetXaxis().SetTitle("MM^2_{ep} (GeV/c)")
+h1.GetXaxis().SetTitle("MM^2_{e#gamma} (GeV/c)")
 h1.Draw("colz")
 c1.Print("dvcs.pdf")
 
 c1.cd()
 h1 = ff.Get("epg_hmm2_epg")
-h1.GetXaxis().SetTitle("MM^2_{ep} (GeV/c)")
+h1.GetXaxis().SetTitle("MM^2_{ep#gamma} (GeV/c)")
 h1.Draw("colz")
 c1.Print("dvcs.pdf")
 
