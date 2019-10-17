@@ -21,8 +21,10 @@ class EP {
       if(proind!=null) {
         def electron = new Particle(11, *['px', 'py', 'pz'].collect{partbank.getFloat(it, eleind)})
         def proton = new Particle(2212, *['px', 'py', 'pz'].collect{partbank.getFloat(it, proind)})
+
+        def status = partbank.getShort('status', proind)
         return [[particle:electron, pindex:eleind, sector:secs[eleind]],
-          [particle:proton, pindex:proind, sector:secs[proind]]]
+          [particle:proton, pindex:proind, status:status]]
       }
     }
     return [null, null]

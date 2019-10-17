@@ -5,7 +5,7 @@ import org.jlab.clas.physics.Particle
 import org.jlab.clas.physics.Vector3
 
 class EPGG {
-  static def getEPGG(HipoDataEvent event) {
+  static def getEPPi0(HipoDataEvent event) {
     def partbank = event.getBank("REC::Particle")
     def calbank = event.getBank("REC::Calorimeter")
 
@@ -26,10 +26,23 @@ class EPGG {
         return [null, null, null, null]
     }
 
-    def gammas = findGammas(partbank)
-    if(gammas.size()<2)
+    def vele = new Particle(11, *['px', 'py', 'pz'].collect{partbank.getFloat(it,inds[0])})
+    def gammas = findGammas(partbank).findAll{ind -> vele.vector().vect().theta(new Vector3(*['px', 'py', 'pz'].collect{partbank.getFloat(it,ind)}))>5}
+    def pi0s = gammas.dropRight(1).withIndex().collect{ig1, ind1->
+      gammas.drop(ind1+1).findResults{ig2->
+        def vg1 = new Particle(22, *['px','py','pz'].collect{partbank.getFloat(it,ig1)})
+        def vg2 = new Particle(22, *['px','py','pz'].collect{partbank.getFloat(it,ig2)})
+        def vpi0 = new Particle(vg1)
+        vpi0.combine(vg2,1)
+
+        def isGoodPi0 = vg1.vector().vect().theta(vg2.vector().vect()) > 2
+        isGoodPi0 ? [ig1, ig2, vpi0] : null
+      }
+    }.collectMany{it}.sort{it[2].e()}.reverse()
+
+    if(pi0s.size()<1)
       return [null, null, null, null]
-    inds.addAll(gammas[0..1])
+    inds.addAll(pi0s[0][0..1])
 
     def secs = [calbank.getShort('pindex')*.toInteger(), calbank.getByte('sector')].transpose().collectEntries()
 

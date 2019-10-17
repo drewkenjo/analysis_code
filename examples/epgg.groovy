@@ -1,3 +1,5 @@
+#!/home/kenjo/.groovy/coatjava/bin/run-groovy
+
 import org.jlab.io.hipo.HipoDataSource
 import org.jlab.detector.base.DetectorType
 import org.jlab.clas.physics.Particle
