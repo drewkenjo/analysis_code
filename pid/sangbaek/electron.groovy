@@ -97,13 +97,14 @@ class electron{
     def vz = pbank.getFloat("vz",ind)
     def evc = event.getBank("REC::Calorimeter")
     def e_ecal_E = 0
+    def sec = 0
 
     //sampling fraction
     evc.getInt("pindex").eachWithIndex{ pindex, ind_c ->
       if (pindex==ind){
         def det = evc.getInt("layer", ind_c);
         e_ecal_E+=evc.getFloat("energy",ind_c)
-        def sec = evc.getInt("sector",ind_c);
+        sec = evc.getInt("sector",ind_c);
       }
     }
     def sampl_frac = e_ecal_E/mom
