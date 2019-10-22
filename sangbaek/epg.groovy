@@ -5,7 +5,7 @@ import org.jlab.clas.physics.Vector3
 import org.jlab.groot.data.H1F
 import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
-import exclusive.sangbaek.EPG
+import exclusive.sangbaek.DVCS
 
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
@@ -18,7 +18,7 @@ def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 200,0,120, 200, 0, 10.6)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 200,0,40, 200, 0, 10.6)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
 
-def beam = new Particle(11, 0,0,10.6)//7.546)
+def beam = new Particle(11, 0,0,5)//7.546)
 def target = new Particle(2212, 0,0,0)
 
 for(fname in args) {
@@ -28,7 +28,7 @@ reader.open(fname)
 while(reader.hasEvent()) {
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
-    def (ele, pro, gam) = EPG.getEPG(event)*.particle
+    def (ele, pro, gam) = DVCS.getEPG(event)*.particle
     def Vangle = {v1, v2 -> 
        if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
     }
