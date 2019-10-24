@@ -20,12 +20,16 @@ def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
 
 def beam = new Particle(11, 0,0,5)//7.546)
 def target = new Particle(2212, 0,0,0)
+def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
+def totalevent = 0
 
 for(fname in args) {
 def reader = new HipoDataSource()
 reader.open(fname)
 
+
 while(reader.hasEvent()) {
+  totalevent++
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
     def (ele, pro, gam) = DVCS.getEPG(event)*.particle
@@ -81,7 +85,12 @@ while(reader.hasEvent()) {
 reader.close()
 }
 
+h_totalevent.setBinContent(0,totalevent)
 def out = new TDirectory()
+out.mkdir('/spec')
+out.cd('/spec')
+out.addDataSet(h_totalevent)
+
 out.mkdir('/epg')
 out.cd('/epg')
 out.addDataSet(hmm2_ep)
