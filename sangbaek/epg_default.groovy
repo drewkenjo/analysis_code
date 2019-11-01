@@ -20,8 +20,6 @@ def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 200,0,120, 200, 0, 10.6)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 200,0,40, 200, 0, 10.6)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
 
-def beam = new Particle(11, 0,0,5)//7.546)
-def target = new Particle(2212, 0,0,0)
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
 
