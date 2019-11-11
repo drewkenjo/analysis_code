@@ -72,7 +72,7 @@ while(reader.hasEvent()) {
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
-      hangle_epg.fill(Vangle(mom_gam,mom_epX))
+      // hangle_epg.fill(Vangle(mom_gam,mom_epX))
       hangle_ep_eg.fill(Vangle(norm_ep,norm_eg))
       h_kine_ele.fill(Math.toDegrees(ele.vector().vect().theta()),ele.vector().vect().mag())
       h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
