@@ -92,7 +92,7 @@ out.mkdir('/spec')
 out.cd('/spec')
 out.addDataSet(h_totalevent)
 
-def out = new TDirectory()
+// def out = new TDirectory()
 out.mkdir('/epg')
 out.cd('/epg')
 out.addDataSet(hmm2_ep)
