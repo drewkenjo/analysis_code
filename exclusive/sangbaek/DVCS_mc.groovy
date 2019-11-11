@@ -8,7 +8,7 @@ class DVCS_mc {
   static def getEPG(HipoDataEvent event) {
     def partbank = event.getBank("MC::Particle")
 
-    def findElectron = { pbank -> (0..<pbank.rows()).find{pbank.getInt('pid',it)==11}
+    def findElectron = { pbank -> (0..<pbank.rows()).find{pbank.getInt('pid',it)==11}}
     def findProton = { pbank -> (0..<pbank.rows()).findAll{pbank.getInt('pid',it)==2212}
       .max{ind -> (new Vector3(*['px', 'py', 'pz'].collect{pbank.getFloat(it,ind)})).mag2()}
     }
