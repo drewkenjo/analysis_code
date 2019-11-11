@@ -1,10 +1,10 @@
-package exclusive
+package exclusive.sangbaek
 
 import org.jlab.io.hipo.HipoDataEvent
 import org.jlab.clas.physics.Particle
 import org.jlab.clas.physics.Vector3
 
-class EPG {
+class DVCS_mc {
   static def getEPG(HipoDataEvent event) {
     def partbank = event.getBank("MC::Particle")
 
