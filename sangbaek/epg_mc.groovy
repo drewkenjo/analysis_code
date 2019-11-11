@@ -7,16 +7,16 @@ import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
 import exclusive.sangbaek.DVCS_mc
 
-def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 200,-2,4)
-def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 200,-2,4)
-def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 200,-0.2,0.2)
-def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 200,-5 ,75)
-def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 380,-5,185)
+def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
+def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
+def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
+def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
+def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
 
-def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 200,0,40, 200, 0, 10.6)
-def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 200,0,120, 200, 0, 10.6)
-def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 200,0,40, 200, 0, 10.6)
-def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
+def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 6)
+def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 6)
+def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 6)
+def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,6);
 
 def beam = new Particle(11, 0,0,5)//7.546)
 def target = new Particle(2212, 0,0,0)
