@@ -23,9 +23,6 @@ def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,6);
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
 
-def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
-def totalevent = 0
-
 for(fname in args) {
 def reader = new HipoDataSource()
 reader.open(fname)
