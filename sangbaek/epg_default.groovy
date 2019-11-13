@@ -98,9 +98,10 @@ h_totalevent.setBinContent(0,totalevent)
 lumi = (double) 1.0558*0.0001
 xsec = (double) 9.0285*100000
 tot_rate = lumi * xsec
-h_ele_rate.normalize(tot_rate)
-h_ele_rate.normalize(tot_rate)
-h_ele_rate.normalize(tot_rate)
+ratio = (double) totalevent / tot_rate
+h_ele_rate.divide(ratio)
+h_pro_rate.divide(ratio)
+h_gam_rate.divide(ratio)
 
 def out = new TDirectory()
 out.mkdir('/spec')
