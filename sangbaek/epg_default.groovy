@@ -72,9 +72,9 @@ while(reader.hasEvent()) {
       norm_ep = ele.vector().vect().cross(pro.vector().vect())
       norm_eg = ele.vector().vect().cross(gam.vector().vect())
 
-      h_ele_rate.fill(ele.particle.theta())
-      h_pro_rate.fill(pro.particle.theta())
-      h_gam_rate.fill(gam.particle.theta())
+      h_ele_rate.fill(ele.theta())
+      h_pro_rate.fill(pro.theta())
+      h_gam_rate.fill(gam.theta())
 
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
