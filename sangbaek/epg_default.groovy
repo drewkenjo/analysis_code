@@ -9,7 +9,7 @@ import exclusive.EPG
 
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
-def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-2,4)
+def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
 def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
 def beam = new Particle(11, 0,0,5)//7.546)
@@ -19,6 +19,10 @@ def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 6)
 def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 6)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 6)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,6);
+
+def h_elec = new H1F("h_ele_rate", "h_ele_rate", 35,5,40)
+def h_prot = new H1F("h_prot_rate", "h_prot_rate",360,0,360)
+def h_gamma = new H1F("h_gamma_rate","h_gamma_rate",360,0,360)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
@@ -68,6 +72,10 @@ while(reader.hasEvent()) {
       norm_ep = ele.vector().vect().cross(pro.vector().vect())
       norm_eg = ele.vector().vect().cross(gam.vector().vect())
 
+      h_ele_rate.fill(ele.particle.theta())
+      h_pro_rate.fill(pro.particle.theta())
+      h_gam_rate.fill(gam.particle.theta())
+
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
@@ -83,7 +91,17 @@ while(reader.hasEvent()) {
 
 reader.close()
 }
+
+
 h_totalevent.setBinContent(0,totalevent)
+
+lumi = (double) 1.0558*0.0001
+xsec = (double) 9.0285*100000
+tot_rate = lumi * xsec
+h_ele_rate.normalize(tot_rate)
+h_ele_rate.normalize(tot_rate)
+h_ele_rate.normalize(tot_rate)
+
 def out = new TDirectory()
 out.mkdir('/spec')
 out.cd('/spec')
@@ -101,5 +119,10 @@ out.addDataSet(h_kine_ele)
 out.addDataSet(h_kine_pro)
 out.addDataSet(h_kine_gam)
 out.addDataSet(h_Q2_xB)
+
+out.mkdir('/rates')
+out.addDataSet(h_ele_rate)
+out.addDataSet(h_pro_rate)
+out.addDataSet(h_gam_rate)
 
 out.writeFile('epg_out.hipo')
