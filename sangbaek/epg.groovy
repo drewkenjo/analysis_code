@@ -20,6 +20,11 @@ def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,12);
 
 def beam = new Particle(11, 0,0,5)//7.546)
 def target = new Particle(2212, 0,0,0)
+
+def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate",20,0,90)
+def h_pro_rate = new H1F("h_pro_rate", "h_pro_rate",20,0,90)
+def h_gam_rate = new H1F("h_gam_rate", "h_gam_rate",20,0,90)
+
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
 
@@ -69,6 +74,15 @@ while(reader.hasEvent()) {
       norm_ep = ele.vector().vect().cross(pro.vector().vect())
       norm_eg = ele.vector().vect().cross(gam.vector().vect())
 
+      // if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(ele.phi())<4.5){
+      h_ele_rate.fill(Math.toDegrees(ele.theta()))
+      // }
+      // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(pro.phi())<4.5){
+      h_pro_rate.fill(Math.toDegrees(pro.theta()))
+      // }
+      // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
+      h_gam_rate.fill(Math.toDegrees(gam.theta()))
+      // }
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
@@ -86,6 +100,17 @@ reader.close()
 }
 
 h_totalevent.setBinContent(0,totalevent)
+
+lumi = (double) 1.0558*0.0001
+xsec = (double) 9.0285*100000
+tot_rate = lumi * xsec
+phi_acceptance = (double) 4.5/180
+ratio = (double) totalevent/tot_rate
+ratio = (double) ratio/phi_acceptance
+h_ele_rate.divide(ratio)
+h_pro_rate.divide(ratio)
+h_gam_rate.divide(ratio)
+
 def out = new TDirectory()
 out.mkdir('/spec')
 out.cd('/spec')
@@ -103,4 +128,10 @@ out.addDataSet(h_kine_pro)
 out.addDataSet(h_kine_gam)
 out.addDataSet(h_Q2_xB)
 
-out.writeFile('epg_out.hipo')
+out.mkdir('/rates')
+out.cd('/rates')
+out.addDataSet(h_ele_rate)
+out.addDataSet(h_pro_rate)
+out.addDataSet(h_gam_rate)
+
+out.writeFile('dvcs_out.hipo')
