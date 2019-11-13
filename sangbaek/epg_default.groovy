@@ -72,10 +72,16 @@ while(reader.hasEvent()) {
       norm_ep = ele.vector().vect().cross(pro.vector().vect())
       norm_eg = ele.vector().vect().cross(gam.vector().vect())
 
-      h_ele_rate.fill(Math.toDegrees(ele.theta()))
-      h_pro_rate.fill(Math.toDegrees(pro.theta()))
-      h_gam_rate.fill(Math.toDegrees(gam.theta()))
 
+      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(ele.phi())<4.5){
+      h_ele_rate.fill(Math.toDegrees(ele.theta()))
+      }
+      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(pro.phi())<4.5){
+      h_pro_rate.fill(Math.toDegrees(pro.theta()))
+      }
+      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
+      h_gam_rate.fill(Math.toDegrees(gam.theta()))
+      }
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
@@ -95,13 +101,13 @@ reader.close()
 
 h_totalevent.setBinContent(0,totalevent)
 
-// lumi = (double) 1.0558*0.0001
-// xsec = (double) 9.0285*100000
-// tot_rate = lumi * xsec
-// ratio = (double) totalevent / tot_rate
-// h_ele_rate.divide(ratio)
-// h_pro_rate.divide(ratio)
-// h_gam_rate.divide(ratio)
+lumi = (double) 1.0558*0.0001
+xsec = (double) 9.0285*100000
+tot_rate = lumi * xsec
+ratio = (double) totalevent / tot_rate
+h_ele_rate.divide(ratio)
+h_pro_rate.divide(ratio)
+h_gam_rate.divide(ratio)
 
 def out = new TDirectory()
 out.mkdir('/spec')
