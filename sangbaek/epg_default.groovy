@@ -20,9 +20,9 @@ def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 6)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 6)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,6);
 
-def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate", 35,5,40)
-def h_pro_rate = new H1F("h_prot_rate", "h_prot_rate",360,-180,180)
-def h_gam_rate = new H1F("h_gamma_rate","h_gamma_rate",360,-180,180)
+def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate",20,0,90)
+def h_pro_rate = new H1F("h_pro_rate", "h_pro_rate",20,0,90)
+def h_gam_rate = new H1F("h_gam_rate", "h_gam_rate",20,0,90)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
@@ -73,15 +73,15 @@ while(reader.hasEvent()) {
       norm_eg = ele.vector().vect().cross(gam.vector().vect())
 
 
-      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(ele.phi())<4.5){
+      // if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(ele.phi())<4.5){
       h_ele_rate.fill(Math.toDegrees(ele.theta()))
-      }
-      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(pro.phi())<4.5){
+      // }
+      // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(pro.phi())<4.5){
       h_pro_rate.fill(Math.toDegrees(pro.theta()))
-      }
-      if (Math.toDegrees(ele.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
+      // }
+      // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
       h_gam_rate.fill(Math.toDegrees(gam.theta()))
-      }
+      // }
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
@@ -104,7 +104,9 @@ h_totalevent.setBinContent(0,totalevent)
 lumi = (double) 1.0558*0.0001
 xsec = (double) 9.0285*100000
 tot_rate = lumi * xsec
-ratio = (double) totalevent / tot_rate
+phi_acceptance = (double) 4.5/180
+ratio = (double) totalevent/tot_rate
+ratio = (double) ratio/phi_acceptance
 h_ele_rate.divide(ratio)
 h_pro_rate.divide(ratio)
 h_gam_rate.divide(ratio)
