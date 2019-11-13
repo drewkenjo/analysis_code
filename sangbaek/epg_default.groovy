@@ -20,9 +20,9 @@ def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 6)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 6)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^2 - xB",100,0,1,100,0,6);
 
-def h_elec = new H1F("h_ele_rate", "h_ele_rate", 35,5,40)
-def h_prot = new H1F("h_prot_rate", "h_prot_rate",360,0,360)
-def h_gamma = new H1F("h_gamma_rate","h_gamma_rate",360,0,360)
+def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate", 35,5,40)
+def h_pro_rate = new H1F("h_prot_rate", "h_prot_rate",360,0,360)
+def h_gam_rate = new H1F("h_gamma_rate","h_gamma_rate",360,0,360)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 def totalevent = 0
