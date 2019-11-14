@@ -85,8 +85,8 @@ while(reader.hasEvent()) {
       // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
       h_gam_rate.fill(Math.toDegrees(gam.theta()))
       // }
-      h_ep_azimuth(Math.toDegrees(pro.phi()),Math.toDegrees(ele.phi()))
-      h_ep_polar(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
+      h_ep_azimuth.fill(Math.toDegrees(pro.phi()),Math.toDegrees(ele.phi()))
+      h_ep_polar.fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
       hmm2_epg.fill(epgX.mass2())
