@@ -109,7 +109,7 @@ lumi = (double) 1.0558*0.0001
 xsec = (double) 9.0285*100000
 tot_rate = lumi * xsec
 phi_acceptance = (double) 4.5/360
-ratio = (double) totalevent/tot_rate
+ratio = (double) 2000000/tot_rate
 ratio = (double) ratio/phi_acceptance
 h_ele_rate.divide(ratio)
 h_pro_rate.divide(ratio)
