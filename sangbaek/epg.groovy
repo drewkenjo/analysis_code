@@ -33,7 +33,7 @@ def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 for(fname in args) {
 def reader = new HipoDataSource()
 reader.open(fname)
-h_totalevent.setBinContent(0,reader.getSize())
+h_totalevent.setBinContent(0,h_totalevent.getBinContent(0)+reader.getSize())
 
 
 while(reader.hasEvent()) {
@@ -86,9 +86,9 @@ while(reader.hasEvent()) {
       h_gam_rate.fill(Math.toDegrees(gam.theta()))
       // }
       def ele_phi = Math.toDegrees(ele.phi())
-      if (ele_phi<0) ele_phi=360-ele_phi
+      if (ele_phi<0) ele_phi=360+ele_phi
       def pro_phi = Math.toDegrees(pro.phi())
-      if (pro_phi<0) pro_phi=360-pro_phi
+      if (pro_phi<0) pro_phi=360+pro_phi
       h_ep_azimuth.fill(pro_phi,ele_phi)
       h_ep_azimuth_diff.fill(Math.abs(pro_phi-ele_phi))
       h_ep_polar.fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
