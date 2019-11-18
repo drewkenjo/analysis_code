@@ -32,7 +32,7 @@ class DVCS {
       
       // cut by pid
       if(ind==null) return [null, null, null]
-      if(twogamma.findsecondGamma(event) >0) return [null,null,null]
+      // if(twogamma.findsecondGamma(event) >0) return [null,null,null]
     }
 
     def secs = [calbank.getShort('pindex')*.toInteger(), calbank.getByte('sector')].transpose().collectEntries()
@@ -61,7 +61,7 @@ class DVCS {
     def VGS = GS.vector()
     def xB = -VGS.mass2()/(2*0.938*VGS.e())
     def Q2 = -VGS.mass2()
-    if (W<2 || Q2<1) return [null, null, null]
+    if (W<2 || Q2<1 ||gam.e()<1) return [null, null, null]
 
 
     // cut by exclusivity

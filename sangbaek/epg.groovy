@@ -24,19 +24,19 @@ def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate",20,0,90)
 def h_pro_rate = new H1F("h_pro_rate", "h_pro_rate",20,0,90)
 def h_gam_rate = new H1F("h_gam_rate", "h_gam_rate",20,0,90)
 
-def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",360,-180,180,360,-180,180)
-def h_ep_polar = new H2F("h_ep_polar", "h_ep_polar",20,0,90,20,0,90)
+def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",80,0,360,80,0,360)
+def h_ep_azimuth_diff = new H1F("h_ep_azimuth_diff", "h_ep_azimuth_diff",80,0,360)
+def h_ep_polar = new H2F("h_ep_polar", "h_ep_polar",90,0,90,90,0,90)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
-def totalevent = 0
 
 for(fname in args) {
 def reader = new HipoDataSource()
 reader.open(fname)
+h_totalevent.setBinContent(0,reader.getSize())
 
 
 while(reader.hasEvent()) {
-  totalevent++
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
     def (ele, pro, gam) = DVCS.getEPG(event)*.particle
@@ -85,7 +85,12 @@ while(reader.hasEvent()) {
       // if (Math.toDegrees(pro.phi())>0 && Math.toDegrees(gam.phi())<4.5){      
       h_gam_rate.fill(Math.toDegrees(gam.theta()))
       // }
-      h_ep_azimuth.fill(Math.toDegrees(pro.phi()),Math.toDegrees(ele.phi()))
+      def ele_phi = Math.toDegrees(ele.phi())
+      if (ele_phi<0) ele_phi=360-ele_phi
+      def pro_phi = Math.toDegrees(pro.phi())
+      if (pro_phi<0) pro_phi=360-pro_phi
+      h_ep_azimuth.fill(pro_phi,ele_phi)
+      h_ep_azimuth_diff.fill(Math.abs(pro_phi-ele_phi))
       h_ep_polar.fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
       hmm2_ep.fill(epX.mass2())
       hmm2_eg.fill(egX.mass2())
@@ -99,21 +104,19 @@ while(reader.hasEvent()) {
     }
   }
 }
-
 reader.close()
 }
 
-h_totalevent.setBinContent(0,totalevent)
 
-lumi = (double) 1.0558*0.0001
-xsec = (double) 9.0285*100000
-tot_rate = lumi * xsec
-phi_acceptance = (double) 4.5/360
-ratio = (double) 2000000/tot_rate
-ratio = (double) ratio/phi_acceptance
-h_ele_rate.divide(ratio)
-h_pro_rate.divide(ratio)
-h_gam_rate.divide(ratio)
+// lumi = (double) 1.0558*0.0001
+// xsec = (double) 9.0285*100000
+// tot_rate = lumi * xsec
+// phi_acceptance = (double) 4.5/360
+// ratio = (double) 2000000/tot_rate
+// ratio = (double) ratio/phi_acceptance
+// h_ele_rate.divide(ratio)
+// h_pro_rate.divide(ratio)
+// h_gam_rate.divide(ratio)
 
 def out = new TDirectory()
 out.mkdir('/spec')
@@ -142,5 +145,6 @@ out.mkdir('/angular')
 out.cd('/angular')
 out.addDataSet(h_ep_azimuth)
 out.addDataSet(h_ep_polar)
+out.addDataSet(h_ep_azimuth_diff)
 
 out.writeFile('dvcs_out.hipo')
