@@ -46,7 +46,7 @@ class DVCS {
 
     // cut by kinematics
     // incoming
-    def beam = new Particle(11, 0, 0, 5)// 10.6)
+    def beam = new Particle(11, 0, 0, 10.6)// 10.6)
     def target = new Particle(2212, 0,0,0)
 
     // outgoing
@@ -108,6 +108,8 @@ class DVCS {
     ){
       excl_cut = true 
     }
+
+    if (!excl_cut) return [null, null, null]
 
 
     return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[inds[it]]]}

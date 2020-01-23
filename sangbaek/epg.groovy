@@ -12,7 +12,7 @@ def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
 def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
-def beam = new Particle(11, 0,0,5)//7.546)
+def beam = new Particle(11, 0,0,10.6)//5)
 def target = new Particle(2212, 0,0,0)
 
 def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 6)
@@ -24,9 +24,11 @@ def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate",20,0,90)
 def h_pro_rate = new H1F("h_pro_rate", "h_pro_rate",20,0,90)
 def h_gam_rate = new H1F("h_gam_rate", "h_gam_rate",20,0,90)
 
-def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",80,0,360,80,0,360)
+def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",80,0,360,80, 0,360)
 def h_ep_azimuth_diff = new H1F("h_ep_azimuth_diff", "h_ep_azimuth_diff",80,0,360)
 def h_ep_polar = new H2F("h_ep_polar", "h_ep_polar",90,0,90,90,0,90)
+
+def h_cross_section = new H1F("h_cross_section","h_cross_section", 80,-0,360)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 
@@ -69,6 +71,22 @@ while(reader.hasEvent()) {
       // def VMISS = epgX.vector()
       // def VmissP = egX.vector()
       // def VmissG = epX.vector()
+      def VB = beam.vector()
+      def VE = ele.vector()
+      def Vlept = (VB.vect()).cross(VE.vect());
+
+      def VPROT = pro.vector()
+      def Vhadr = (VPROT.vect()).cross(VGS.vect());
+
+      def TrentoAng = (float)Vangle(Vlept,Vhadr);
+
+      def Q2 = -VGS.mass2()
+      def xB = -VGS.mass2()/(2*0.938*VGS.e())
+
+      def mand = new Particle(pro)
+      mand.combine(target,-1)
+      def Vmand = mand.vector()
+      def t = -Vmand.mass2() //-t
 
       mom_gam = gam.vector().vect()
       mom_epX = epX.vector().vect()
@@ -101,6 +119,10 @@ while(reader.hasEvent()) {
       h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
       h_kine_gam.fill(Math.toDegrees(gam.vector().vect().theta()),gam.vector().vect().mag())
       h_Q2_xB.fill(-VGS.mass2()/(2*0.938*VGS.e()),-VGS.mass2());
+
+      if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
+      if (TrentoAng<0) TrentoAng = 360+TrentoAng
+      h_cross_section.fill(TrentoAng)
     }
   }
 }
@@ -146,5 +168,9 @@ out.cd('/angular')
 out.addDataSet(h_ep_azimuth)
 out.addDataSet(h_ep_polar)
 out.addDataSet(h_ep_azimuth_diff)
+
+out.mkdir('/xsec')
+out.cd('/xsec')
+out.addDataSet(h_cross_section)
 
 out.writeFile('dvcs_out.hipo')
