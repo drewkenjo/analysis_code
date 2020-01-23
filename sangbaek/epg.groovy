@@ -11,7 +11,7 @@ def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
-def hangle_ep_eg = new H1F("hange_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
+def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
 def beam = new Particle(11, 0,0,10.6)//5)
 def target = new Particle(2212, 0,0,0)
 
@@ -32,6 +32,12 @@ def h_cross_section = new H1F("h_cross_section","h_cross_section", 80,-0,360)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 
+def h_ele_phi = (1..6).collect{
+  sec_num=it
+  def hist = new H1F("electron phi sec"+sec_num,80,-360,360)
+  return hist
+}
+
 for(fname in args) {
 def reader = new HipoDataSource()
 reader.open(fname)
@@ -42,6 +48,7 @@ while(reader.hasEvent()) {
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
     def (ele, pro, gam) = DVCS.getEPG(event)*.particle
+    def (ele_sec, pro_sec, gam_sec) = DVCS.getEPG(event)*.sector
     def Vangle = {v1, v2 -> 
        if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
     }
@@ -123,6 +130,8 @@ while(reader.hasEvent()) {
       if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
       if (TrentoAng<0) TrentoAng = 360+TrentoAng
       h_cross_section.fill(TrentoAng)
+
+      h_ele_phi[ele_sec-1].fill(ele_phi)
     }
   }
 }
@@ -168,6 +177,7 @@ out.cd('/angular')
 out.addDataSet(h_ep_azimuth)
 out.addDataSet(h_ep_polar)
 out.addDataSet(h_ep_azimuth_diff)
+h_ele_phi.each{out.addDataSet(it)}
 
 out.mkdir('/xsec')
 out.cd('/xsec')

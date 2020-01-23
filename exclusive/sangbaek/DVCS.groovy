@@ -16,7 +16,7 @@ class DVCS {
     def calbank = event.getBank("REC::Calorimeter")
 
     def findElectron = { ev -> 
-      electron.find_byEVENT(ev)
+      Electron.findElectron(ev)
     }
     def findProton = { ev ->
       Proton.findProton(ev)
