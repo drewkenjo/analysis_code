@@ -15,10 +15,10 @@ def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg"
 def beam = new Particle(11, 0,0,10.6)//5)
 def target = new Particle(2212, 0,0,0)
 
-def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 6)
-def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 6)
-def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 6)
-def h_Q2_xB = new H2F("h_Q2_xB", "Q^{2} - x_{B}",100,0,1,100,0,6);
+def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 12)
+def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 12)
+def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 12)
+def h_Q2_xB = new H2F("h_Q2_xB", "Q^{2} - x_{B}",100,0,1,100,0,12);
 
 def h_ele_rate = new H1F("h_ele_rate", "h_ele_rate",20,0,90)
 def h_pro_rate = new H1F("h_pro_rate", "h_pro_rate",20,0,90)
@@ -28,13 +28,13 @@ def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",80,0,360,80, 0,360)
 def h_ep_azimuth_diff = new H1F("h_ep_azimuth_diff", "h_ep_azimuth_diff",80,0,360)
 def h_ep_polar = new H2F("h_ep_polar", "h_ep_polar",90,0,90,90,0,90)
 
-def h_cross_section = new H1F("h_cross_section","h_cross_section", 80,-0,360)
+def h_cross_section = new H1F("h_cross_section","DVCS cross section", 36,0,360)
 
 def h_totalevent = new H1F("h_totalevent","total events",1,0,1)
 
 def h_ele_phi = (1..6).collect{
   sec_num=it
-  def hist = new H1F("electron phi sec"+sec_num,80,-360,360)
+  def hist = new H1F("electron phi sec"+sec_num,80,0,360)
   return hist
 }
 
@@ -129,7 +129,7 @@ while(reader.hasEvent()) {
 
       if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
       if (TrentoAng<0) TrentoAng = 360+TrentoAng
-      h_cross_section.fill(TrentoAng)
+      if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
 
       h_ele_phi[ele_sec-1].fill(ele_phi)
     }
