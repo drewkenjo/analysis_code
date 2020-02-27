@@ -2,6 +2,8 @@ package event
 import org.jlab.detector.base.DetectorType
 import org.jlab.io.hipo.HipoDataEvent
 import event.Event
+import event.DCHit
+import event.FtofHit
 
 class EventConverter {
 
@@ -9,6 +11,7 @@ class EventConverter {
         def event = new Event()
         convertScalars(dataEvent,event)
         convertPart(dataEvent,event)
+	convertCovMat(dataEvent,event)
         convertCherenkov(dataEvent,event)
         convertCalorimeter(dataEvent,event)
         convertTimeOfFlight(dataEvent,event)
@@ -45,12 +48,40 @@ class EventConverter {
                 event.vz.put(index, part.getFloat('vz', index))
                 event.vt.put(index, part.getFloat('vt', index))
                 event.beta.put(index, part.getFloat('beta', index))
+                event.chi2pid.put(index, part.getFloat('chi2pid', index))
                 event.status.put(index, part.getShort('status', index))
                 event.charge.put(index, part.getByte('charge', index))
                 event.pid.put(index, part.getInt('pid', index))
             }
         } else {
             event.npart = 0
+        }
+    }
+
+    static def convertCovMat(HipoDataEvent dataEvent, Event event){
+        if (dataEvent.hasBank("REC::CovMat")){
+            def cov = dataEvent.getBank("REC::CovMat")
+            (0 ..< cov.rows()).each{ index ->
+                def pindex = cov.getShort('pindex',index).toInteger()		
+		def cmatrix = new CovarianceMatrix()
+		cmatrix.c11 = cov.getFloat('C11',index)
+		cmatrix.c12 = cov.getFloat('C12',index)
+		cmatrix.c13 = cov.getFloat('C13',index)
+		cmatrix.c14 = cov.getFloat('C14',index)
+		cmatrix.c15 = cov.getFloat('C15',index)
+		cmatrix.c22 = cov.getFloat('C22',index)
+		cmatrix.c23 = cov.getFloat('C23',index)
+		cmatrix.c24 = cov.getFloat('C24',index)
+		cmatrix.c25 = cov.getFloat('C25',index)
+		cmatrix.c33 = cov.getFloat('C33',index)
+		cmatrix.c34 = cov.getFloat('C34',index)
+		cmatrix.c35 = cov.getFloat('C35',index)
+		cmatrix.c44 = cov.getFloat('C44',index)
+		cmatrix.c45 = cov.getFloat('C45',index)
+		cmatrix.c55 = cov.getFloat('C55',index)
+		event.covariance_status.add(pindex)
+		event.cov_mat.put(pindex, cmatrix)
+            }
         }
     }
 
@@ -77,7 +108,7 @@ class EventConverter {
                 def pindex = cal.getShort('pindex', index).toInteger()
                 def layer = cal.getByte('layer', index)
 
-                if (layer == 1){
+                if (layer == 4){
                     event.ecal_inner_status.add(pindex)
                     event.ecal_inner_energy.put(pindex, cal.getFloat('energy', index))
                     event.ecal_inner_time.put(pindex, cal.getFloat('time', index))
@@ -88,7 +119,7 @@ class EventConverter {
                     event.ecal_inner_w.put(pindex, cal.getFloat('lw', index))
                 }
 
-                else if (layer == 4){
+                else if (layer == 7){
                     event.ecal_outer_status.add(pindex)
                     event.ecal_outer_energy.put(pindex, cal.getFloat('energy', index))
                     event.ecal_outer_time.put(pindex, cal.getFloat('time', index))
@@ -99,7 +130,7 @@ class EventConverter {
                     event.ecal_outer_w.put(pindex, cal.getFloat('lw', index))
                 }
 
-                else if (layer == 7){
+                else if (layer == 1){
                     event.pcal_status.add(pindex)
                     event.pcal_energy.put(pindex, cal.getFloat('energy', index))
                     event.pcal_time.put(pindex, cal.getFloat('time', index))
@@ -123,7 +154,8 @@ class EventConverter {
                 // Add some logic to determine the paddle and the kind of
                 // detector which was hit.
                 if (detector == DetectorType.FTOF.getDetectorId()){
-                    event.tof_status.add(pindex)
+
+                    /* Outdated by FtofHit
                     event.tof_sector.put(pindex, tof.getByte('sector', index))
                     event.tof_layer.put(pindex, tof.getByte('layer', index))
 
@@ -132,7 +164,26 @@ class EventConverter {
                     event.tof_time.put(pindex, tof.getFloat('time', index))
                     event.tof_path.put(pindex, tof.getFloat('path', index))
                     event.tof_energy.put(pindex, tof.getFloat('energy', index))
+                    */
+
+                    def hit = new FtofHit(
+                            sector: tof.getByte('sector', index),
+                            layer: tof.getByte('layer', index),
+                            paddle: tof.getShort('component', index),
+                            time: tof.getFloat('time', index),
+                            energy: tof.getFloat('energy', index),
+                            path: tof.getFloat('path', index)
+                    )
+                    if (event.tof_status.contains(pindex)){
+                        event.tof.get(pindex).add(hit)
+                    }
+                    else {
+                        event.tof_status.add(pindex)
+                        event.tof.put(pindex, new ArrayList<FtofHit>())
+                        event.tof.get(pindex).add(hit)
+                    }
                 }
+
                 else if (detector == DetectorType.CTOF.getDetectorId()){
                     event.ctof_status.add(pindex)
                     event.ctof_sector.put(pindex, tof.getByte('sector', index))

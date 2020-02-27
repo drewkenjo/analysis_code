@@ -12,7 +12,7 @@ class ElectronFromEvent {
     def min_vz = -12
     def max_vz = 9
 
-    def min_pcal_dep = 0.06
+    def min_ecal_dep = 0.06
 
     //calorimeter fiducial cut
     def min_u = 0
@@ -64,7 +64,7 @@ class ElectronFromEvent {
     }
 
     def passElectronEIEOCut = { event, index ->
-		return (event.pcal_status.contains(index)) ? event.pcal_energy[index] > min_pcal_dep : false
+		return (event.ecal_inner_status.contains(index)) ? event.ecal_inner_energy[index] > min_ecal_dep : false
 	}
 
     //detector layer r1-12, r2-24, r3-36

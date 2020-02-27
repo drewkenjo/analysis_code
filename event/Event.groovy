@@ -1,6 +1,8 @@
 package event
 import org.jlab.detector.base.DetectorType
 import event.DCHit
+import event.FtofHit
+import event.CovarianceMatrix
 
 class Event {
 
@@ -12,7 +14,7 @@ class Event {
 
     // All detector status variables collected together
     HashSet<Integer> cherenkov_status, ecal_inner_status, ecal_outer_status, pcal_status, ctof_status
-    HashSet<Integer> dc1_status, dc2_status, dc3_status, tof_status
+    HashSet<Integer> dc1_status, dc2_status, dc3_status, tof_status, covariance_status
 
     // REC::Cherenkov
     HashMap<Integer,Float> nphe, cherenkov_time, cherenkov_path
@@ -20,7 +22,10 @@ class Event {
 
     // REC::Particle
     HashMap<Integer, Short> pid, status, charge
-    HashMap<Integer, Float> px, py, pz, p, vx, vy, vz, vt, beta
+    HashMap<Integer, Float> px, py, pz, p, vx, vy, vz, vt, beta, chi2pid
+
+    // REC::CovMat
+    HashMap<Integer, CovarianceMatrix> cov_mat
 
     // REC::Calorimeter
     HashMap<Integer, Short> ecal_inner_sector, ecal_outer_sector, pcal_sector
@@ -31,10 +36,10 @@ class Event {
     HashMap<Integer, Float> ecal_inner_v, ecal_outer_v, pcal_v
     HashMap<Integer, Float> ecal_inner_w, ecal_outer_w, pcal_w
 
-
     // REC::Scintillator
     HashMap<Integer, Short> tof_sector, tof_paddle, tof_layer
     HashMap<Integer, Float> tof_time, tof_path, tof_energy
+    HashMap<Integer, ArrayList<FtofHit>> tof
 
     HashMap<Integer, Short> ctof_sector, ctof_component, ctof_layer
     HashMap<Integer, Float> ctof_time, ctof_energy, ctof_path
@@ -58,6 +63,7 @@ class Event {
         dc3_status = new HashSet<Integer>()
         tof_status = new HashSet<Integer>()
         ctof_status = new HashSet<Integer>()
+        covariance_status = new HashSet<Integer>()
 
         // REC::Particle
         px = new HashMap<Integer, Float>()
@@ -69,9 +75,13 @@ class Event {
         vz = new HashMap<Integer, Float>()
         vt = new HashMap<Integer, Float>()
         beta = new HashMap<Integer, Float>()
+        chi2pid = new HashMap<Integer, Float>()
         pid = new HashMap<Integer, Integer>()
         charge = new HashMap<Integer, Short>()
         status = new HashMap<Integer, Short>()
+
+	// REC::CovMat
+	cov_mat = new HashMap<Integer, CovarianceMatrix>()
 
         // REC::Cherenkov
         nphe = new HashMap<Integer, Float>()
@@ -103,6 +113,7 @@ class Event {
         pcal_w = new HashMap<Integer, Float>()
 
         // REC::Scintillator
+        tof = new HashMap<Integer, ArrayList<FtofHit>>()
         tof_time = new HashMap<Integer, Float>()
         tof_path = new HashMap<Integer, Float>()
         tof_energy = new HashMap<Integer, Float>()
