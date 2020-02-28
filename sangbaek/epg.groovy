@@ -37,6 +37,36 @@ def h_ele_phi = (1..6).collect{
   def hist = new H1F("electron phi sec"+sec_num,80,0,360)
   return hist
 }
+def h_W_sec = (1..6).collect{
+  sec_num=it
+  def hist = new H1F("h_W_"+sec_num,"h_W_"+sec_num,100,0,10)
+  return hist
+}
+
+def h_Q2_xB_sec = (1..6).collect{
+  sec_num=it
+  def hist = new H2F("h_Q2_xB_"+sec_num,"h_Q2_xB_"+sec_num,100,0,1,100,0,12)
+  return hist
+}
+
+def h_t_sec = (1..6).collect{
+  sec_num=it
+  def hist = new H1F("h_t_"+sec_num,"h_t_"+sec_num,100,0,4)
+  return hist
+}
+
+def h_phi_sec = (1..6).collect{
+  sec_num=it
+  def hist = new H1F("h_phi"+sec_num,360,0,360)
+  return hist
+}
+
+def h_y_sec = (1..6).collect{
+  sec_num=it
+  def hist = new H1F("W"+sec_num,100,0,1)
+  return hist
+}
+
 
 for(fname in args) {
 def reader = new HipoDataSource()
@@ -47,8 +77,9 @@ h_totalevent.setBinContent(0,h_totalevent.getBinContent(0)+reader.getSize())
 while(reader.hasEvent()) {
   def event = reader.getNextEvent()
   if (event.hasBank("REC::Particle") && event.hasBank("REC::Calorimeter")) {
-    def (ele, pro, gam) = DVCS.getEPG(event)*.particle
-    def (ele_sec, pro_sec, gam_sec) = DVCS.getEPG(event)*.sector
+    def dsets= DVCS.getEPG(event)
+    def (ele, pro, gam) = dsets*.particle
+    def (ele_sec, pro_sec, gam_sec) = dsets*.sector
     def Vangle = {v1, v2 -> 
        if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
     }
@@ -72,6 +103,9 @@ while(reader.hasEvent()) {
 
       def GS = new Particle(beam)
       GS.combine(ele,-1)
+
+      def W = new Particle(GS)
+      GS.combine(target,1)
 
       // def VG1 = gam.vector()
       def VGS = GS.vector()
@@ -125,13 +159,16 @@ while(reader.hasEvent()) {
       h_kine_ele.fill(Math.toDegrees(ele.vector().vect().theta()),ele.vector().vect().mag())
       h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
       h_kine_gam.fill(Math.toDegrees(gam.vector().vect().theta()),gam.vector().vect().mag())
-      h_Q2_xB.fill(-VGS.mass2()/(2*0.938*VGS.e()),-VGS.mass2());
+      h_Q2_xB.fill(xB,Q2);
 
       if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
       if (TrentoAng<0) TrentoAng = 360+TrentoAng
       if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
 
       h_ele_phi[ele_sec-1].fill(ele_phi)
+
+      h_Q2_xB_sec[ele_sec-1].fill(xB,Q2)
+      h_W_sec[ele_sec-1].fill(W.mass())
     }
   }
 }

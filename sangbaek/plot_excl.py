@@ -116,9 +116,14 @@ f1 = ROOT.TF1('f1', 'gaus(0)+pol0(3)', 0,1)
 
 # c1.cd()
 # h1 = ff.Get("epg_h_Q2_xB")
-# h1.GetXaxis().SetTitle("xB");
-# h1.GetYaxis().SetTitle("Q^2 (GeV^2)");
+# h1.SetTitle("")
+# h1.GetXaxis().SetTitle("x_{B}");
+# h1.GetYaxis().SetTitle("Q^{2} (GeV^2)");
+# a = np.array([0], dtype=np.int32)
 # h1.Draw("colz")
+# ROOT.gStyle.SetPalette(1)
+# ROOT.gPad.Modified()
+# ROOT.gPad.Update()
 # c1.Print("dvcs.pdf)")
 
 h1 = ff.Get("spec_h_totalevent")
