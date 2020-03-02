@@ -28,11 +28,11 @@ class KinTool{
     }
 
     static def calcPhiTrento(LorentzVector beam, LorentzVector measured_el,LorentzVector measured_prot){
-	def v3l = beam.vect().cross(ele.vect())
-	def v3h = pro.vect().cross((beam-ele).vect())
+	def v3l = beam.vect().cross(measured_el.vect())
+	def v3h = measured_prot.vect().cross((beam-measured_el).vect())
 	def trento = Math.toDegrees(Math.acos(v3l.dot(v3h)/(v3l.mag()*v3h.mag())))
 
-	if(v3l.dot(pro.vect())<0){trento=360-trento}
+	if(v3l.dot(measured_prot.vect())<0){trento=360-trento}
 	return trento
     }
 
