@@ -32,20 +32,20 @@ class electron{
 
   def initalizeCustomElecCuts(){
     this.electronCutStrategies_Brandon = [
-      electronCuts.passElectronStatus,
-      electronCuts.passElectronChargeCut,
-      electronCuts.passElectronTrackQualityCut,
-      electronCuts.passElectronMinMomentum,
-      electronCuts.passElectronEBPIDCut,
-      electronCuts.passElectronSamplingFractionCut,
-      electronCuts.passElectronNpheCut,
-      electronCuts.passElectronVertexCut,
-      electronCuts.passElectronPCALFiducialCut,
-      electronCuts.passElectronEIEOCut,
-      electronCuts.passElectronDCR1,
-      electronCuts.passElectronDCR2,
-      electronCuts.passElectronDCR3,
-      electronCuts.passElectronAntiPionCut
+      electron_candidate.passElectronStatus,
+      electron_candidate.passElectronChargeCut,
+      electron_candidate.passElectronTrackQualityCut,
+      electron_candidate.passElectronMinMomentum,
+      electron_candidate.passElectronEBPIDCut,
+      electron_candidate.passElectronSamplingFractionCut,
+      electron_candidate.passElectronNpheCut,
+      electron_candidate.passElectronVertexCut,
+      electron_candidate.passElectronPCALFiducialCut,
+      electron_candidate.passElectronEIEOCut,
+      electron_candidate.passElectronDCR1,
+      electron_candidate.passElectronDCR2,
+      electron_candidate.passElectronDCR3,
+      electron_candidate.passElectronAntiPionCut
     ]
 
     this.electronCutStrategies_Custom = [
