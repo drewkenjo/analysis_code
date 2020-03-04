@@ -57,7 +57,7 @@ class electron{
 
   def getGoodElectron(event){
     //return a list of REC::Particle indices for tracks passing all electron cuts
-    def el_cut_result = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, electronCutStrategies.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
+    def el_cut_result = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, electronCutStrategies_Brandon.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
     this.electronCutResults_Brandon = el_cut_result.findResults{el_indx, cut_result -> !cut_result.contains(false) ? el_indx : null}
   }
 
