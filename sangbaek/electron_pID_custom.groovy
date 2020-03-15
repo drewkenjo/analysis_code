@@ -28,6 +28,7 @@ el_cut_strictness_lvl=["ecal_cut_lvl":1,
 		       "anti_pion_cut_lvl":1
 ]
 
+def hist_ele_theta_mom = [:].withDefault{new H2F("hist_ele_theta_mom_$it", "momentum vs theta", 250,0,30, 250,0,11)}
 
 //use these two lines for the second and third method
 def ele_selector = new ElectronSelector()
@@ -61,35 +62,38 @@ def myElectronCutStrategies = [
     electron.passElectronAntiPionCut
 ]
 
+def electron_ind = new electron()
    
 for(fname in args) {
     def reader = new HipoDataSource()
     reader.open(fname)
     
     while(reader.hasEvent()) {
-	def data_event = reader.getNextEvent()
-	def event = EventConverter.convert(data_event)
+		def data_event = reader.getNextEvent()
+		def event = EventConverter.convert(data_event)
 
-	def electron_ind = new electron(event)
+		def good_el_with_cuts_Brandon = electron_ind.applyCuts_Brandon(event)
+		def good_el_with_cuts_Custom = electron_ind.applyCuts_Custom(event)
 
-	// first method for selecting electrons illustrates what the ElectronSelector class is doing under the hood.
-	// def my_el_cuts = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, myElectronCutStrategies.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()	  
-	// my_el_cuts.each{ index, value ->
-	//     def lv = new Vector3(event.px[index], event.py[index], event.pz[index])
-	//     def p = lv.mag()
-	//     def vz = event.vz[index]
-	//     def theta = Math.toDegrees(lv.theta())
-	//     def phi = Math.toDegrees(lv.phi())
-	//     //do other stuff here
-	// }
+		good_el_with_cuts_Brandon.each{eleind->
+	        def ele = new Particle(11, *[event.px, event.py, event.pz].collect{it[eleind]})
+			def ele_p = ele.p()
+			def ele_theta = Math.toDegrees(ele.theta())
+			hist_ele_theta_mom['Brandon'+event.pcal_sector[eleind]].fill(ele_theta,ele_p)
+		}
 
-	// second method here will return a list of indicies for tracks passing all electron cuts.
-	// decide which of the electron candidates you want here
-	// def my_good_el = ele_selector.getGoodElectron(event)	
-	// third method will return a map with key as the REC::Particle index and value as the list of booleans describing if the track passed the cut or not.
-	// def my_good_el_with_cuts = ele_selector.getGoodElectronWithCuts(event)
-
+		good_el_with_cuts_Custom.each{ eleind ->
+	        def ele = new Particle(11, *[event.px, event.py, event.pz].collect{it[eleind]})
+			def ele_p = ele.p()
+			def ele_theta = Math.toDegrees(ele.theta())
+			hist_ele_theta_mom['Custom'+event.pcal_sector[eleind]].fill(ele_theta,ele_p)
+		}
     }
+    reader.close()
 }
 
-reader.close()
+def out = new TDirectory()
+out.mkdir('/electron')
+out.cd('/electron')
+hist_ele_theta_mom.values().each{out.addDataSet(it)}
+out.writeFile('electron_out.hipo')

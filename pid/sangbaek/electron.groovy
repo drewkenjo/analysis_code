@@ -30,40 +30,74 @@ class electron{
     this.getGoodElectronCustom(event)
   }
 
+  def applyCuts_Brandon(event){
+    this.getGoodElectron(event)
+    return this.electronCutResults_Brandon
+  }
+
+  def applyCuts_Custom(event){
+    this.getGoodElectronCustom(event)
+    return this.electronCutResults_Custom
+  }
+
+
   def initalizeCustomElecCuts(){
     this.electronCutStrategies_Brandon = [
-      electron_candidate.passElectronStatus,
-      electron_candidate.passElectronChargeCut,
-      electron_candidate.passElectronTrackQualityCut,
-      electron_candidate.passElectronMinMomentum,
-      electron_candidate.passElectronEBPIDCut,
-      electron_candidate.passElectronSamplingFractionCut,
-      electron_candidate.passElectronNpheCut,
-      electron_candidate.passElectronVertexCut,
-      electron_candidate.passElectronPCALFiducialCut,
-      electron_candidate.passElectronEIEOCut,
-      electron_candidate.passElectronDCR1,
-      electron_candidate.passElectronDCR2,
-      electron_candidate.passElectronDCR3,
-      electron_candidate.passElectronAntiPionCut
+      this.electron_candidate.passElectronStatus,
+      this.electron_candidate.passElectronChargeCut,
+      this.electron_candidate.passElectronTrackQualityCut,
+      this.electron_candidate.passElectronMinMomentum,
+      this.electron_candidate.passElectronEBPIDCut,
+      this.electron_candidate.passElectronSamplingFractionCut,
+      this.electron_candidate.passElectronNpheCut,
+      this.electron_candidate.passElectronVertexCut,
+      this.electron_candidate.passElectronPCALFiducialCut,
+      this.electron_candidate.passElectronEIEOCut,
+      this.electron_candidate.passElectronDCR1,
+      this.electron_candidate.passElectronDCR2,
+      this.electron_candidate.passElectronDCR3,
+      this.electron_candidate.passElectronAntiPionCut
     ]
 
     this.electronCutStrategies_Custom = [
       this.find_byFTOF,
       this.find_byMOM
     ]
+
+    def field_setting = "inbending"
+    // cut lvl meanings: 0 loose, 1 med, 2 tight
+    def el_cut_strictness_lvl=["ecal_cut_lvl":1,
+               "nphe_cut_lvl":1,
+               "vz_cut_lvl":1,
+               "min_u_cut_lvl":1,
+               "min_v_cut_lvl":1,
+               "min_w_cut_lvl":1,
+               "max_u_cut_lvl":1,
+               "max_v_cut_lvl":1,
+               "max_w_cut_lvl":1,
+               "dcr1_cut_lvl":1,
+               "dcr2_cut_lvl":1,
+               "dcr3_cut_lvl":1,
+               "anti_pion_cut_lvl":1
+    ]
+    this.electron_selector.setElectronCutStrictness(el_cut_strictness_lvl)
+    this.electron_selector.setCutParameterFromMagField("inbending")
+
+    this.electron_candidate.setElectronCutStrictness(el_cut_strictness_lvl)
+    this.electron_candidate.setElectronCutParameters("inbending")
+
   }
 
 
   def getGoodElectron(event){
     //return a list of REC::Particle indices for tracks passing all electron cuts
-    def el_cut_result = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, electronCutStrategies_Brandon.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
+    def el_cut_result = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, this.electronCutStrategies_Brandon.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
     this.electronCutResults_Brandon = el_cut_result.findResults{el_indx, cut_result -> !cut_result.contains(false) ? el_indx : null}
   }
 
   def getGoodElectronCustom(event){
     this.electronCutResults_Custom = this.electronCutResults_Brandon.findResults{ index ->
-      this.electronCutStrategies_Custom.collect{custom_test -> custom_test(event,index)}.contains(false)? index : null
+      this.electronCutStrategies_Custom.collect{custom_test -> !custom_test(event,index)}.contains(false)? index : null
     }
   }
 
@@ -79,6 +113,6 @@ class electron{
     def vz = event.vz[index]
     def theta = Math.toDegrees(lv.theta())
     def phi = Math.toDegrees(lv.phi())
-    return mom > 1.5 && theta>17*(1-mom/7)
+    return p > 1.5 && theta>17*(1-p/7)
   }
 }
