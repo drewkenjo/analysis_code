@@ -1,11 +1,13 @@
 import org.jlab.io.hipo.HipoDataSource
 import org.jlab.detector.base.DetectorType
 import org.jlab.clas.physics.Particle
+import org.jlab.clas.physics.LorentzVector
 import org.jlab.clas.physics.Vector3
 import org.jlab.groot.data.H1F
 import org.jlab.groot.data.H2F
 import org.jlab.groot.data.TDirectory
 import exclusive.sangbaek.DVCS
+import utils.KinTool
 
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
@@ -13,6 +15,7 @@ def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
 def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
 def beam = new Particle(11, 0,0,10.6)//5)
+LorentzVector beam_vector = beam.vector()
 def target = new Particle(2212, 0,0,0)
 
 def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 12)
@@ -63,10 +66,9 @@ def h_phi_sec = (1..6).collect{
 
 def h_y_sec = (1..6).collect{
   sec_num=it
-  def hist = new H1F("W"+sec_num,100,0,1)
+  def hist = new H1F("h_y"+sec_num,100,0,1)
   return hist
 }
-
 
 for(fname in args) {
 def reader = new HipoDataSource()
@@ -105,7 +107,7 @@ while(reader.hasEvent()) {
       GS.combine(ele,-1)
 
       def W = new Particle(GS)
-      GS.combine(target,1)
+      W.combine(target,1)
 
       // def VG1 = gam.vector()
       def VGS = GS.vector()
@@ -169,6 +171,9 @@ while(reader.hasEvent()) {
 
       h_Q2_xB_sec[ele_sec-1].fill(xB,Q2)
       h_W_sec[ele_sec-1].fill(W.mass())
+      h_t_sec[ele_sec-1].fill(t)
+      h_phi_sec[ele_sec-1].fill(TrentoAng) 
+      h_y_sec[ele_sec-1].fill(KinTool.calcY(beam_vector, ele.vector()))
     }
   }
 }
