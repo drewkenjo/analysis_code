@@ -17,7 +17,6 @@ def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg"
 def beam = new Particle(11, 0,0,10.6)//5)
 LorentzVector beam_vector = beam.vector()
 def target = new Particle(2212, 0,0,0)
-
 def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 12)
 def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 12)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 12)
@@ -106,7 +105,8 @@ while(reader.hasEvent()) {
       def GS = new Particle(beam)
       GS.combine(ele,-1)
 
-      def W = new Particle(GS)
+      def W = new Particle(beam)
+      W.combine(ele,-1)
       W.combine(target,1)
 
       // def VG1 = gam.vector()
@@ -207,6 +207,12 @@ out.addDataSet(h_kine_ele)
 out.addDataSet(h_kine_pro)
 out.addDataSet(h_kine_gam)
 out.addDataSet(h_Q2_xB)
+h_Q2_xB_sec.each{out.addDataSet(it)}
+h_W_sec.each{out.addDataSet(it)}
+h_t_sec.each{out.addDataSet(it)}
+h_phi_sec.each{out.addDataSet(it)}
+h_y_sec.each{out.addDataSet(it)}
+
 
 out.mkdir('/rates')
 out.cd('/rates')
