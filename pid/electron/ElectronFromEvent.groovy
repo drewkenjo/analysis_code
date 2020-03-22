@@ -481,7 +481,7 @@ class ElectronFromEvent {
 	if(event.cherenkov_status.contains(index) && 
 	   event.pcal_status.contains(index) && 
 	   event.dc1_status.contains(index) ){
-	    if( event.pcal_sector[index]-1 > 0 && event.dc_sector[index]-1 > 0 && event.cherenkov_sector[index]-1 > 0){ //forces tracks to be in Forward detector
+	    if( event.pcal_sector[index] > 0 && event.dc_sector[index] > 0 && event.cherenkov_sector[index] > 0){ //forces tracks to be in Forward detector
 		return true	    
 	    }
 	}
