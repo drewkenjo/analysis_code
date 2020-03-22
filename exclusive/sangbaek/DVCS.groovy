@@ -44,9 +44,9 @@ class DVCS {
       // if(twogamma.findsecondGamma(event) >0) return [null,null,null]
     }
 
-    def secs1 = event.pcal_sector
-    def secs2 = event.ecal_inner_sector
-    def secs3 = event.ecal_outer_sector
+    def secs1 = event.ecal_inner_sector
+    def secs2 = event.ecal_outer_sector
+    def secs3 = event.pcal_sector
 
     def secs = []
 
