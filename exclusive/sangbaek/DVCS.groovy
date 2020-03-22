@@ -9,21 +9,30 @@ import pid.sangbaek.gamma
 import pid.sangbaek.twogamma
 import pid.sangbaek.electron
 import org.jlab.clas.physics.LorentzVector;
+import event.Event
 
 class DVCS {
-  static def getEPG(HipoDataEvent event) {
-    def partbank = event.getBank("REC::Particle")
-    def calbank = event.getBank("REC::Calorimeter")
 
-    def findElectron = { ev -> 
-      Electron.findElectron(ev)
+
+  def Vangle = {v1, v2 -> 
+     if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
+  }
+
+  static def getEPG(event, electron_ind) {
+
+    def findElectron = { ev ->
+      def electron_candidate = electron_ind.applyCuts_Brandon(ev)
+      if(electron_candidate) electron_candidate
+      .max{ind -> (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
-    def findProton = { ev ->
-      Proton.findProton(ev)
+    def findProton = {ev -> (0..<ev.npart).findAll{ev.pid[it]==2212}
+      .max{ind -> (new Vector3(*[ev.px, ev.py, ev.pz].collect{it[ind]})).mag2()}
     }
-    def findGamma = { ev -> 
-      gamma.findGamma(ev)
+
+    def findGamma = {ev -> (0..<ev.npart).findAll{ev.pid[it]==22}
+      .max{ind -> (new Vector3(*[ev.px, ev.py, ev.pz].collect{it[ind]})).mag2()}
     }
+
 
     def inds = []
     for(def findPart in [findElectron, findProton, findGamma]) {
@@ -35,22 +44,50 @@ class DVCS {
       // if(twogamma.findsecondGamma(event) >0) return [null,null,null]
     }
 
-    def secs = [calbank.getShort('pindex')*.toInteger(), calbank.getByte('sector')].transpose().collectEntries()
+    def secs1 = event.pcal_sector
+    def secs2 = event.ecal_inner_sector
+    def secs3 = event.ecal_outer_sector
 
-    def parts = [11,2212,22].withIndex()
-      .collect{pid,i -> new Particle(pid, *['px', 'py', 'pz'].collect{partbank.getFloat(it, inds[i])}) }
+    def secs = []
 
-    def Vangle = {v1, v2 -> 
-       if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
+    (0..<3).each{
+      def sec1 = secs1[inds[it]]
+      def sec2 = secs2[inds[it]]
+      def sec3 = secs3[inds[it]]
+      if(sec1) secs.add(sec1)
+      else if(sec2) secs.add(sec2)
+      else if(sec3) secs.add(sec3)
+      else secs.add(null)
     }
 
-    // cut by kinematics
-    // incoming
-    def beam = new Particle(11, 0, 0, 10.6)// 10.6)
-    def target = new Particle(2212, 0,0,0)
+    def parts = [11,2212,22].withIndex()
+      .collect{pid,i -> new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
+    }
 
-    // outgoing
-    def (ele, pro, gam) = parts
+    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
+  }
+
+  static def KineCuts(Q2, W, photon_e){
+      W>2 && Q2>1 && photon_e >1
+  }
+
+  static def ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2){
+    // haz_g2==-1&& 
+     // VG1.e()>3
+     // && Vangle(VG1.vect(),VE.vect())>4
+     // && VMISS.e()<1.5 
+     // && VMISS.mass2() <0.2 && VMISS.mass2() >-0.2 
+     // && VmissP.mass2() < 3 && VmissP.mass2() > -0.25
+     // && VmissG.mass2() < 1 && VmissG.mass2() > -1
+     // && Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()) < 0.3
+     // && Vangle(VG1.vect(),VmissG.vect()) < 3
+     // && Vangle(Vhad2,Vhadr) < 25
+     //&& Vangle(Vhad2,Vhadr) < 90
+  }
+
+  static def getDVCS(ele, pro, gam, target, beam){
+
+    // cut by kinematics
     def W_vec = new Particle(beam)
     W_vec.combine(target, 1)
     W_vec.combine(ele, -1)
@@ -93,24 +130,8 @@ class DVCS {
     def Vhadr = (VPROT.vect()).cross(VGS.vect());
     def Vhad2 = (VGS.vect()).cross(VG1.vect());
 
-    if( 
-    // haz_g2==-1&& 
-     VG1.e()>3
-     && Vangle(VG1.vect(),VE.vect())>4
-     && VMISS.e()<1.5 
-     && VMISS.mass2() <0.2 && VMISS.mass2() >-0.2 
-     && VmissP.mass2() < 3 && VmissP.mass2() > -0.25
-     && VmissG.mass2() < 1 && VmissG.mass2() > -1
-     && Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()) < 0.3
-     && Vangle(VG1.vect(),VmissG.vect()) < 3
-     && Vangle(Vhad2,Vhadr) < 25
-     //&& Vangle(Vhad2,Vhadr) < 90
-    ){
-      excl_cut = true 
-    }
 
     if (!excl_cut) return [null, null, null]
-
 
     return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[inds[it]]]}
   }
