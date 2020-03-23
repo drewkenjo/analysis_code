@@ -14,15 +14,32 @@ import event.Event
 import event.EventConverter
 import pid.electron.ElectronSelector
 import pid.sangbaek.electron
+import run.Run
 
+
+def run_number = 3000 // default run_number
+
+//define default beam and target
+def beam = new Particle(11, 0, 0, 10.604)
+def beam_vector = beam.vector()
+def target = new Particle(2212, 0, 0, 0)
+
+//define default run package
+def run = new Run()
+def torus_scale = "-1"
+def field_setting = ["-1" : "inbending", "1" :"outbending"]
+
+
+// define a electron selector
+def electron_selector = new electron()
+
+// define histograms to be drawn.
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
 def hangle_ep_eg = new H1F("hangle_ep_eg", "Angle between two planes, ep and eg", 190,-5,185)
-def beam = new Particle(11, 0,0,10.6)//5)
-LorentzVector beam_vector = beam.vector()
-def target = new Particle(2212, 0,0,0)
+
 def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 12)
 def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 12)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 12)
@@ -81,133 +98,149 @@ def h_y_sec = (1..6).collect{
   return hist
 }
 
-def Vangle = {v1, v2 -> 
-   if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
-}
-
-def electron_ind = new electron()
-
+// main loop
 for(fname in args) {
-def reader = new HipoDataSource()
-reader.open(fname)
-h_totalevent.setBinContent(0,h_totalevent.getBinContent(0)+reader.getSize())
 
+  // run number from file name
+  def name = fname.split('/')[-1]
+  def m = name =~ /\d{4,6}/
+  def run_number_from_file = m[0].toInteger()
 
-while(reader.hasEvent()) {
-  def dataevent = reader.getNextEvent()
-  def event = EventConverter.convert(dataevent)
+  // for each run, change beam energy.
+  if (run_number != run_number_from_file){
+    run_number = run_number_from_file
+    run.run_number = run_number
+    run.ReadDB()
+    beam.setProperty("pz", run.rcdb.rcdb_dict["beam_energy"]/1000.0)
+    beam_vector = beam.vector()
 
-  if (event.npart>0) {
-    def dsets = DVCS.getEPG(event, electron_ind)
-    def (ele, pro, gam) = dsets*.particle
-
-    if(ele!=null) {
-      def (ele_sec, pro_sec, gam_sec) = dsets*.sector
-      
-      def epX = new Particle(beam)
-      epX.combine(target, 1)
-      epX.combine(ele,-1)
-      epX.combine(pro,-1)
-
-      def egX = new Particle(beam)
-      egX.combine(target, 1)
-      egX.combine(ele,-1)
-      egX.combine(gam,-1)
-
-      def epgX = new Particle(beam)
-      epgX.combine(target, 1)
-      epgX.combine(ele,-1)
-      epgX.combine(pro,-1)
-      epgX.combine(gam,-1)
-
-      def GS = new Particle(beam)
-      GS.combine(ele,-1)
-
-      def W_vec = new Particle(beam)
-      W_vec.combine(target, 1)
-      W_vec.combine(ele, -1)
-      def W = W_vec.mass()
-
-      def VG1 = gam.vector()
-      def VGS = GS.vector()
-      def VMISS = epgX.vector()
-      def VmissP = egX.vector()
-      def VmissG = epX.vector()
-      def VB = beam.vector()
-      def VE = ele.vector()
-      def Vlept = (VB.vect()).cross(VE.vect());
-
-      def VPROT = pro.vector()
-      def Vhadr = (VPROT.vect()).cross(VGS.vect());
-      def Vhad2 = (VGS.vect()).cross(VG1.vect());
-
-      def TrentoAng = (float)Vangle(Vlept,Vhadr);
-
-      def Q2 = -VGS.mass2()
-      def xB = -VGS.mass2()/(2*0.938*VGS.e())
-
-      def mand = new Particle(pro)
-      mand.combine(target,-1)
-      def Vmand = mand.vector()
-      def t = -Vmand.mass2() //-t
-
-      mom_gam = gam.vector().vect()
-      mom_epX = epX.vector().vect()
-
-      norm_ep = ele.vector().vect().cross(pro.vector().vect())
-      norm_eg = ele.vector().vect().cross(gam.vector().vect())
-
-      h_ele_rate.fill(Math.toDegrees(ele.theta()))
-      h_pro_rate.fill(Math.toDegrees(pro.theta()))
-      h_gam_rate.fill(Math.toDegrees(gam.theta()))
-
-      def ele_phi = Math.toDegrees(ele.phi())
-      if (ele_phi<0) ele_phi=360+ele_phi
-      def pro_phi = Math.toDegrees(pro.phi())
-      if (pro_phi<0) pro_phi=360+pro_phi
-      h_ep_azimuth.fill(pro_phi,ele_phi)
-      h_ep_azimuth_diff.fill(Math.abs(pro_phi-ele_phi))
-      h_ep_polar.fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
-
-      hmm2_ep.fill(epX.mass2())
-      hmm2_eg.fill(egX.mass2())
-      hmm2_epg.fill(epgX.mass2())
-
-      hangle_epg.fill(Vangle(mom_gam,mom_epX))
-      hangle_ep_eg.fill(Vangle(norm_ep,norm_eg))
-
-      h_kine_ele.fill(Math.toDegrees(ele.vector().vect().theta()),ele.vector().vect().mag())
-      h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
-      h_kine_gam.fill(Math.toDegrees(gam.vector().vect().theta()),gam.vector().vect().mag())
-
-      h_Q2_xB.fill(xB,Q2);
-      h_Q2_t.fill(t,Q2)
-      h_t_xB.fill(xB,t)
-      double theta_e = Math.toDegrees(ele.theta()) /5
-      String theta_label = String.format("%.0f_theta_%.0f",5*theta_e.trunc(),5*theta_e.trunc()+5)
-      h_Q2_xB_cond[theta_label].fill(xB,Q2)
-      if (W>2) h_Q2_xB_cond["W>2"].fill(xB,Q2)
-      else h_Q2_xB_cond["W<2"].fill(xB,Q2)
-      h_Q2_theta.fill(Math.toDegrees(ele.theta()),Q2);
-      
-      if (event.status[dsets.pindex[1]]>=4000) h_Q2_xB_cond['proton_CD'].fill(xB,Q2)
-      if (event.status[dsets.pindex[2]]<2000) h_Q2_xB_cond['photon_FT'].fill(xB,Q2)
-
-      if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
-      if (TrentoAng<0) TrentoAng = 360+TrentoAng
-      if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
-
-      h_ele_phi[ele_sec-1].fill(ele_phi)
-
-      h_Q2_xB_sec[ele_sec-1].fill(xB,Q2)
-      h_W_sec[ele_sec-1].fill(W)
-      h_t_sec[ele_sec-1].fill(t)
-      h_phi_sec[ele_sec-1].fill(TrentoAng) 
-      h_y_sec[ele_sec-1].fill(KinTool.calcY(beam_vector, ele.vector()))
+    if (String.format("%.0f",run.rcdb.rcdb_dict["torus_scale"]) != torus_scale){
+      torus_scale = String.format("%.0f",run.rcdb.rcdb_dict["torus_scale"])
+      // electron_selector.electron_selector.setCutParameterFromMagField(field_setting[torus_scale])
+      electron_selector.electron_candidate.ebeam = run.rcdb.rcdb_dict["beam_energy"]/1000.0
+      electron_selector.electron_candidate.setElectronCutParameters(field_setting[torus_scale])
     }
   }
-}
-reader.close()
+
+  def reader = new HipoDataSource()
+  reader.open(fname)
+  h_totalevent.setBinContent(0, h_totalevent.getBinContent(0)+reader.getSize())
+
+  while(reader.hasEvent()) {
+    def dataevent = reader.getNextEvent()
+    def event = EventConverter.convert(dataevent)
+
+    if (event.npart>0) {
+      def dsets = DVCS.getEPG(event, electron_selector)
+      def (ele, pro, gam) = dsets*.particle
+
+      if(ele!=null) {
+        def (ele_sec, pro_sec, gam_sec) = dsets*.sector
+        
+        def epX = new Particle(beam)
+        epX.combine(target, 1)
+        epX.combine(ele,-1)
+        epX.combine(pro,-1)
+
+        def egX = new Particle(beam)
+        egX.combine(target, 1)
+        egX.combine(ele,-1)
+        egX.combine(gam,-1)
+
+        def epgX = new Particle(beam)
+        epgX.combine(target, 1)
+        epgX.combine(ele,-1)
+        epgX.combine(pro,-1)
+        epgX.combine(gam,-1)
+
+        def GS = new Particle(beam)
+        GS.combine(ele,-1)
+
+        def W_vec = new Particle(beam)
+        W_vec.combine(target, 1)
+        W_vec.combine(ele, -1)
+        def W = W_vec.mass()
+
+        def VG1 = gam.vector()
+        def VGS = GS.vector()
+        def VMISS = epgX.vector()
+        def VmissP = egX.vector()
+        def VmissG = epX.vector()
+        def VB = beam.vector()
+        def VE = ele.vector()
+        def Vlept = (VB.vect()).cross(VE.vect());
+
+        def VPROT = pro.vector()
+        def Vhadr = (VPROT.vect()).cross(VGS.vect());
+        def Vhad2 = (VGS.vect()).cross(VG1.vect());
+
+        def TrentoAng = (float)KinTool.Vangle(Vlept,Vhadr);
+
+        def Q2 = -VGS.mass2()
+        def xB = -VGS.mass2()/(2*0.938*VGS.e())
+
+        def mand = new Particle(pro)
+        mand.combine(target,-1)
+        def Vmand = mand.vector()
+        def t = -Vmand.mass2() //-t
+
+        mom_gam = gam.vector().vect()
+        mom_epX = epX.vector().vect()
+
+        norm_ep = ele.vector().vect().cross(pro.vector().vect())
+        norm_eg = ele.vector().vect().cross(gam.vector().vect())
+
+        h_ele_rate.fill(Math.toDegrees(ele.theta()))
+        h_pro_rate.fill(Math.toDegrees(pro.theta()))
+        h_gam_rate.fill(Math.toDegrees(gam.theta()))
+
+        def ele_phi = Math.toDegrees(ele.phi())
+        if (ele_phi<0) ele_phi=360+ele_phi
+        def pro_phi = Math.toDegrees(pro.phi())
+        if (pro_phi<0) pro_phi=360+pro_phi
+        h_ep_azimuth.fill(pro_phi,ele_phi)
+        h_ep_azimuth_diff.fill(Math.abs(pro_phi-ele_phi))
+        h_ep_polar.fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
+
+        hmm2_ep.fill(epX.mass2())
+        hmm2_eg.fill(egX.mass2())
+        hmm2_epg.fill(epgX.mass2())
+
+        hangle_epg.fill(KinTool.Vangle(mom_gam,mom_epX))
+        hangle_ep_eg.fill(KinTool.Vangle(norm_ep,norm_eg))
+
+        h_kine_ele.fill(Math.toDegrees(ele.vector().vect().theta()),ele.vector().vect().mag())
+        h_kine_pro.fill(Math.toDegrees(pro.vector().vect().theta()),pro.vector().vect().mag())
+        h_kine_gam.fill(Math.toDegrees(gam.vector().vect().theta()),gam.vector().vect().mag())
+
+        h_Q2_xB.fill(xB,Q2);
+        h_Q2_t.fill(t,Q2)
+        h_t_xB.fill(xB,t)
+        double theta_e = Math.toDegrees(ele.theta()) /5
+        String theta_label = String.format("%.0f_theta_%.0f",5*theta_e.trunc(),5*theta_e.trunc()+5)
+        h_Q2_xB_cond[theta_label].fill(xB,Q2)
+        if (W>2) h_Q2_xB_cond["W>2"].fill(xB,Q2)
+        else h_Q2_xB_cond["W<2"].fill(xB,Q2)
+        h_Q2_theta.fill(Math.toDegrees(ele.theta()),Q2);
+        
+        if (event.status[dsets.pindex[1]]>=4000) h_Q2_xB_cond['proton_CD'].fill(xB,Q2)
+        if (event.status[dsets.pindex[2]]<2000) h_Q2_xB_cond['photon_FT'].fill(xB,Q2)
+
+        if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
+        if (TrentoAng<0) TrentoAng = 360+TrentoAng
+        if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
+
+        h_ele_phi[ele_sec-1].fill(ele_phi)
+
+        h_Q2_xB_sec[ele_sec-1].fill(xB,Q2)
+        h_W_sec[ele_sec-1].fill(W)
+        h_t_sec[ele_sec-1].fill(t)
+        h_phi_sec[ele_sec-1].fill(TrentoAng) 
+        h_y_sec[ele_sec-1].fill(KinTool.calcY(beam_vector, ele.vector()))
+      }
+    }
+  }
+  reader.close()
 }
 
 
