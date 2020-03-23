@@ -27,7 +27,7 @@ def h_kine_ele = new H2F("h_kine_ele", "e Kinematics", 100,0,40, 100, 0, 12)
 def h_kine_pro = new H2F("h_kine_pro", "p Kinematics", 100,0,120, 100, 0, 12)
 def h_kine_gam = new H2F("h_kine_gam", "#gamma Kinematics", 100,0,40, 100, 0, 12)
 def h_Q2_xB = new H2F("h_Q2_xB", "Q^{2} - x_{B}",100,0,1,100,0,12);
-def h_t_xB = new H2F("h_t_xB", "-t - x_{B}",100,0,2,100,0,1);
+def h_t_xB = new H2F("h_t_xB", "-t - x_{B}",100,0,1,100,0,2);
 def h_Q2_t = new H2F("h_Q2_t", "Q^{2} - -t",100,0,2,100,0,12);
 
 def h_Q2_xB_cond = [:].withDefault{new H2F("hist_Q2_xB_$it", "Q2 vs xB $it", 100,0,1,100,0,12)}
@@ -100,9 +100,6 @@ while(reader.hasEvent()) {
   if (event.npart>0) {
     def dsets = DVCS.getEPG(event, electron_ind)
     def (ele, pro, gam) = dsets*.particle
-
-    def dsets_2 = EPG.getEPG(dataevent)
-
 
     if(ele!=null) {
       def (ele_sec, pro_sec, gam_sec) = dsets*.sector
@@ -192,6 +189,9 @@ while(reader.hasEvent()) {
       if (W>2) h_Q2_xB_cond["W>2"].fill(xB,Q2)
       else h_Q2_xB_cond["W<2"].fill(xB,Q2)
       h_Q2_theta.fill(Math.toDegrees(ele.theta()),Q2);
+      
+      if (event.status[dsets.pindex[1]]>=4000) h_Q2_xB_cond['proton_CD'].fill(xB,Q2)
+      if (event.status[dsets.pindex[2]]<2000) h_Q2_xB_cond['photon_FT'].fill(xB,Q2)
 
       if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
       if (TrentoAng<0) TrentoAng = 360+TrentoAng
