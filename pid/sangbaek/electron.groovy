@@ -12,7 +12,7 @@ class electron{
   def event
 
   def electron_candidate = new ElectronFromEvent()
-  def electron_selector = new ElectronSelector()
+  // def electron_selector = new ElectronSelector()
   def electronCutStrategies_Brandon
   def electronCutStrategies_Custom
 
@@ -80,8 +80,8 @@ class electron{
                "dcr3_cut_lvl":1,
                "anti_pion_cut_lvl":1
     ]
-    this.electron_selector.setElectronCutStrictness(el_cut_strictness_lvl)
-    this.electron_selector.setCutParameterFromMagField("inbending")
+    // this.electron_selector.setElectronCutStrictness(el_cut_strictness_lvl)
+    // this.electron_selector.setCutParameterFromMagField("inbending")
 
     this.electron_candidate.setElectronCutStrictness(el_cut_strictness_lvl)
     this.electron_candidate.setElectronCutParameters("inbending")
