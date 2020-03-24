@@ -30,9 +30,9 @@ def torus_scale = "-1"
 def field_setting = ["-1" : "inbending", "1" :"outbending"]
 
 // Define event counter to provide processing status
-def event_counts = 0
-def dvcs_counts = 0
-
+def event_count = 0
+def dvcs_count = 0
+def file_count = 0
 
 // define a electron selector
 def electron_selector = new electron()
@@ -123,6 +123,10 @@ def binnumber = {xB, theta, t ->
 // main loop
 for(fname in args) {
 
+  // std print out file count
+  file_count++
+  println("Reading "+file_count"-th file...")
+  
   // run number from file name
   def name = fname.split('/')[-1]
   def m = name =~ /\d{4,6}/
@@ -152,9 +156,9 @@ for(fname in args) {
     def event = EventConverter.convert(dataevent)
 
     // count events so that users can know the program is running
-    event_counts++
-    if (event_counts%500000 == 0){
-      println("processing "+0.1*event_counts.intdiv(500000)+" M-th event...")
+    event_count++
+    if (event_count%500000 == 0){
+      println("processing "+0.1*event_count.intdiv(500000)+" M-th event...")
     }
 
     if (event.npart>0) {
@@ -280,7 +284,7 @@ for(fname in args) {
 
         // exclusive cuts
         if (DVCS.ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
-          dvcs_counts++
+          dvcs_count++
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)
           h_cross_section[bin_number].fill(TrentoAng)
@@ -306,8 +310,8 @@ for(fname in args) {
 }// file closed
 
 // event number histograms
-h_totalevents.setBinContent(0, event_counts)  
-h_dvcsevents.setBinContent(0, dvcs_counts)  
+h_totalevents.setBinContent(0, event_count)  
+h_dvcsevents.setBinContent(0, dvcs_count)  
 
 // // If luminosities are calculated...
 // lumi = (double) 1.0558*0.0001
