@@ -37,8 +37,12 @@ def file_count = 0
 // define a electron selector
 def electron_selector = new electron()
 
-// define histograms to be drawn.
+// define ordinal number
+def ordinal={
+    (it % 100 == 11 || it % 100 == 12 || it % 100 == 13) ? it + "th" : it + ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][it % 10];
+}
 
+// define histograms to be drawn.
 // missing mass
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
@@ -125,8 +129,8 @@ for(fname in args) {
 
   // std print out file count
   file_count++
-  println("Reading "+file_count"-th file...")
-  
+  println("Reading " + ordinal(file_count) + " file...")
+
   // run number from file name
   def name = fname.split('/')[-1]
   def m = name =~ /\d{4,6}/
@@ -158,7 +162,7 @@ for(fname in args) {
     // count events so that users can know the program is running
     event_count++
     if (event_count%500000 == 0){
-      println("processing "+0.1*event_count.intdiv(500000)+" M-th event...")
+      println("Processing "+0.1*event_count.intdiv(500000)+" M-th event...")
     }
 
     if (event.npart>0) {
