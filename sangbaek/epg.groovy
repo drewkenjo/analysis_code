@@ -293,18 +293,22 @@ for(fname in args) {
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)
           h_cross_section['dvcs_'+bin_number].fill(TrentoAng)
+          
           if (event.status[dsets.pindex[1]]>=4000){
             h_Q2_xB_cond['dvcs_pro_CD_'+bin_number].fill(xB,Q2)
             h_cross_section['pro_CD_'+bin_number].fill(TrentoAng)
           }
+
           if (event.status[dsets.pindex[2]]<2000){
             h_Q2_xB_cond['dvcs_gam_FT_'+bin_number].fill(xB,Q2)
             h_cross_section['gam_FT_'+bin_number].fill(TrentoAng)            
           }
+
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
             h_Q2_xB_cond['dvcs_pro_CD_gam_FT_'+bin_number].fill(xB,Q2)
             h_cross_section['pro_CD_gam_FT_'+bin_number].fill(TrentoAng)            
-          }            
+            hmm2_epg_dvcs.fill(epgX.mass2())
+         }            
         } // exclusivity cuts ended
         //add here for analysis
 
