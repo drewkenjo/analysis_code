@@ -153,8 +153,8 @@ for(fname in args) {
 
     // count events so that users can know the program is running
     event_counts++
-    if (event_counts%1000000 == 0){
-      println("processing "+event_counts.intdiv(1000000)+" M-th event...")
+    if (event_counts%500000 == 0){
+      println("processing "+0.1*event_counts.intdiv(500000)+" M-th event...")
     }
 
     if (event.npart>0) {
@@ -235,8 +235,7 @@ for(fname in args) {
         // Trento like angle from ep and eg plane
         norm_ep = ele.vector().vect().cross(pro.vector().vect())
         norm_eg = ele.vector().vect().cross(gam.vector().vect())
-        hangle_ep_eg.fill(KinTool.Vangle(norm_ep,norm_eg))
-        if (KinTool.Vangle(norm_ep,norm_eg)) hangle_ep_eg.fill(KinTool.Vangl    e(norm_ep,norm_eg))
+        if(KinTool.Vangle(VG1.vect(),VmissG.vect())) hangle_ep_eg.fill(KinTool.Vangle(norm_ep,norm_eg))
 
         // reconstructed and detected gamma angle deviation
         hangle_epg.fill(KinTool.Vangle(VG1.vect(),VmissG.vect()))
@@ -269,27 +268,43 @@ for(fname in args) {
         else h_Q2_xB_cond["W<2"].fill(xB,Q2)
         h_Q2_theta.fill(Math.toDegrees(ele.theta()),Q2);
         
-        if (event.status[dsets.pindex[1]]>=4000) h_Q2_xB_cond['proton_CD'].fill(xB,Q2)
-        if (event.status[dsets.pindex[2]]<2000) h_Q2_xB_cond['photon_FT'].fill(xB,Q2)
+        if (event.status[dsets.pindex[1]]>=4000) h_Q2_xB_cond['pro_CD'].fill(xB,Q2)
+        if (event.status[dsets.pindex[2]]<2000) h_Q2_xB_cond['gam_FT'].fill(xB,Q2)
 
-        // exclusive cuts
-        if (DVCS.ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
-          dvcs_counts++
-          // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
-          h_cross_section[binnumber(xB, ele.theta(), t)].fill(TrentoAng)
-          if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000) h_cross_section['CD_FT'+binnumber(xB, ele.theta(), t)].fill(TrentoAng)
-        }
         h_ele_phi[ele_sec-1].fill(ele_phi)
         h_Q2_xB_sec[ele_sec-1].fill(xB,Q2)
         h_W_sec[ele_sec-1].fill(W)
         h_t_sec[ele_sec-1].fill(t)
         h_phi_sec[ele_sec-1].fill(TrentoAng) 
         h_y_sec[ele_sec-1].fill(KinTool.calcY(VB, VE))
-      }
-    }
-  }
+
+        // exclusive cuts
+        if (DVCS.ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+          dvcs_counts++
+          // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
+          def bin_number = binnumber(xB, ele.theta(), t)
+          h_cross_section[bin_number].fill(TrentoAng)
+          if (event.status[dsets.pindex[1]]>=4000){
+            h_Q2_xB_cond['dvcs_pro_CD'].fill(xB,Q2)
+            h_cross_section['pro_CD'+bin_number].fill(TrentoAng)
+          }
+          if (event.status[dsets.pindex[2]]<2000){
+            h_Q2_xB_cond['dvcs_gam_FT'].fill(xB,Q2)
+            h_cross_section['dvcs_gam_FT'+bin_number].fill(TrentoAng)            
+          }
+          if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
+            println("DVCS candidates founds! e at FD, p at CD, g at FT")
+            h_Q2_xB_cond['dvcs_gam_FT'].fill(xB,Q2)
+            h_cross_section['dvcs_pro_CD_gam_FT'+bin_number].fill(TrentoAng)            
+          }            
+        } // exclusivity cuts ended
+        //add here for analysis
+
+      }// event with e, p, g
+    }// event with particles
+  }// file loop
   reader.close()
-}
+}// file closed
 
 // event number histograms
 h_totalevents.setBinContent(0, event_counts)  
