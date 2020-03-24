@@ -214,7 +214,7 @@ for(fname in args) {
         // Q2
         def Q2 = -VGS.mass2()
         // phi
-        def TrentoAng = (float)KinTool.Vangle(Vlept,Vhadr);
+        def TrentoAng = (float) KinTool.Vangle(Vlept,Vhadr);
         if((VPROT.vect()).dot(Vlept)<0)TrentoAng=-TrentoAng;
         if (TrentoAng<0) TrentoAng = 360+TrentoAng
         // -t
@@ -235,7 +235,7 @@ for(fname in args) {
         // Trento like angle from ep and eg plane
         norm_ep = ele.vector().vect().cross(pro.vector().vect())
         norm_eg = ele.vector().vect().cross(gam.vector().vect())
-        if(KinTool.Vangle(VG1.vect(),VmissG.vect())) hangle_ep_eg.fill(KinTool.Vangle(norm_ep,norm_eg))
+        hangle_ep_eg.fill(KinTool.Vangle(norm_ep,norm_eg))
 
         // reconstructed and detected gamma angle deviation
         hangle_epg.fill(KinTool.Vangle(VG1.vect(),VmissG.vect()))
@@ -293,7 +293,6 @@ for(fname in args) {
             h_cross_section['dvcs_gam_FT'+bin_number].fill(TrentoAng)            
           }
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
-            println("DVCS candidates founds! e at FD, p at CD, g at FT")
             h_Q2_xB_cond['dvcs_gam_FT'].fill(xB,Q2)
             h_cross_section['dvcs_pro_CD_gam_FT'+bin_number].fill(TrentoAng)            
           }            
