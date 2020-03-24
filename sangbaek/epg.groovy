@@ -118,7 +118,7 @@ def binnumber = {xB, theta, t ->
   if (xB <xB_array[0] || xB >xB_array[11] || t <t_array[0] || t >t_array[9]) return null
   int xBQbin = 2*xB_array.findIndexOf{ xB < it}-1
   if (xBQbin==-3) xBQbin = 21
-  if (xBQbin>1 && Math.toDegrees(theta)<15) xBQbin--
+  if (xBQbin>1 && Math.toDegrees(theta)<10) xBQbin--
 
   int tbin = t_array.findIndexOf{ t < it} -1
   if (tbin==-1) tbin = 8
@@ -269,10 +269,10 @@ for(fname in args) {
         h_Q2_t.fill(t,Q2)
         h_t_xB.fill(xB,t)
 
-        // working on binning
-        double theta_e = Math.toDegrees(ele.theta()) /5
-        String theta_label = String.format("%.0f_theta_%.0f",5*theta_e.trunc(),5*theta_e.trunc()+5)
-        h_Q2_xB_cond[theta_label].fill(xB,Q2)
+        // working on binning // don't have to fill this because binning is over.
+        // double theta_e = Math.toDegrees(ele.theta()) /5
+        // String theta_label = String.format("%.0f_theta_%.0f",5*theta_e.trunc(),5*theta_e.trunc()+5)
+        // h_Q2_xB_cond[theta_label].fill(xB,Q2)
         if (W>2) h_Q2_xB_cond["W>2"].fill(xB,Q2)
         else h_Q2_xB_cond["W<2"].fill(xB,Q2)
         h_Q2_theta.fill(Math.toDegrees(ele.theta()),Q2);
@@ -288,7 +288,7 @@ for(fname in args) {
         h_y_sec[ele_sec-1].fill(KinTool.calcY(VB, VE))
 
         // exclusive cuts
-        if (DVCS.ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+        if (DVCS.KineCuts(Q2, W, VG1) && DVCS.ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
           dvcs_count++
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)

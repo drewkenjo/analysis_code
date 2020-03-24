@@ -63,8 +63,8 @@ class DVCS {
     return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
   }
 
-  static def KineCuts(Q2, W, photon_e){
-      W>2 && Q2>1 && photon_e >1
+  static def KineCuts(Q2, W, VG1){
+      W>2 && Q2>1 && VG1.e() >1
   }
 
   static def ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2){
