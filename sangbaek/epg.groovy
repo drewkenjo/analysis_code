@@ -163,7 +163,7 @@ for(fname in args) {
     // count events so that users can know the program is running
     event_count++
     if (event_count%500000 == 0){
-      println("Processing "+0.1*event_count.intdiv(500000)+" M-th event...")
+      println("Processing "+0.5*event_count.intdiv(500000)+" M-th event...")
     }
 
     if (event.npart>0) {
