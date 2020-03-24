@@ -47,6 +47,7 @@ def ordinal={
 def hmm2_ep = new H1F("hmm2_ep", "missing mass squared, ep", 100,-2,4)
 def hmm2_eg = new H1F("hmm2_eg", "missing mass squared, eg", 100,-2,4)
 def hmm2_epg = new H1F("hmm2_epg", "missing mass squared, epg", 100,-0.2,0.2)
+def hmm2_epg_dvcs = new H1F("hmm2_epg_dvcs", "missing mass squared, epg (DVCS)", 100,-0.2,0.2)
 
 // angle between planes
 def hangle_epg = new H1F("hangle_epg", "Angle between gamma and epX", 100,-5 ,75)
@@ -79,7 +80,7 @@ def h_ep_azimuth = new H2F("h_ep_azimuth", "h_ep_azimuth",80,0,360,80, 0,360)
 def h_ep_azimuth_diff = new H1F("h_ep_azimuth_diff", "h_ep_azimuth_diff",80,0,360)
 def h_ep_polar = new H2F("h_ep_polar", "h_ep_polar",90,0,90,90,0,90)
 
-def h_cross_section = [:].withDefault{new H1F("h_cross_section_bin_$it","DVCS cross section_bin_$it", 24,0,360)}
+def h_cross_section = [:].withDefault{new H1F("h_cross_section_$it","DVCS cross section_$it", 24,0,360)}
 
 // count total events collected
 def h_totalevents = new H1F("h_totalevents","total events",1,0,1)
@@ -291,18 +292,18 @@ for(fname in args) {
           dvcs_count++
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)
-          h_cross_section[bin_number].fill(TrentoAng)
+          h_cross_section['dvcs_'+bin_number].fill(TrentoAng)
           if (event.status[dsets.pindex[1]]>=4000){
             h_Q2_xB_cond['dvcs_pro_CD_'+bin_number].fill(xB,Q2)
             h_cross_section['pro_CD_'+bin_number].fill(TrentoAng)
           }
           if (event.status[dsets.pindex[2]]<2000){
             h_Q2_xB_cond['dvcs_gam_FT_'+bin_number].fill(xB,Q2)
-            h_cross_section['dvcs_gam_FT_'+bin_number].fill(TrentoAng)            
+            h_cross_section['gam_FT_'+bin_number].fill(TrentoAng)            
           }
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
             h_Q2_xB_cond['dvcs_pro_CD_gam_FT_'+bin_number].fill(xB,Q2)
-            h_cross_section['dvcs_pro_CD_gam_FT_'+bin_number].fill(TrentoAng)            
+            h_cross_section['pro_CD_gam_FT_'+bin_number].fill(TrentoAng)            
           }            
         } // exclusivity cuts ended
         //add here for analysis
@@ -339,6 +340,7 @@ out.cd('/epg')
 out.addDataSet(hmm2_ep)
 out.addDataSet(hmm2_epg)
 out.addDataSet(hmm2_eg)
+out.addDataSet(hmm2_epg_dvcs)
 out.addDataSet(hangle_epg)
 out.addDataSet(hangle_ep_eg)
 out.addDataSet(h_ele_mom_theta)
