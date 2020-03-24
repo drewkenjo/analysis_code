@@ -285,16 +285,16 @@ for(fname in args) {
           def bin_number = binnumber(xB, ele.theta(), t)
           h_cross_section[bin_number].fill(TrentoAng)
           if (event.status[dsets.pindex[1]]>=4000){
-            h_Q2_xB_cond['dvcs_pro_CD'].fill(xB,Q2)
-            h_cross_section['pro_CD'+bin_number].fill(TrentoAng)
+            h_Q2_xB_cond['dvcs_pro_CD_'+bin_number].fill(xB,Q2)
+            h_cross_section['pro_CD_'+bin_number].fill(TrentoAng)
           }
           if (event.status[dsets.pindex[2]]<2000){
-            h_Q2_xB_cond['dvcs_gam_FT'].fill(xB,Q2)
-            h_cross_section['dvcs_gam_FT'+bin_number].fill(TrentoAng)            
+            h_Q2_xB_cond['dvcs_gam_FT_'+bin_number].fill(xB,Q2)
+            h_cross_section['dvcs_gam_FT_'+bin_number].fill(TrentoAng)            
           }
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
-            h_Q2_xB_cond['dvcs_gam_FT'].fill(xB,Q2)
-            h_cross_section['dvcs_pro_CD_gam_FT'+bin_number].fill(TrentoAng)            
+            h_Q2_xB_cond['dvcs_pro_CD_gam_FT_'+bin_number].fill(xB,Q2)
+            h_cross_section['dvcs_pro_CD_gam_FT_'+bin_number].fill(TrentoAng)            
           }            
         } // exclusivity cuts ended
         //add here for analysis
