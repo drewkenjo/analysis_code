@@ -18,7 +18,7 @@ class draw_dcr {
 				def hit2 = event.dc2.get(index).find{ hit -> hit.layer == 24}
 				if (hit2) hists.computeIfAbsent("/DCR2/sec_"+sec,h_DCR_hits).fill(hit2.x, hit2.y)
 				def hit3 = event.dc3.get(index).find{ hit -> hit.layer == 36}
-				if (hit3) hists.computeIfAbsent("/DCR3/sec_"+sec,h_DCR_hits).fill(hit1.x, hit1.y)
+				if (hit3) hists.computeIfAbsent("/DCR3/sec_"+sec,h_DCR_hits).fill(hit3.x, hit3.y)
 			}
 		}
 	}
