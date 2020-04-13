@@ -12,23 +12,30 @@ class draw_dcr {
 
 	def processEvent(event) {
 		(0..<event.npart).each{ index ->
-			if (event.dc1_status.contains(index)){
-				def sec = event.dc_sector.get(index)-1
-				def hit1 = event.dc1.get(index).find{ hit -> hit.layer == 12}
-				if (hit1) hists.computeIfAbsent("/DCR1/sec_"+(sec+1),h_DCR_hits1).fill(hit1.x, hit1.y)
-			}
+            if (event.dc1_status.contains(index)){
+                    def sec = event.dc_sector.get(index)-1
+                    def hit1 = event.dc1.get(index)
+                    if (hit1){
+                            hit1.each{ hists.computeIfAbsent("/DCR1/layer"+it.layer+"/sec_"+(sec+1),h_DCR_hits1).fill(it.x, it.y)}
+                    }   
+            }   
 
-			if (event.dc2_status.contains(index)){
-				def sec = event.dc_sector.get(index)-1
-				def hit2 = event.dc2.get(index).find{ hit -> hit.layer == 24}
-				if (hit2) hists.computeIfAbsent("/DCR2/sec_"+(sec+1),h_DCR_hits2).fill(hit2.x, hit2.y)
-			}
+            if (event.dc2_status.contains(index)){
+                    def sec = event.dc_sector.get(index)-1
+                    def hit2 = event.dc2.get(index)
+                    if (hit2){
+                            hit2.each{ hists.computeIfAbsent("/DCR2/layer"+it.layer+"/sec_"+(sec+1),h_DCR_hits2).fill(it.x, it.y)}
+                    }   
+            }   
 
-			if (event.dc1_status.contains(index)){
-				def sec = event.dc_sector.get(index)-1
-				def hit3 = event.dc3.get(index).find{ hit -> hit.layer == 36}
-				if (hit3) hists.computeIfAbsent("/DCR3/sec_"+(sec+1),h_DCR_hits3).fill(hit3.x, hit3.y)
-			}
+            if (event.dc3_status.contains(index)){
+                    def sec = event.dc_sector.get(index)-1
+                    def hit3 = event.dc3.get(index)
+                    if (hit3){
+                            hit3.each{ hists.computeIfAbsent("/DCR3/layer"+it.layer+"/sec_"+(sec+1),h_DCR_hits3).fill(it.x, it.y)}
+                    }   
+            }   
+
 		}
 	}
 }
