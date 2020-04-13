@@ -6,26 +6,28 @@ import java.util.concurrent.ConcurrentHashMap
 
 class draw_dcr {
 	def hists = new ConcurrentHashMap()
-	def h_DCR_hits = {new H2F("$it","$it",200,-600,600, 200,-600,600)}
+	def h_DCR_hits1 = {new H2F("$it","$it",200,-300,300, 200,-300,300)}
+	def h_DCR_hits2 = {new H2F("$it","$it",200,-400,400, 200,-400,400)}
+	def h_DCR_hits3 = {new H2F("$it","$it",200,-500,500, 200,-500,500)}
 
 	def processEvent(event) {
 		(0..<event.npart).each{ index ->
 			if (event.dc1_status.contains(index)){
 				def sec = event.dc_sector.get(index)-1
 				def hit1 = event.dc1.get(index).find{ hit -> hit.layer == 12}
-				if (hit1) hists.computeIfAbsent("/DCR1/sec_"+(sec+1),h_DCR_hits).fill(hit1.x, hit1.y)
+				if (hit1) hists.computeIfAbsent("/DCR1/sec_"+(sec+1),h_DCR_hits1).fill(hit1.x, hit1.y)
 			}
 
 			if (event.dc2_status.contains(index)){
 				def sec = event.dc_sector.get(index)-1
 				def hit2 = event.dc2.get(index).find{ hit -> hit.layer == 24}
-				if (hit2) hists.computeIfAbsent("/DCR2/sec_"+(sec+1),h_DCR_hits).fill(hit2.x, hit2.y)
+				if (hit2) hists.computeIfAbsent("/DCR2/sec_"+(sec+1),h_DCR_hits2).fill(hit2.x, hit2.y)
 			}
 
 			if (event.dc1_status.contains(index)){
 				def sec = event.dc_sector.get(index)-1
 				def hit3 = event.dc3.get(index).find{ hit -> hit.layer == 36}
-				if (hit3) hists.computeIfAbsent("/DCR3/sec_"+(sec+1),h_DCR_hits).fill(hit3.x, hit3.y)
+				if (hit3) hists.computeIfAbsent("/DCR3/sec_"+(sec+1),h_DCR_hits3).fill(hit3.x, hit3.y)
 			}
 		}
 	}
