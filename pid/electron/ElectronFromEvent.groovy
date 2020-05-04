@@ -569,7 +569,7 @@ class ElectronFromEvent {
     def passElectronDCR1 = { event, index ->
 	if (event.dc1_status.contains(index)){
 	    def sec = event.dc_sector.get(index)-1
-	    def hit = event.dc1.get(index).find{ hit -> hit.layer == 12}
+	    def hit = event.dc1.get(index).find{ hit -> hit.layer == 6}
             if (hit){
                 def hit_rotate = rotateDCHitPosition([hit.x, hit.y], sec)
                 def left_right = borderDCHitPosition(hit_rotate.get(1), heightR1[sec])		
@@ -584,7 +584,7 @@ class ElectronFromEvent {
     def passElectronDCR2 = { event, index ->
 	if (event.dc2_status.contains(index)){
 	    def sec = event.dc_sector[index]-1
-	    def hit = event.dc2.get(index).find{ hit -> hit.layer == 24}
+	    def hit = event.dc2.get(index).find{ hit -> hit.layer == 18}
             if (hit){
                 def hit_rotate = rotateDCHitPosition([hit.x, hit.y], sec)
                 def left_right = borderDCHitPosition(hit_rotate.get(1), heightR2[sec])
