@@ -8,7 +8,7 @@ class Event {
 
     // Scalars
     Short npart, mc_npart, helicity
-    Long event_number
+    Long event_number, run_number
     Float start_time, rf_time
     Boolean mc_status
 

@@ -30,6 +30,7 @@ class EventConverter {
         if (dataEvent.hasBank("RUN::config")){
             def conf = dataEvent.getBank("RUN::config")
             event.event_number = conf.getInt("event",0)
+            event.run_number = conf.getInt("run",0)
         }
     }
 
