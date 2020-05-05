@@ -17,60 +17,62 @@ ff = ROOT.TFile(sys.argv[1])
 ROOT.gStyle.SetOptStat(0)
 ROOT.TGaxis.SetMaxDigits(3);
 
-# c1 = ROOT.TCanvas('c1','c1',1024,592)
-# c1.Divide(3,3)
+c1 = ROOT.TCanvas('c1','c1',1024,592)
+c1.Divide(3,3)
 
-# xB_array = [0.1, 0.14, 0.17, 0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.38, 0.42, 0.58]
-# t_array = [0.09, 0.13, 0.18, 0.23, 0.3, 0.39, 0.52, 0.72, 1.1, 2]
-# Integral = 0
+xB_array = [0.1, 0.14, 0.17, 0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.38, 0.42, 0.58]
+t_array = [0.09, 0.13, 0.18, 0.23, 0.3, 0.39, 0.52, 0.72, 1.1, 2]
+Integral = 0
 
-# h2 = ROOT.TH1F("test","test",24,0,360)
-
-# for i in range(1,190):
-# 	c1.cd((i-1)%9+1)
-# 	h1 = ff.Get("xsec_h_cross_section_pro_CD_gam_FT_"+str(i))
-# 	if (not h1):
-# 		h1 = h2.Clone(str(i))
-
-# 	h1.SetTitle("bin"+str((i-1)//9+1)+"\t"+str(t_array[(i-1)%9])+"<-t<"+str(t_array[(i-1)%9+1])+" GeV ^{2}")
-# 	h1.GetXaxis().SetTitle("#phi (#circ)");
-# 	Integral = Integral + h1.Integral()
-# 	if i%9 == 0:
-# 		h1.Draw()
-# 		c1.Update()
-# 		if i == 9:
-# 			c1.Print("clas12_dvcs_raw_yields.pdf(")
-# 		elif i == 189:
-# 			c1.Print("clas12_dvcs_raw_yields.pdf)")		
-# 		else:
-# 			c1.Print("clas12_dvcs_raw_yields.pdf")		
-# 	else:
-# 		h1.Draw()
-# 		c1.Update()
-
-# print(Integral)
-
-c1 = ROOT.TCanvas('c1','c1',480,480)
+h2 = ROOT.TH1F("test","test",24,0,360)
 
 for i in range(1,190):
-	h1 = ff.Get("root_dvcs_h_Q2_xB_bin_"+str(i))
-	if not h1:
-		 continue
-	h1.SetTitle("Q^{2} - x_{B}")
-	h1.GetXaxis().SetTitle("x_{B}");
-	h1.GetYaxis().SetTitle("Q^{2} (GeV^{2})");
-	h1.GetYaxis().SetRangeUser(0.5,5.5);
-	h1.GetXaxis().SetLimits(.05,.7);
-	if (i-1)%21==0:
-		h1.Draw("same")
-	elif ((i-1)%21)%4 == 0 or ((i-1)%21)%4 == 1:
-		h1.SetMarkerColor(2)
-		h1.Draw("same")
-	elif ((i-1)%21)%4 == 2 or ((i-1)%21)%4 == 3:
-		h1.SetMarkerColor(4)
-		h1.Draw("same")
+	c1.cd((i-1)%9+1)
+	tbin = (i-1)%9
+	xBQbin = (i-1)//9+1
+	h1 = ff.Get("xsec_h_cross_section_pro_CD_gam_FT_"+str(21*tbin + xBQbin))
+	if (not h1):
+		h1 = h2.Clone(str(i))
 
-c1.Print("dvcs_binning_clas12.pdf")
+	h1.SetTitle("bin"+str((i-1)//9+1)+"\t"+str(t_array[(i-1)%9])+"<-t<"+str(t_array[(i-1)%9+1])+" GeV ^{2}")
+	h1.GetXaxis().SetTitle("#phi (#circ)");
+	Integral = Integral + h1.Integral()
+	if i%9 == 0:
+		h1.Draw()
+		c1.Update()
+		if i == 9:
+			c1.Print("clas12_dvcs_raw_yields.pdf(")
+		elif i == 189:
+			c1.Print("clas12_dvcs_raw_yields.pdf)")		
+		else:
+			c1.Print("clas12_dvcs_raw_yields.pdf")		
+	else:
+		h1.Draw()
+		c1.Update()
+
+print(Integral)
+
+# c1 = ROOT.TCanvas('c1','c1',480,480)
+
+# for i in range(1,190):
+# 	h1 = ff.Get("root_dvcs_h_Q2_xB_bin_"+str(i))
+# 	if not h1:
+# 		 continue
+# 	h1.SetTitle("Q^{2} - x_{B}")
+# 	h1.GetXaxis().SetTitle("x_{B}");
+# 	h1.GetYaxis().SetTitle("Q^{2} (GeV^{2})");
+# 	h1.GetYaxis().SetRangeUser(0.5,5.5);
+# 	h1.GetXaxis().SetLimits(.05,.7);
+# 	if (i-1)%21==0:
+# 		h1.Draw("same")
+# 	elif ((i-1)%21)%4 == 0 or ((i-1)%21)%4 == 1:
+# 		h1.SetMarkerColor(2)
+# 		h1.Draw("same")
+# 	elif ((i-1)%21)%4 == 2 or ((i-1)%21)%4 == 3:
+# 		h1.SetMarkerColor(4)
+# 		h1.Draw("same")
+
+# c1.Print("dvcs_binning_clas12.pdf")
 # c1.cd()
 # h1 = ff.Get("epg_h_Q2_xB")
 # h1.SetTitle("Q^{2} - x_{B}")
