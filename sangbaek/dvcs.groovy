@@ -65,7 +65,7 @@ class dvcs{
     if (xB <xB_array[0] || xB >xB_array[11] || t <t_array[0] || t >t_array[9]) return null
     int xBQbin = 2*xB_array.findIndexOf{ xB < it}-1
     if (xBQbin==-3) xBQbin = 21
-    if (xBQbin>1 && Math.toDegrees(theta)<10) xBQbin--
+    if (xBQbin>1 && Math.toDegrees(theta)<15) xBQbin--
 
     int tbin = t_array.findIndexOf{ t < it} -1
     if (tbin==-1) tbin = 8
@@ -79,7 +79,20 @@ class dvcs{
   def processEvent(event){
 
     if (event.npart>0) {
-      
+
+      (0..<event.npart).findAll{event.pid[it]==2212}.each{ind->
+        def prot = new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})
+        def prot_phi = Math.toDegrees(prot.phi())
+        if (prot_phi<0) prot_phi=360+prot_phi
+        if (event.status[ind]>=4000){
+          hists.computeIfAbsent("/prot/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(prot.theta()))
+          hists.computeIfAbsent("/prot/prot_azimuth_CD", h_azimuth_rate).fill(prot_phi)
+        }
+        else if (event.status[ind]<4000){
+          hists.computeIfAbsent("/prot/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(prot.theta()))
+          hists.computeIfAbsent("/prot/prot_azimuth_FD", h_azimuth_rate).fill(prot_phi)
+        }
+      }      
       // get epg coincidence, no exclusive cut applied. electron cut from Brandon's package
       def dsets = DVCS.getEPG(event, electron_selector)
       def (ele, pro, gam) = dsets*.particle.collect{it ? it.vector() : null} 
@@ -217,18 +230,10 @@ class dvcs{
           if (event.status[dsets.pindex[1]]>=4000){
             hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
             hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
-            if (W>2){
-                hists.computeIfAbsent("/dvcs/prot_polar_CD_W>2", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-                hists.computeIfAbsent("/dvcs/prot_azimuth_CD_W>2", h_azimuth_rate).fill(pro_phi)
-            }
           }
           else if (event.status[dsets.pindex[1]]<4000){
             hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
             hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
-            if (W>2){
-              hists.computeIfAbsent("/dvcs/prot_polar_FD_W>2", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-              hists.computeIfAbsent("/dvcs/prot_azimuth_FD_W>2", h_azimuth_rate).fill(pro_phi)
-            }
           }
         } // exclusivity cuts ended
         //add here for analysis
