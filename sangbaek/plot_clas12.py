@@ -30,7 +30,7 @@ for i in range(1,190):
 	c1.cd((i-1)%9+1)
 	tbin = (i-1)%9
 	xBQbin = (i-1)//9+1
-	h1 = ff.Get("xsec_h_cross_section_pro_CD_gam_FT_"+str(21*tbin + xBQbin))
+	h1 = ff.Get("root_dvcs_h_phi_pro_CD_gam_FT_bin_"+str(21*tbin + xBQbin))
 	if (not h1):
 		h1 = h2.Clone(str(i))
 
