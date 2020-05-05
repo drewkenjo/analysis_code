@@ -4,3 +4,4 @@
 *.pdf
 *.root
 */.ipynb_checkpoints
+*/.DS_Store
