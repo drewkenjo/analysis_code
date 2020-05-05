@@ -26,6 +26,7 @@ class dvcs{
 
   // missing mass
   def hmm2 = {new H1F("$it", "$it", 100, -2, 4)}
+  def hmm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
 
   // angle between planes
   def h_angle = {new H1F("$it", "$it", 190, -5 ,185)}
@@ -154,7 +155,7 @@ class dvcs{
         // check missing mass
         hists.computeIfAbsent("/epg/hmm2_ep", hmm2).fill(VmissG.mass2())
         hists.computeIfAbsent("/epg/hmm2_eg", hmm2).fill(VmissP.mass2())
-        hists.computeIfAbsent("/epg/hmm2_epg", hmm2).fill(VMISS.mass2())
+        hists.computeIfAbsent("/epg/hmm2_epg", hmm2_2).fill(VMISS.mass2())
 
 
         // kinematic range
@@ -223,7 +224,7 @@ class dvcs{
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_pro_CD_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2_2).fill(VMISS.mass2())
             hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
           }            
 
