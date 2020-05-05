@@ -52,20 +52,22 @@ ROOT.TGaxis.SetMaxDigits(3);
 
 c1 = ROOT.TCanvas('c1','c1',480,480)
 
-xB_array = [0.1, 0.14, 0.17, 0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.38, 0.42, 0.58]
-t_array = [0.09, 0.13, 0.18, 0.23, 0.3, 0.39, 0.52, 0.72, 1.1, 2]
-
 for i in range(1,190):
 	h1 = ff.Get("root_dvcs_h_Q2_xB_bin_"+str(i))
-
-	if i//9 == 0:
-		h1.SetMarkerColor(1)
-		h1.Draw()
-	elif i//9 == 1:
+	if not h1:
+		 continue
+	h1.SetTitle("Q^{2} - x_{B}")
+	h1.GetXaxis().SetTitle("x_{B}");
+	h1.GetYaxis().SetTitle("Q^{2} (GeV^{2})");
+	h1.GetYaxis().SetRangeUser(0.5,5.5);
+	h1.GetXaxis().SetLimits(.05,.7);
+	if (i-1)%21==0:
+		h1.Draw("same")
+	elif ((i-1)%21)%4 == 0 or ((i-1)%21)%4 == 1:
 		h1.SetMarkerColor(2)
 		h1.Draw("same")
-	elif i//9 == 2:
-		h1.SetMarkerColor(3)
+	elif ((i-1)%21)%4 == 2 or ((i-1)%21)%4 == 3:
+		h1.SetMarkerColor(4)
 		h1.Draw("same")
 
 c1.Print("dvcs_binning_clas12.pdf")
