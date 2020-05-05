@@ -9,6 +9,7 @@ import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import sangbaek.draw_dcr
+import sangbaek.dvcs
 import event.Event
 import event.EventConverter
 import my.Sugar
@@ -18,7 +19,7 @@ Sugar.enable()
 
 def outname = args[0].split('/')[-1]
 
-def processors = [new draw_dcr()]
+def processors = [new dvcs()]
 
 def evcount = new AtomicInteger()
 def save = {
@@ -28,7 +29,7 @@ def save = {
     out.cd("/root")
     it.hists.each{out.writeDataSet(it.value)}
     def clasname = it.getClass().getSimpleName()
-    out.writeFile("mon_${clasname}_${outname}")
+    out.writeFile("${clasname}.hipo")
   }
   println "event count: "+evcount.get()
   evcount.set(0)
