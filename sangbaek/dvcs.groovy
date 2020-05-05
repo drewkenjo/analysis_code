@@ -207,6 +207,7 @@ class dvcs{
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)
           hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
+          hists.computeIfAbsent("/dvcs/h_Q2_xB_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
           hists.computeIfAbsent("/events/events", h_events).fill(1.5)  
           
           if (event.status[dsets.pindex[1]]>=4000){

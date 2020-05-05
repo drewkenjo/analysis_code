@@ -56,8 +56,7 @@ xB_array = [0.1, 0.14, 0.17, 0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.38, 0.42, 0.58
 t_array = [0.09, 0.13, 0.18, 0.23, 0.3, 0.39, 0.52, 0.72, 1.1, 2]
 
 for i in range(1,190):
-	c1.cd((i-1)%9+1)
-	h1 = ff.Get("root_dvcs_h_phi_bin_"+str(i))
+	h1 = ff.Get("root_dvcs_h_Q2_xB_bin_"+str(i))
 
 	if i//9 == 0:
 		h1.SetMarkerColor(1)

@@ -3,3 +3,4 @@
 *.hipo
 *.pdf
 *.root
+*/.ipynb_checkpoints
