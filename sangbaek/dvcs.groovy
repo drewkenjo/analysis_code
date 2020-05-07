@@ -225,7 +225,7 @@ class dvcs{
           }
           else if (event.status[dsets.pindex[1]]>=1000){
             hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-          hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
+            hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
           }
 
           if (event.status[dsets.pindex[1]]>=4000){
@@ -261,20 +261,17 @@ class dvcs{
           if (event.status[dsets.pindex[1]]>=4000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_pro_CD_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
           }
 
           if (event.status[dsets.pindex[2]]<2000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
           }
 
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_pro_CD_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
             hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2_2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
           }            
 
           if (event.status[dsets.pindex[1]]>=4000){
