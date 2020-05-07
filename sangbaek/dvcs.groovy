@@ -214,8 +214,8 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
           // fill t dependence on 2 fold binning (xB, Q2)
-          def xBbin = (int) Math.floor(xB/0.5)
-          def Q2bin = (int) Math.floor(Q2/0.5)
+          int xBbin = Math.floor(xB/0.1)
+          int Q2bin = 5* Math.floor(Q2/0.5)
 
           hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
           hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
