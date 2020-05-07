@@ -204,6 +204,40 @@ class dvcs{
 
         // exclusive cuts
         if (DVCS.KineCuts(Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+
+
+          // dvcs t dependence
+          def xBbin = (int) Math.floor(xB/0.5)
+          def Q2bin = (int) Math.floor(Q2/0.5)
+
+          hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+            hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          }
+          else if (event.status[dsets.pindex[1]]>=1000){
+            hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          }
+
+          if (event.status[dsets.pindex[1]]>=4000){
+            hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            }
+            else if (event.status[dsets.pindex[1]]>=1000){
+              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            }
+          }
+          else if (event.status[dsets.pindex[1]]>=2000){
+            hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            }
+            else if (event.status[dsets.pindex[1]]>=1000){
+              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            }
+          }
+
+
           // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
           def bin_number = binnumber(xB, ele.theta(), t)
           hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
