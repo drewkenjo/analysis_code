@@ -213,48 +213,47 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
           hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
-          // dvcs t dependence
+          // fill t dependence on 2 fold binning (xB, Q2)
           def xBbin = (int) Math.floor(xB/0.5)
           def Q2bin = (int) Math.floor(Q2/0.5)
 
-          hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
           hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
           if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-            hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
           hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
           }
           else if (event.status[dsets.pindex[1]]>=1000){
-            hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
           hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
           }
 
           if (event.status[dsets.pindex[1]]>=4000){
-            hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
             hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
             if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
               hists.computeIfAbsent("/events/events", h_events).fill(7.5)  
             }
             else if (event.status[dsets.pindex[1]]>=1000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
               hists.computeIfAbsent("/events/events", h_events).fill(8.5)  
             }
           }
           else if (event.status[dsets.pindex[1]]>=2000){
-            hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
             hists.computeIfAbsent("/events/events", h_events).fill(9.5)  
             if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
               hists.computeIfAbsent("/events/events", h_events).fill(10.5)  
             }
             else if (event.status[dsets.pindex[1]]>=1000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
               hists.computeIfAbsent("/events/events", h_events).fill(11.5)  
             }
           }
 
-
-          // if (Q2>1 && Q2<5 && xB<0.5 && xB>0.2 && t<0.5 && t>0.2) h_cross_section.fill(TrentoAng)
+          // fill phi dependence on 3 fold binning (xB, Q2, t)
           def bin_number = binnumber(xB, ele.theta(), t)
           hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
           hists.computeIfAbsent("/dvcs/h_Q2_xB_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
