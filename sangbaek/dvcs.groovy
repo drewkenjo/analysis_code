@@ -40,7 +40,7 @@ class dvcs{
   def h_Q2_theta = {new H2F("$it", "$it", 100, 0, 45, 100, 0, 12)}
 
   // polar angle
-  def h_polar_rate = {new H1F("$it", "$it", 90, 0, 90)}
+  def h_polar_rate = {new H1F("$it", "$it", 360, 0, 90)}
   // electron phi (sanity check)
   def h_azimuth_rate = {new H1F("$it","$it", 80, 0, 360)}
 
@@ -52,7 +52,7 @@ class dvcs{
   def h_cross_section = {new H1F("$it","$it", 24, 0, 360)}
 
   // count total events collected
-  def h_events = {new H1F("$it","$it",10, 0,10)}
+  def h_events = {new H1F("$it","$it",12, 0,12)}
 
   // sector dependence of kinematic variables 
   def h_W = {new H1F("$it","$it",100,0,10)}
@@ -79,7 +79,11 @@ class dvcs{
 
   def processEvent(event){
 
+    hists.computeIfAbsent("/events/events", h_events).fill(0.5)  
+
     if (event.npart>0) {
+
+      hists.computeIfAbsent("/events/events", h_events).fill(1.5)  
 
       (0..<event.npart).findAll{event.pid[it]==2212}.each{ind->
         def prot = new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})
@@ -100,7 +104,7 @@ class dvcs{
       // process only if there's a epg set in coincidence
       if(ele!=null) {
         // event number histograms
-        hists.computeIfAbsent("/events/events", h_events).fill(0.5)  
+        hists.computeIfAbsent("/events/events", h_events).fill(2.5)  
 
         // get sector
         def (ele_sec, pro_sec, gam_sec) = dsets*.sector
@@ -205,35 +209,47 @@ class dvcs{
         // exclusive cuts
         if (DVCS.KineCuts(Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
 
+          hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
+          hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
+          hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
           // dvcs t dependence
           def xBbin = (int) Math.floor(xB/0.5)
           def Q2bin = (int) Math.floor(Q2/0.5)
 
           hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
           if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
             hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
           }
           else if (event.status[dsets.pindex[1]]>=1000){
             hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+          hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
           }
 
           if (event.status[dsets.pindex[1]]>=4000){
             hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
             if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
               hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/events/events", h_events).fill(7.5)  
             }
             else if (event.status[dsets.pindex[1]]>=1000){
               hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/events/events", h_events).fill(8.5)  
             }
           }
           else if (event.status[dsets.pindex[1]]>=2000){
             hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+            hists.computeIfAbsent("/events/events", h_events).fill(9.5)  
             if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
               hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/events/events", h_events).fill(10.5)  
             }
             else if (event.status[dsets.pindex[1]]>=1000){
               hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}_sec_$ele_sec", h_t).fill(t)
+              hists.computeIfAbsent("/events/events", h_events).fill(11.5)  
             }
           }
 
@@ -242,25 +258,24 @@ class dvcs{
           def bin_number = binnumber(xB, ele.theta(), t)
           hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
           hists.computeIfAbsent("/dvcs/h_Q2_xB_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
-          hists.computeIfAbsent("/events/events", h_events).fill(1.5)  
           
           if (event.status[dsets.pindex[1]]>=4000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_pro_CD_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/events/events", h_events).fill(2.5)  
+            hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
           }
 
           if (event.status[dsets.pindex[2]]<2000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
+            hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
           }
 
           if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
             hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/h_phi_pro_CD_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
             hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2_2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
+            hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
           }            
 
           if (event.status[dsets.pindex[1]]>=4000){
