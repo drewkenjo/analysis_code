@@ -121,7 +121,6 @@ class DVCS {
      && VmissG.mass2() < 1 && VmissG.mass2() > -1
      && Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()) < 0.3
      && KinTool.Vangle(VG1.vect(),VmissG.vect()) < 3
-     && KinTool.Vangle(Vhad2,Vhadr) < 25
-     && KinTool.Vangle(Vhad2,Vhadr) < 90)
+     && KinTool.Vangle(Vhad2,Vhadr) < 25)
   }
 }
