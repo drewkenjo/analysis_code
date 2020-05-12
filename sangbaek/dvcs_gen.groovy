@@ -14,7 +14,7 @@ import run.Run
 import java.util.concurrent.ConcurrentHashMap
 
 
-class dvcs_EB{
+class dvcs_gen{
 
   //defining histograms
   def hists = new ConcurrentHashMap()
