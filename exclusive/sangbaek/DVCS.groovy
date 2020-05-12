@@ -123,7 +123,7 @@ class DVCS {
     }
 
     def parts = [11,2212,22].withIndex()
-      .collect{pid,i -> new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
+      .collect{pid,i -> new Particle(pid, *[event.mc_px, event.mc_py, event.mc_pz].collect{it[inds[i]]})
     }
 
     def secs = parts.collect{
