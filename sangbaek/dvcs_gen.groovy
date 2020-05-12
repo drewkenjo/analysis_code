@@ -76,25 +76,26 @@ class dvcs_EB{
 
     hists.computeIfAbsent("/events/events", h_events).fill(0.5)  
 
-    if (event.npart>0) {
+    if (event.mc_npart>0) {
 
       hists.computeIfAbsent("/events/events", h_events).fill(1.5)  
 
-      (0..<event.npart).findAll{event.pid[it]==2212}.each{ind->
-        def prot = new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})
+      (0..<event.mc_npart).findAll{event.pid[it]==2212}.each{ind->
+        def prot = new Vector3(*[event.mc_px, event.mc_py, event.mc_pz].collect{it[ind]})
         def prot_phi = Math.toDegrees(prot.phi())
+        def prot_theta = Math.toDegrees(prot.theta())
         if (prot_phi<0) prot_phi=360+prot_phi
-        if (event.status[ind]>=4000){
+        if (prot_theta >= 35){
           hists.computeIfAbsent("/prot/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(prot.theta()))
           hists.computeIfAbsent("/prot/prot_azimuth_CD", h_azimuth_rate).fill(prot_phi)
         }
-        else if (event.status[ind]<4000){
+        else if (prot_theta < 35){
           hists.computeIfAbsent("/prot/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(prot.theta()))
           hists.computeIfAbsent("/prot/prot_azimuth_FD", h_azimuth_rate).fill(prot_phi)
         }
       }      
       // get epg coincidence, no exclusive cut applied. electron cut from Brandon's package
-      def dsets = DVCS.getEPG_EB(event)
+      def dsets = DVCS.getEPG_MC(event)
       def (ele, pro, gam) = dsets*.particle.collect{it ? it.vector() : null} 
       // process only if there's a epg set in coincidence
       if(ele!=null) {
