@@ -80,7 +80,7 @@ class dvcs_gen{
 
       hists.computeIfAbsent("/events/events", h_events).fill(1.5)  
 
-      (0..<event.mc_npart).findAll{event.pid[it]==2212}.each{ind->
+      (0..<event.mc_npart).findAll{event.mc_pid[it]==2212}.each{ind->
         def prot = new Vector3(*[event.mc_px, event.mc_py, event.mc_pz].collect{it[ind]})
         def prot_phi = Math.toDegrees(prot.phi())
         def prot_theta = Math.toDegrees(prot.theta())
