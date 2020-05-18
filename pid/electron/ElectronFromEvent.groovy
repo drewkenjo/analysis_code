@@ -39,9 +39,9 @@ class ElectronFromEvent {
     //def s_min_w_outb = [11.0, 17.5, 16.25, 7.5,  14.5, 9.25]
     //def s_max_w_outb = [400, 400, 400, 400, 400, 400]
 
-    def min_u_tight_inb = [42, 32, 38, 27.5, 32, 29]
-    def min_u_med_inb   = [33, 26, 34, 22,   27, 25]
-    def min_u_loose_inb = [28, 22, 30, 18,   22, 22]
+    def min_u_tight_inb = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_u_med_inb   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_u_loose_inb = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // u shows a slight fall of the sampling fraction for high values
     def max_u_tight_inb = [398, 398, 398, 398, 398, 398]
@@ -52,9 +52,9 @@ class ElectronFromEvent {
     def max_u_cuts_inb = [max_u_loose_inb, max_u_med_inb, max_u_tight_inb]
 
     // tight: only background outside 3 sigma, medium: 10 % outside 3 sigma, loose: 50% outside 3 sigma 
-    def min_v_tight_inb = [18.0, 12.0, 19.5,  15.5,  20.0, 13.0]
-    def min_v_med_inb   = [16.0, 10.5, 17.0,  14.25, 18.0, 11.0]
-    def min_v_loose_inb = [10.25, 8.0, 12.75, 12.5,  13.25, 9.0]
+    def min_v_tight_inb = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_v_med_inb   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_v_loose_inb = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // the maximum of v is never reached
     def max_v_tight_inb = [400, 400, 400, 400, 400, 400]
@@ -65,9 +65,9 @@ class ElectronFromEvent {
     def max_v_cuts_inb = [max_v_loose_inb, max_v_med_inb, max_v_tight_inb]
     
     // tight: only background outside 3 sigma, medium: 10 % outside 3 sigma, loose: 50% outside 3 sigma 
-    def min_w_tight_inb = [14.0, 18.7, 18.7,  12.0, 16.0, 13.0]
-    def min_w_med_inb   = [11.0, 17.5, 16.25, 7.5,  14.5, 9.25]
-    def min_w_loose_inb = [7.25, 11.0, 13.0,  5.5,  10.0, 6.0]
+    def min_w_tight_inb = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_w_med_inb   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_w_loose_inb = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // the maximum of w is never reached
     def max_w_tight_inb = [400, 400, 400, 400, 400, 400]
@@ -81,9 +81,9 @@ class ElectronFromEvent {
     /// outbending (not adjusted up to now, same as inbending!):
     
     // tight: only background outside 3 sigma, medium: 10 % outside 3 sigma, loose: 50% outside 3 sigma 
-    def min_u_tight_out = [42, 32, 38, 27.5, 32, 29]
-    def min_u_med_out   = [33, 26, 34, 22,   27, 25]
-    def min_u_loose_out = [28, 22, 30, 18,   22, 22]
+    def min_u_tight_out = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_u_med_out   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_u_loose_out = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // u shows a slight fall of the sampling fraction for high values
     def max_u_tight_out = [398, 398, 398, 398, 398, 398]
@@ -94,9 +94,9 @@ class ElectronFromEvent {
     def max_u_cuts_outb = [max_u_loose_out, max_u_med_out, max_u_tight_out]
     
     // tight: only background outside 3 sigma, medium: 10 % outside 3 sigma, loose: 50% outside 3 sigma 
-    def min_v_tight_out = [18.0, 12.0, 19.5,  15.5,  20.0, 13.0]
-    def min_v_med_out   = [16.0, 10.5, 17.0,  14.25, 18.0, 11.0]
-    def min_v_loose_out = [10.25, 8.0, 12.75, 12.5,  13.25, 9.0]
+    def min_v_tight_out = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_v_med_out   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_v_loose_out = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // the maximum of v is never reached
     def max_v_tight_out = [400, 400, 400, 400, 400, 400]
@@ -107,9 +107,9 @@ class ElectronFromEvent {
     def max_v_cuts_outb = [max_v_loose_out, max_v_med_out, max_v_tight_out]
     
     // tight: only background outside 3 sigma, medium: 10 % outside 3 sigma, loose: 50% outside 3 sigma 
-    def min_w_tight_out = [14.0, 18.7, 18.7,  12.0, 16.0, 13.0]
-    def min_w_med_out   = [11.0, 17.5, 16.25, 7.5,  14.5, 9.25]
-    def min_w_loose_out = [7.25, 11.0, 13.0,  5.5,  10.0, 6.0]
+    def min_w_tight_out = [19.0, 19.0, 19.0, 19.0, 19.0, 19.0]
+    def min_w_med_out   = [14.0, 14.0, 14.0, 14.0, 14.0, 14.0]
+    def min_w_loose_out = [9.0, 9.0, 9.0, 9.0, 9.0, 9.0]
     
     // the maximum of w is never reached
     def max_w_tight_out = [400, 400, 400, 400, 400, 400]
@@ -182,6 +182,280 @@ class ElectronFromEvent {
     
     def heightR3_inb = [47, 39, 39, 47, 39, 39]
     def heightR3_outb = [48, 48, 48, 48, 48, 48]
+
+    // updated DC cuts
+
+    def reg1_min_sec1, reg1_min_sec1_inb, reg1_min_sec1_outb
+    def reg1_max_sec1, reg1_max_sec1_inb, reg1_max_sec1_outb
+    def reg2_min_sec1, reg2_min_sec1_inb, reg2_min_sec1_outb
+    def reg2_max_sec1, reg2_max_sec1_inb, reg2_max_sec1_outb
+    def reg3_min_sec1, reg3_min_sec1_inb, reg3_min_sec1_outb
+    def reg3_max_sec1, reg3_max_sec1_inb, reg3_max_sec1_outb
+    def reg1_min_sec2, reg1_min_sec2_inb, reg1_min_sec2_outb
+    def reg1_max_sec2, reg1_max_sec2_inb, reg1_max_sec2_outb
+    def reg2_min_sec2, reg2_min_sec2_inb, reg2_min_sec2_outb
+    def reg2_max_sec2, reg2_max_sec2_inb, reg2_max_sec2_outb
+    def reg3_min_sec2, reg3_min_sec2_inb, reg3_min_sec2_outb
+    def reg3_max_sec2, reg3_max_sec2_inb, reg3_max_sec2_outb
+    def reg1_min_sec3, reg1_min_sec3_inb, reg1_min_sec3_outb
+    def reg1_max_sec3, reg1_max_sec3_inb, reg1_max_sec3_outb
+    def reg2_min_sec3, reg2_min_sec3_inb, reg2_min_sec3_outb
+    def reg2_max_sec3, reg2_max_sec3_inb, reg2_max_sec3_outb
+    def reg3_min_sec3, reg3_min_sec3_inb, reg3_min_sec3_outb
+    def reg3_max_sec3, reg3_max_sec3_inb, reg3_max_sec3_outb
+    def reg1_min_sec4, reg1_min_sec4_inb, reg1_min_sec4_outb
+    def reg1_max_sec4, reg1_max_sec4_inb, reg1_max_sec4_outb
+    def reg2_min_sec4, reg2_min_sec4_inb, reg2_min_sec4_outb
+    def reg2_max_sec4, reg2_max_sec4_inb, reg2_max_sec4_outb
+    def reg3_min_sec4, reg3_min_sec4_inb, reg3_min_sec4_outb
+    def reg3_max_sec4, reg3_max_sec4_inb, reg3_max_sec4_outb
+    def reg1_min_sec5, reg1_min_sec5_inb, reg1_min_sec5_outb
+    def reg1_max_sec5, reg1_max_sec5_inb, reg1_max_sec5_outb
+    def reg2_min_sec5, reg2_min_sec5_inb, reg2_min_sec5_outb
+    def reg2_max_sec5, reg2_max_sec5_inb, reg2_max_sec5_outb
+    def reg3_min_sec5, reg3_min_sec5_inb, reg3_min_sec5_outb
+    def reg3_max_sec5, reg3_max_sec5_inb, reg3_max_sec5_outb
+    def reg1_min_sec6, reg1_min_sec6_inb, reg1_min_sec6_outb
+    def reg1_max_sec6, reg1_max_sec6_inb, reg1_max_sec6_outb
+    def reg2_min_sec6, reg2_min_sec6_inb, reg2_min_sec6_outb
+    def reg2_max_sec6, reg2_max_sec6_inb, reg2_max_sec6_outb
+    def reg3_min_sec6, reg3_min_sec6_inb, reg3_min_sec6_outb
+    def reg3_max_sec6, reg3_max_sec6_inb, reg3_max_sec6_outb
+    // inbending cut parameters (adjusted):
+    // medium (50 %):
+
+    def reg1_min_sec1_inb_med = [25.6464, -26.0938, 1.36205, 0.0083525, -0.000433074];
+    def reg1_max_sec1_inb_med = [-21.002, 19.3141, 0.183817, -0.061424, 0.00117881];
+    def reg2_min_sec1_inb_med = [20.8156, -19.1708, -0.244432, 0.0652386, -0.00120129];
+    def reg2_max_sec1_inb_med = [-20.2319, 19.2371, 0.0491417, -0.0527963, 0.000995253];
+    def reg3_min_sec1_inb_med = [22.9342, -24.6621, 1.25766, 0.0133507, -0.00049441];
+    def reg3_max_sec1_inb_med = [-8.72949, 4.50811, 3.13299, -0.15452, 0.00234593];
+    def reg1_min_sec2_inb_med = [16.0752, -15.8399, -0.65495, 0.0740595, -0.00133068];
+    def reg1_max_sec2_inb_med = [-40.921, 40.2558, -3.67186, 0.0498104, -0.000151358];
+    def reg2_min_sec2_inb_med = [20.5524, -23.7002, 1.20081, 0.0126066, -0.000501927];
+    def reg2_max_sec2_inb_med = [-22.7933, 18.397, 0.707315, -0.0848617, 0.00150965];
+    def reg3_min_sec2_inb_med = [7.84857, -9.62769, -1.39224, 0.0876156, -0.00137369];
+    def reg3_max_sec2_inb_med = [-24.5099, 24.8373, -1.22162, -0.0135951, 0.00051455];
+    def reg1_min_sec3_inb_med = [18.2067, -12.322, -1.79675, 0.111661, -0.0017831];
+    def reg1_max_sec3_inb_med = [-20.4639, 11.3285, 2.56498, -0.149755, 0.00243423];
+    def reg2_min_sec3_inb_med = [17.5093, -13.0897, -1.44801, 0.0995944, -0.00163973];
+    def reg2_max_sec3_inb_med = [-29.4241, 25.1723, -0.643032, -0.0433457, 0.0010157];
+    def reg3_min_sec3_inb_med = [19.6412, -18.3363, -0.139482, 0.0623644, -0.00122319];
+    def reg3_max_sec3_inb_med = [-23.4069, 20.1087, 0.0111006, -0.0595069, 0.00123094];
+    def reg1_min_sec4_inb_med = [27.7329, -24.8668, 0.855257, 0.0229504, -0.000588103];
+    def reg1_max_sec4_inb_med = [-25.1595, 24.3626, -0.826633, -0.0280833, 0.000694613];
+    def reg2_min_sec4_inb_med = [35.3061, -35.9815, 3.34709, -0.0587318, 0.000517383];
+    def reg2_max_sec4_inb_med = [-23.5005, 23.5232, -0.872864, -0.0214562, 0.000570724];
+    def reg3_min_sec4_inb_med = [13.1517, -8.73139, -2.18634, 0.115133, -0.00170354];
+    def reg3_max_sec4_inb_med = [-14.1635, 13.6887, 0.949846, -0.0787818, 0.00128683];
+    def reg1_min_sec5_inb_med = [23.5653, -17.285, -1.21053, 0.108096, -0.00189499];
+    def reg1_max_sec5_inb_med = [-23.3017, 16.1351, 1.45328, -0.112999, 0.00193088];
+    def reg2_min_sec5_inb_med = [30.5631, -30.3887, 2.11072, -0.00879513, -0.000281135];
+    def reg2_max_sec5_inb_med = [-18.7762, 11.5513, 2.23634, -0.132, 0.00208225];
+    def reg3_min_sec5_inb_med = [14.2375, -10.0129, -2.03418, 0.1236, -0.00199283];
+    def reg3_max_sec5_inb_med = [-23.8159, 21.7783, -0.373554, -0.0463973, 0.0010055];
+    def reg1_min_sec6_inb_med = [34.9766, -38.2253, 3.80455, -0.0624294, 0.000385789];
+    def reg1_max_sec6_inb_med = [-23.6287, 21.0793, 0.0916929, -0.0641014, 0.00125089];
+    def reg2_min_sec6_inb_med = [21.6462, -23.9106, 1.1985, 0.0108284, -0.000435214];
+    def reg2_max_sec6_inb_med = [-22.1881, 21.3921, -0.325758, -0.0406509, 0.000821165];
+    def reg3_min_sec6_inb_med = [12.3393, -12.5734, -1.07645, 0.0836258, -0.00137295];
+    def reg3_max_sec6_inb_med = [-20.6041, 23.7403, -1.43195, 0.00507544, 0.000160285];
+
+    // loose (35 %):
+    def reg1_min_sec1_inb_loose = [24.9198, -26.6682, 1.22328, 0.0326184, 0.0326184];
+    def reg1_max_sec1_inb_loose = [-38.0903, 44.8413, -5.13684, 0.0913599, -0.000566229];
+    def reg2_min_sec1_inb_loose = [34.3872, -41.6892, 4.78076, -0.0904016, 0.000691157];
+    def reg2_max_sec1_inb_loose = [-36.582, 45.4679, -5.70527, 0.121105, -0.00107292];
+    def reg3_min_sec1_inb_loose = [38.5882, -51.7707, 7.65247, -0.198183, 0.00222671];
+    def reg3_max_sec1_inb_loose = [-35.1098, 46.9821, -6.62713, 0.16512, -0.00177347];
+    def reg1_min_sec2_inb_loose = [26.3964, -32.5314, 2.87032, -0.0261837, -0.0261837];
+    def reg1_max_sec2_inb_loose = [-45.4528, 53.4467, -6.83895, 0.144609, -0.00127358];
+    def reg2_min_sec2_inb_loose = [29.5885, -38.6103, 4.45494, -0.084114, 0.000626459];
+    def reg2_max_sec2_inb_loose = [-42.6042, 50.783, -6.44381, 0.135305, -0.00117332];
+    def reg3_min_sec2_inb_loose = [21.3286, -33.2316, 4.16718, -0.0947928, 0.000950229];
+    def reg3_max_sec2_inb_loose = [-26.2955, 32.832, -3.21406, 0.0443669, -0.000110018];
+    def reg1_min_sec3_inb_loose = [38.3683, -39.555, 3.48786, -0.0311045, -0.0311045];
+    def reg1_max_sec3_inb_loose = [-44.7002, 48.5238, -5.33933, 0.0857334, -0.000389759];
+    def reg2_min_sec3_inb_loose = [26.2411, -26.4956, 1.17454, 0.0314168, -0.000923764];
+    def reg2_max_sec3_inb_loose = [-49.1042, 53.7936, -6.50797, 0.125435, -0.000940508];
+    def reg3_min_sec3_inb_loose = [30.2087, -36.2303, 3.94272, -0.070659, 0.000484111];
+    def reg3_max_sec3_inb_loose = [-25.1075, 27.5492, -1.81589, -0.00372993, 0.000534551];
+    def reg1_min_sec4_inb_loose = [45.5355, -50.2561, 5.91736, -0.116203, -0.116203];
+    def reg1_max_sec4_inb_loose = [-45.3956, 52.8208, -6.57583, 0.13245, -0.00106037];
+    def reg2_min_sec4_inb_loose = [42.9007, -48.8609, 6.02101, -0.13073, 0.00125121];
+    def reg2_max_sec4_inb_loose = [-32.1523, 38.6933, -4.15879, 0.0722104, -0.000474606];
+    def reg3_min_sec4_inb_loose = [34.0991, -40.7811, 4.8997, -0.107033, 0.00105086];
+    def reg3_max_sec4_inb_loose = [-39.189, 52.9641, -8.01756, 0.214872, -0.00250226];
+    def reg1_min_sec5_inb_loose = [52.0273, -61.3244, 8.45187, -0.193011, -0.193011];
+    def reg1_max_sec5_inb_loose = [-50.6284, 54.3673, -6.38031, 0.116905, -0.000778886];
+    def reg2_min_sec5_inb_loose = [32.1495, -35.3084, 3.11177, -0.0314703, -8.39833e-05];
+    def reg2_max_sec5_inb_loose = [-47.0576, 50.676, -5.80697, 0.10389, -0.000677858];
+    def reg3_min_sec5_inb_loose = [27.5659, -34.8935, 3.81989, -0.0655272, 0.000389246];
+    def reg3_max_sec5_inb_loose = [-25.7138, 27.0011, -1.53335, -0.0152295, 0.000694336];
+    def reg1_min_sec6_inb_loose = [35.6586, -43.3351, 5.05374, -0.0961372, -0.0961372];
+    def reg1_max_sec6_inb_loose = [-43.6986, 52.1413, -6.61602, 0.137247, -0.00115149];
+    def reg2_min_sec6_inb_loose = [33.3586, -42.3939, 5.17582, -0.106612, 0.000910642];
+    def reg2_max_sec6_inb_loose = [-38.3305, 46.3099, -5.57615, 0.109409, -0.000869664];
+    def reg3_min_sec6_inb_loose = [20.9702, -29.641, 3.08715, -0.0542694, 0.00036852];
+    def reg3_max_sec6_inb_loose = [-36.3081, 47.6882, -6.51571, 0.152934, -0.00153014];
+
+    // tight (65 %):
+    def reg1_min_sec1_inb_tight = [10.8127, 0.867417, -5.23315, 0.236924, 0.236924];
+    def reg1_max_sec1_inb_tight = [-1.05905, -11.11, 6.99604, -0.280718, 0.00394115];
+    def reg2_min_sec1_inb_tight = [15.6429, -8.51554, -2.8828, 0.158688, -0.00249913];
+    def reg2_max_sec1_inb_tight = [4.94591, -19.5039, 8.81259, -0.33865, 0.00465444];
+    def reg3_min_sec1_inb_tight = [1.34092, 9.28247, -6.60044, 0.281318, -0.00409396];
+    def reg3_max_sec1_inb_tight = [7.95213, -22.3926, 9.38108, -0.362289, 0.00504018];
+    def reg1_min_sec2_inb_tight = [6.83952, 1.15885, -4.75388, 0.212145, 0.212145];
+    def reg1_max_sec2_inb_tight = [-13.5338, 2.90293, 4.04606, -0.18406, 0.00270977];
+    def reg2_min_sec2_inb_tight = [2.23926, 6.12481, -5.72273, 0.242722, -0.00348261];
+    def reg2_max_sec2_inb_tight = [-19.2228, 12.2586, 1.80921, -0.109461, 0.00172974];
+    def reg3_min_sec2_inb_tight = [-7.44705, 15.9478, -7.51342, 0.2998, -0.00422782];
+    def reg3_max_sec2_inb_tight = [-8.05779, -1.88087, 4.79989, -0.208209, 0.00301469];
+    def reg1_min_sec3_inb_tight = [5.36591, 8.06724, -6.39578, 0.262518, 0.262518];
+    def reg1_max_sec3_inb_tight = [-8.20889, -5.7771, 5.98507, -0.245252, 0.00348177];
+    def reg2_min_sec3_inb_tight = [-2.61308, 17.4864, -8.28425, 0.321424, -0.00449555];
+    def reg2_max_sec3_inb_tight = [-15.7028, 5.06188, 3.58882, -0.169598, 0.00252206];
+    def reg3_min_sec3_inb_tight = [-1.47028, 12.199, -6.67515, 0.261044, -0.00361062];
+    def reg3_max_sec3_inb_tight = [-2.49195, -10.9866, 6.77373, -0.267217, 0.0037212];
+    def reg1_min_sec4_inb_tight = [7.28085, 4.43634, -5.4954, 0.22469, 0.22469];
+    def reg1_max_sec4_inb_tight = [-2.88726, -7.75256, 6.11348, -0.246024, 0.00342];
+    def reg2_min_sec4_inb_tight = [11.1628, -0.875717, -4.40181, 0.191682, -0.00269305];
+    def reg2_max_sec4_inb_tight = [4.98009, -20.3121, 9.08305, -0.347362, 0.00476636];
+    def reg3_min_sec4_inb_tight = [-1.53387, 16.9129, -8.4497, 0.334303, -0.00465195];
+    def reg3_max_sec4_inb_tight = [5.76932, -17.8998, 8.19437, -0.317309, 0.00436422];
+    def reg1_min_sec5_inb_tight = [16.2619, -7.2257, -3.02427, 0.151797, 0.151797];
+    def reg1_max_sec5_inb_tight = [-8.7963, -3.03534, 5.17438, -0.214586, 0.0030239];
+    def reg2_min_sec5_inb_tight = [14.656, -7.43444, -2.74998, 0.141668, -0.00216617];
+    def reg2_max_sec5_inb_tight = [2.24964, -18.1672, 8.48444, -0.321566, 0.00438927];
+    def reg3_min_sec5_inb_tight = [3.38717, 7.1616, -5.73249, 0.231652, -0.00320412];
+    def reg3_max_sec5_inb_tight = [4.63583, -20.0558, 8.78226, -0.33313, 0.0045258];
+    def reg1_min_sec6_inb_tight = [8.74274, 0.225052, -4.62671, 0.205157, 0.205157];
+    def reg1_max_sec6_inb_tight = [-8.82084, 1.73358, 3.85433, -0.168173, 0.0024055];
+    def reg2_min_sec6_inb_tight = [3.86614, 7.51372, -6.36287, 0.268641, -0.00385432];
+    def reg2_max_sec6_inb_tight = [-7.0834, -0.809866, 4.46815, -0.18982, 0.00266762];
+    def reg3_min_sec6_inb_tight = [3.12244, 3.84008, -5.05955, 0.223398, -0.00326745];
+    def reg3_max_sec6_inb_tight = [5.70817, -16.9736, 7.8074, -0.295122, 0.00398425];
+
+    // outbending cut parameters (not adjusted, same as inbending):
+
+    //_medium (50 %):
+    def reg1_min_sec1_outb_med = [25.6464, -26.0938, 1.36205, 0.0083525, 0.0083525];
+    def reg1_max_sec1_outb_med = [-21.002, 19.3141, 0.183817, -0.061424, 0.00117881];
+    def reg2_min_sec1_outb_med = [20.8156, -19.1708, -0.244432, 0.0652386, -0.00120129];
+    def reg2_max_sec1_outb_med = [-20.2319, 19.2371, 0.0491417, -0.0527963, 0.000995253];
+    def reg3_min_sec1_outb_med = [22.9342, -24.6621, 1.25766, 0.0133507, -0.00049441];
+    def reg3_max_sec1_outb_med = [-8.72949, 4.50811, 3.13299, -0.15452, 0.00234593];
+    def reg1_min_sec2_outb_med = [16.0752, -15.8399, -0.65495, 0.0740595, 0.0740595];
+    def reg1_max_sec2_outb_med = [-40.921, 40.2558, -3.67186, 0.0498104, -0.000151358];
+    def reg2_min_sec2_outb_med = [20.5524, -23.7002, 1.20081, 0.0126066, -0.000501927];
+    def reg2_max_sec2_outb_med = [-22.7933, 18.397, 0.707315, -0.0848617, 0.00150965];
+    def reg3_min_sec2_outb_med = [7.84857, -9.62769, -1.39224, 0.0876156, -0.00137369];
+    def reg3_max_sec2_outb_med = [-24.5099, 24.8373, -1.22162, -0.0135951, 0.00051455];
+    def reg1_min_sec3_outb_med = [18.2067, -12.322, -1.79675, 0.111661, 0.111661];
+    def reg1_max_sec3_outb_med = [-20.4639, 11.3285, 2.56498, -0.149755, 0.00243423];
+    def reg2_min_sec3_outb_med = [17.5093, -13.0897, -1.44801, 0.0995944, -0.00163973];
+    def reg2_max_sec3_outb_med = [-29.4241, 25.1723, -0.643032, -0.0433457, 0.0010157];
+    def reg3_min_sec3_outb_med = [19.6412, -18.3363, -0.139482, 0.0623644, -0.00122319];
+    def reg3_max_sec3_outb_med = [-23.4069, 20.1087, 0.0111006, -0.0595069, 0.00123094];
+    def reg1_min_sec4_outb_med = [27.7329, -24.8668, 0.855257, 0.0229504, 0.0229504];
+    def reg1_max_sec4_outb_med = [-25.1595, 24.3626, -0.826633, -0.0280833, 0.000694613];
+    def reg2_min_sec4_outb_med = [35.3061, -35.9815, 3.34709, -0.0587318, 0.000517383];
+    def reg2_max_sec4_outb_med = [-23.5005, 23.5232, -0.872864, -0.0214562, 0.000570724];
+    def reg3_min_sec4_outb_med = [13.1517, -8.73139, -2.18634, 0.115133, -0.00170354];
+    def reg3_max_sec4_outb_med = [-14.1635, 13.6887, 0.949846, -0.0787818, 0.00128683];
+    def reg1_min_sec5_outb_med = [23.5653, -17.285, -1.21053, 0.108096, 0.108096];
+    def reg1_max_sec5_outb_med = [-23.3017, 16.1351, 1.45328, -0.112999, 0.00193088];
+    def reg2_min_sec5_outb_med = [30.5631, -30.3887, 2.11072, -0.00879513, -0.000281135];
+    def reg2_max_sec5_outb_med = [-18.7762, 11.5513, 2.23634, -0.132, 0.00208225];
+    def reg3_min_sec5_outb_med = [14.2375, -10.0129, -2.03418, 0.1236, -0.00199283];
+    def reg3_max_sec5_outb_med = [-23.8159, 21.7783, -0.373554, -0.0463973, 0.0010055];
+    def reg1_min_sec6_outb_med = [34.9766, -38.2253, 3.80455, -0.0624294, -0.0624294];
+    def reg1_max_sec6_outb_med = [-23.6287, 21.0793, 0.0916929, -0.0641014, 0.00125089];
+    def reg2_min_sec6_outb_med = [21.6462, -23.9106, 1.1985, 0.0108284, -0.000435214];
+    def reg2_max_sec6_outb_med = [-22.1881, 21.3921, -0.325758, -0.0406509, 0.000821165];
+    def reg3_min_sec6_outb_med = [12.3393, -12.5734, -1.07645, 0.0836258, -0.00137295];
+    def reg3_max_sec6_outb_med = [-20.6041, 23.7403, -1.43195, 0.00507544, 0.000160285];
+
+    // loose (35 %):
+    def reg1_min_sec1_outb_loose = [24.9198, -26.6682, 1.22328, 0.0326184, 0.0326184];
+    def reg1_max_sec1_outb_loose = [-38.0903, 44.8413, -5.13684, 0.0913599, -0.000566229];
+    def reg2_min_sec1_outb_loose = [34.3872, -41.6892, 4.78076, -0.0904016, 0.000691157];
+    def reg2_max_sec1_outb_loose = [-36.582, 45.4679, -5.70527, 0.121105, -0.00107292];
+    def reg3_min_sec1_outb_loose = [38.5882, -51.7707, 7.65247, -0.198183, 0.00222671];
+    def reg3_max_sec1_outb_loose = [-35.1098, 46.9821, -6.62713, 0.16512, -0.00177347];
+    def reg1_min_sec2_outb_loose = [26.3964, -32.5314, 2.87032, -0.0261837, -0.0261837];
+    def reg1_max_sec2_outb_loose = [-45.4528, 53.4467, -6.83895, 0.144609, -0.00127358];
+    def reg2_min_sec2_outb_loose = [29.5885, -38.6103, 4.45494, -0.084114, 0.000626459];
+    def reg2_max_sec2_outb_loose = [-42.6042, 50.783, -6.44381, 0.135305, -0.00117332];
+    def reg3_min_sec2_outb_loose = [21.3286, -33.2316, 4.16718, -0.0947928, 0.000950229];
+    def reg3_max_sec2_outb_loose = [-26.2955, 32.832, -3.21406, 0.0443669, -0.000110018];
+    def reg1_min_sec3_outb_loose = [38.3683, -39.555, 3.48786, -0.0311045, -0.0311045];
+    def reg1_max_sec3_outb_loose = [-44.7002, 48.5238, -5.33933, 0.0857334, -0.000389759];
+    def reg2_min_sec3_outb_loose = [26.2411, -26.4956, 1.17454, 0.0314168, -0.000923764];
+    def reg2_max_sec3_outb_loose = [-49.1042, 53.7936, -6.50797, 0.125435, -0.000940508];
+    def reg3_min_sec3_outb_loose = [30.2087, -36.2303, 3.94272, -0.070659, 0.000484111];
+    def reg3_max_sec3_outb_loose = [-25.1075, 27.5492, -1.81589, -0.00372993, 0.000534551];
+    def reg1_min_sec4_outb_loose = [45.5355, -50.2561, 5.91736, -0.116203, -0.116203];
+    def reg1_max_sec4_outb_loose = [-45.3956, 52.8208, -6.57583, 0.13245, -0.00106037];
+    def reg2_min_sec4_outb_loose = [42.9007, -48.8609, 6.02101, -0.13073, 0.00125121];
+    def reg2_max_sec4_outb_loose = [-32.1523, 38.6933, -4.15879, 0.0722104, -0.000474606];
+    def reg3_min_sec4_outb_loose = [34.0991, -40.7811, 4.8997, -0.107033, 0.00105086];
+    def reg3_max_sec4_outb_loose = [-39.189, 52.9641, -8.01756, 0.214872, -0.00250226];
+    def reg1_min_sec5_outb_loose = [52.0273, -61.3244, 8.45187, -0.193011, -0.193011];
+    def reg1_max_sec5_outb_loose = [-50.6284, 54.3673, -6.38031, 0.116905, -0.000778886];
+    def reg2_min_sec5_outb_loose = [32.1495, -35.3084, 3.11177, -0.0314703, -8.39833e-05];
+    def reg2_max_sec5_outb_loose = [-47.0576, 50.676, -5.80697, 0.10389, -0.000677858];
+    def reg3_min_sec5_outb_loose = [27.5659, -34.8935, 3.81989, -0.0655272, 0.000389246];
+    def reg3_max_sec5_outb_loose = [-25.7138, 27.0011, -1.53335, -0.0152295, 0.000694336];
+    def reg1_min_sec6_outb_loose = [35.6586, -43.3351, 5.05374, -0.0961372, -0.0961372];
+    def reg1_max_sec6_outb_loose = [-43.6986, 52.1413, -6.61602, 0.137247, -0.00115149];
+    def reg2_min_sec6_outb_loose = [33.3586, -42.3939, 5.17582, -0.106612, 0.000910642];
+    def reg2_max_sec6_outb_loose = [-38.3305, 46.3099, -5.57615, 0.109409, -0.000869664];
+    def reg3_min_sec6_outb_loose = [20.9702, -29.641, 3.08715, -0.0542694, 0.00036852];
+    def reg3_max_sec6_outb_loose = [-36.3081, 47.6882, -6.51571, 0.152934, -0.00153014];
+
+    // tight (65 %):
+    def reg1_min_sec1_outb_tight = [10.8127, 0.867417, -5.23315, 0.236924, 0.236924];
+    def reg1_max_sec1_outb_tight = [-1.05905, -11.11, 6.99604, -0.280718, 0.00394115];
+    def reg2_min_sec1_outb_tight = [15.6429, -8.51554, -2.8828, 0.158688, -0.00249913];
+    def reg2_max_sec1_outb_tight = [4.94591, -19.5039, 8.81259, -0.33865, 0.00465444];
+    def reg3_min_sec1_outb_tight = [1.34092, 9.28247, -6.60044, 0.281318, -0.00409396];
+    def reg3_max_sec1_outb_tight = [7.95213, -22.3926, 9.38108, -0.362289, 0.00504018];
+    def reg1_min_sec2_outb_tight = [6.83952, 1.15885, -4.75388, 0.212145, 0.212145];
+    def reg1_max_sec2_outb_tight = [-13.5338, 2.90293, 4.04606, -0.18406, 0.00270977];
+    def reg2_min_sec2_outb_tight = [2.23926, 6.12481, -5.72273, 0.242722, -0.00348261];
+    def reg2_max_sec2_outb_tight = [-19.2228, 12.2586, 1.80921, -0.109461, 0.00172974];
+    def reg3_min_sec2_outb_tight = [-7.44705, 15.9478, -7.51342, 0.2998, -0.00422782];
+    def reg3_max_sec2_outb_tight = [-8.05779, -1.88087, 4.79989, -0.208209, 0.00301469];
+    def reg1_min_sec3_outb_tight = [5.36591, 8.06724, -6.39578, 0.262518, 0.262518];
+    def reg1_max_sec3_outb_tight = [-8.20889, -5.7771, 5.98507, -0.245252, 0.00348177];
+    def reg2_min_sec3_outb_tight = [-2.61308, 17.4864, -8.28425, 0.321424, -0.00449555];
+    def reg2_max_sec3_outb_tight = [-15.7028, 5.06188, 3.58882, -0.169598, 0.00252206];
+    def reg3_min_sec3_outb_tight = [-1.47028, 12.199, -6.67515, 0.261044, -0.00361062];
+    def reg3_max_sec3_outb_tight = [-2.49195, -10.9866, 6.77373, -0.267217, 0.0037212];
+    def reg1_min_sec4_outb_tight = [7.28085, 4.43634, -5.4954, 0.22469, 0.22469];
+    def reg1_max_sec4_outb_tight = [-2.88726, -7.75256, 6.11348, -0.246024, 0.00342];
+    def reg2_min_sec4_outb_tight = [11.1628, -0.875717, -4.40181, 0.191682, -0.00269305];
+    def reg2_max_sec4_outb_tight = [4.98009, -20.3121, 9.08305, -0.347362, 0.00476636];
+    def reg3_min_sec4_outb_tight = [-1.53387, 16.9129, -8.4497, 0.334303, -0.00465195];
+    def reg3_max_sec4_outb_tight = [5.76932, -17.8998, 8.19437, -0.317309, 0.00436422];
+    def reg1_min_sec5_outb_tight = [16.2619, -7.2257, -3.02427, 0.151797, 0.151797];
+    def reg1_max_sec5_outb_tight = [-8.7963, -3.03534, 5.17438, -0.214586, 0.0030239];
+    def reg2_min_sec5_outb_tight = [14.656, -7.43444, -2.74998, 0.141668, -0.00216617];
+    def reg2_max_sec5_outb_tight = [2.24964, -18.1672, 8.48444, -0.321566, 0.00438927];
+    def reg3_min_sec5_outb_tight = [3.38717, 7.1616, -5.73249, 0.231652, -0.00320412];
+    def reg3_max_sec5_outb_tight = [4.63583, -20.0558, 8.78226, -0.33313, 0.0045258];
+    def reg1_min_sec6_outb_tight = [8.74274, 0.225052, -4.62671, 0.205157, 0.205157];
+    def reg1_max_sec6_outb_tight = [-8.82084, 1.73358, 3.85433, -0.168173, 0.0024055];
+    def reg2_min_sec6_outb_tight = [3.86614, 7.51372, -6.36287, 0.268641, -0.00385432];
+    def reg2_max_sec6_outb_tight = [-7.0834, -0.809866, 4.46815, -0.18982, 0.00266762];
+    def reg3_min_sec6_outb_tight = [3.12244, 3.84008, -5.05955, 0.223398, -0.00326745];
+    def reg3_max_sec6_outb_tight = [5.70817, -16.9736, 7.8074, -0.295122, 0.00398425];
+
+    def p0_min = 0; def p1_min = 0; def p2_min = 0; def p3_min = 0; def p4_min = 0;
+    def p0_max = 0; def p1_max = 0; def p2_max = 0; def p3_max = 0; def p4_max = 0;
+
 
     // vertex position cuts
     def vz_tight = -1 
@@ -295,36 +569,198 @@ class ElectronFromEvent {
 	    heightR1_outb = heightR1_outb.collect{it + dcR1_loose }
 	    radiusR1_inb+=dcR1_loose
 	    radiusR1_outb+=dcR1_loose
+
+        reg1_min_sec1_inb = reg1_min_sec1_inb_loose
+        reg1_max_sec1_inb = reg1_max_sec1_inb_loose
+        reg1_min_sec2_inb = reg1_min_sec2_inb_loose
+        reg1_max_sec2_inb = reg1_max_sec2_inb_loose
+        reg1_min_sec3_inb = reg1_min_sec3_inb_loose
+        reg1_max_sec3_inb = reg1_max_sec3_inb_loose
+        reg1_min_sec4_inb = reg1_min_sec4_inb_loose
+        reg1_max_sec4_inb = reg1_max_sec4_inb_loose
+        reg1_min_sec5_inb = reg1_min_sec5_inb_loose
+        reg1_max_sec5_inb = reg1_max_sec5_inb_loose
+        reg1_min_sec6_inb = reg1_min_sec6_inb_loose
+        reg1_max_sec6_inb = reg1_max_sec6_inb_loose
+
+        reg1_min_sec1_outb = reg1_min_sec1_outb_loose
+        reg1_max_sec1_outb = reg1_max_sec1_outb_loose
+        reg1_min_sec2_outb = reg1_min_sec2_outb_loose
+        reg1_max_sec2_outb = reg1_max_sec2_outb_loose
+        reg1_min_sec3_outb = reg1_min_sec3_outb_loose
+        reg1_max_sec3_outb = reg1_max_sec3_outb_loose
+        reg1_min_sec4_outb = reg1_min_sec4_outb_loose
+        reg1_max_sec4_outb = reg1_max_sec4_outb_loose
+        reg1_min_sec5_outb = reg1_min_sec5_outb_loose
+        reg1_max_sec5_outb = reg1_max_sec5_outb_loose
+        reg1_min_sec6_outb = reg1_min_sec6_outb_loose
+        reg1_max_sec6_outb = reg1_max_sec6_outb_loose
+
 	}
 	else if( dcr1_cut_lvl == 1 ) {
 	    heightR1_inb = heightR1_inb.collect{it + dcR1_med }
 	    heightR1_outb = heightR1_outb.collect{it + dcR1_med }
 	    radiusR1_inb+=dcR1_med
 	    radiusR1_outb+=dcR1_med
+
+        reg1_min_sec1_inb = reg1_min_sec1_inb_med
+        reg1_max_sec1_inb = reg1_max_sec1_inb_med
+        reg1_min_sec2_inb = reg1_min_sec2_inb_med
+        reg1_max_sec2_inb = reg1_max_sec2_inb_med
+        reg1_min_sec3_inb = reg1_min_sec3_inb_med
+        reg1_max_sec3_inb = reg1_max_sec3_inb_med
+        reg1_min_sec4_inb = reg1_min_sec4_inb_med
+        reg1_max_sec4_inb = reg1_max_sec4_inb_med
+        reg1_min_sec5_inb = reg1_min_sec5_inb_med
+        reg1_max_sec5_inb = reg1_max_sec5_inb_med
+        reg1_min_sec6_inb = reg1_min_sec6_inb_med
+        reg1_max_sec6_inb = reg1_max_sec6_inb_med
+
+        reg1_min_sec1_outb = reg1_min_sec1_outb_med
+        reg1_max_sec1_outb = reg1_max_sec1_outb_med
+        reg1_min_sec2_outb = reg1_min_sec2_outb_med
+        reg1_max_sec2_outb = reg1_max_sec2_outb_med
+        reg1_min_sec3_outb = reg1_min_sec3_outb_med
+        reg1_max_sec3_outb = reg1_max_sec3_outb_med
+        reg1_min_sec4_outb = reg1_min_sec4_outb_med
+        reg1_max_sec4_outb = reg1_max_sec4_outb_med
+        reg1_min_sec5_outb = reg1_min_sec5_outb_med
+        reg1_max_sec5_outb = reg1_max_sec5_outb_med
+        reg1_min_sec6_outb = reg1_min_sec6_outb_med
+        reg1_max_sec6_outb = reg1_max_sec6_outb_med
+
 	}
 	else if( dcr1_cut_lvl == 2 ) {
 	    heightR1_inb = heightR1_inb.collect{it + dcR1_tight }
 	    heightR1_outb = heightR1_outb.collect{it + dcR1_tight }
 	    radiusR1_inb+=dcR1_tight
 	    radiusR1_outb+=dcR1_tight
+
+        reg1_min_sec1_inb = reg1_min_sec1_inb_tight
+        reg1_max_sec1_inb = reg1_max_sec1_inb_tight
+        reg1_min_sec2_inb = reg1_min_sec2_inb_tight
+        reg1_max_sec2_inb = reg1_max_sec2_inb_tight
+        reg1_min_sec3_inb = reg1_min_sec3_inb_tight
+        reg1_max_sec3_inb = reg1_max_sec3_inb_tight
+        reg1_min_sec4_inb = reg1_min_sec4_inb_tight
+        reg1_max_sec4_inb = reg1_max_sec4_inb_tight
+        reg1_min_sec5_inb = reg1_min_sec5_inb_tight
+        reg1_max_sec5_inb = reg1_max_sec5_inb_tight
+        reg1_min_sec6_inb = reg1_min_sec6_inb_tight
+        reg1_max_sec6_inb = reg1_max_sec6_inb_tight
+
+        reg1_min_sec1_outb = reg1_min_sec1_outb_tight
+        reg1_max_sec1_outb = reg1_max_sec1_outb_tight
+        reg1_min_sec2_outb = reg1_min_sec2_outb_tight
+        reg1_max_sec2_outb = reg1_max_sec2_outb_tight
+        reg1_min_sec3_outb = reg1_min_sec3_outb_tight
+        reg1_max_sec3_outb = reg1_max_sec3_outb_tight
+        reg1_min_sec4_outb = reg1_min_sec4_outb_tight
+        reg1_max_sec4_outb = reg1_max_sec4_outb_tight
+        reg1_min_sec5_outb = reg1_min_sec5_outb_tight
+        reg1_max_sec5_outb = reg1_max_sec5_outb_tight
+        reg1_min_sec6_outb = reg1_min_sec6_outb_tight
+        reg1_max_sec6_outb = reg1_max_sec6_outb_tight
+
 	}
 	if( dcr2_cut_lvl == 0 ) {
 	    heightR2_inb = heightR2_inb.collect{it + dcR2_loose }
 	    heightR2_outb = heightR2_outb.collect{it + dcR2_loose }
 	    radiusR2_inb+=dcR2_loose
 	    radiusR2_outb+=dcR2_loose
+
+        reg2_min_sec1_inb = reg2_min_sec1_inb_loose
+        reg2_max_sec1_inb = reg2_max_sec1_inb_loose
+        reg2_min_sec2_inb = reg2_min_sec2_inb_loose
+        reg2_max_sec2_inb = reg2_max_sec2_inb_loose
+        reg2_min_sec3_inb = reg2_min_sec3_inb_loose
+        reg2_max_sec3_inb = reg2_max_sec3_inb_loose
+        reg2_min_sec4_inb = reg2_min_sec4_inb_loose
+        reg2_max_sec4_inb = reg2_max_sec4_inb_loose
+        reg2_min_sec5_inb = reg2_min_sec5_inb_loose
+        reg2_max_sec5_inb = reg2_max_sec5_inb_loose
+        reg2_min_sec6_inb = reg2_min_sec6_inb_loose
+        reg2_max_sec6_inb = reg2_max_sec6_inb_loose
+
+        reg2_min_sec1_outb = reg2_min_sec1_outb_loose
+        reg2_max_sec1_outb = reg2_max_sec1_outb_loose
+        reg2_min_sec2_outb = reg2_min_sec2_outb_loose
+        reg2_max_sec2_outb = reg2_max_sec2_outb_loose
+        reg2_min_sec3_outb = reg2_min_sec3_outb_loose
+        reg2_max_sec3_outb = reg2_max_sec3_outb_loose
+        reg2_min_sec4_outb = reg2_min_sec4_outb_loose
+        reg2_max_sec4_outb = reg2_max_sec4_outb_loose
+        reg2_min_sec5_outb = reg2_min_sec5_outb_loose
+        reg2_max_sec5_outb = reg2_max_sec5_outb_loose
+        reg2_min_sec6_outb = reg2_min_sec6_outb_loose
+        reg2_max_sec6_outb = reg2_max_sec6_outb_loose
+
 	}
 	else if( dcr2_cut_lvl == 1 ) {
 	    heightR2_inb = heightR2_inb.collect{it + dcR2_med }
 	    heightR2_outb = heightR2_outb.collect{it + dcR2_med }
 	    radiusR2_inb+=dcR2_med
 	    radiusR2_outb+=dcR2_med
+
+        reg2_min_sec1_inb = reg2_min_sec1_inb_med
+        reg2_max_sec1_inb = reg2_max_sec1_inb_med
+        reg2_min_sec2_inb = reg2_min_sec2_inb_med
+        reg2_max_sec2_inb = reg2_max_sec2_inb_med
+        reg2_min_sec3_inb = reg2_min_sec3_inb_med
+        reg2_max_sec3_inb = reg2_max_sec3_inb_med
+        reg2_min_sec4_inb = reg2_min_sec4_inb_med
+        reg2_max_sec4_inb = reg2_max_sec4_inb_med
+        reg2_min_sec5_inb = reg2_min_sec5_inb_med
+        reg2_max_sec5_inb = reg2_max_sec5_inb_med
+        reg2_min_sec6_inb = reg2_min_sec6_inb_med
+        reg2_max_sec6_inb = reg2_max_sec6_inb_med
+
+        reg2_min_sec1_outb = reg2_min_sec1_outb_med
+        reg2_max_sec1_outb = reg2_max_sec1_outb_med
+        reg2_min_sec2_outb = reg2_min_sec2_outb_med
+        reg2_max_sec2_outb = reg2_max_sec2_outb_med
+        reg2_min_sec3_outb = reg2_min_sec3_outb_med
+        reg2_max_sec3_outb = reg2_max_sec3_outb_med
+        reg2_min_sec4_outb = reg2_min_sec4_outb_med
+        reg2_max_sec4_outb = reg2_max_sec4_outb_med
+        reg2_min_sec5_outb = reg2_min_sec5_outb_med
+        reg2_max_sec5_outb = reg2_max_sec5_outb_med
+        reg2_min_sec6_outb = reg2_min_sec6_outb_med
+        reg2_max_sec6_outb = reg2_max_sec6_outb_med
+
 	}
 	else if( dcr2_cut_lvl == 2 ) {
 	    heightR2_inb = heightR2_inb.collect{it + dcR2_tight }
 	     heightR2_outb = heightR2_outb.collect{it + dcR2_tight }
 	    radiusR2_inb+=dcR2_tight
 	    radiusR2_outb+=dcR2_tight
+
+        reg2_min_sec1_inb = reg2_min_sec1_inb_tight
+        reg2_max_sec1_inb = reg2_max_sec1_inb_tight
+        reg2_min_sec2_inb = reg2_min_sec2_inb_tight
+        reg2_max_sec2_inb = reg2_max_sec2_inb_tight
+        reg2_min_sec3_inb = reg2_min_sec3_inb_tight
+        reg2_max_sec3_inb = reg2_max_sec3_inb_tight
+        reg2_min_sec4_inb = reg2_min_sec4_inb_tight
+        reg2_max_sec4_inb = reg2_max_sec4_inb_tight
+        reg2_min_sec5_inb = reg2_min_sec5_inb_tight
+        reg2_max_sec5_inb = reg2_max_sec5_inb_tight
+        reg2_min_sec6_inb = reg2_min_sec6_inb_tight
+        reg2_max_sec6_inb = reg2_max_sec6_inb_tight
+
+        reg2_min_sec1_outb = reg2_min_sec1_outb_tight
+        reg2_max_sec1_outb = reg2_max_sec1_outb_tight
+        reg2_min_sec2_outb = reg2_min_sec2_outb_tight
+        reg2_max_sec2_outb = reg2_max_sec2_outb_tight
+        reg2_min_sec3_outb = reg2_min_sec3_outb_tight
+        reg2_max_sec3_outb = reg2_max_sec3_outb_tight
+        reg2_min_sec4_outb = reg2_min_sec4_outb_tight
+        reg2_max_sec4_outb = reg2_max_sec4_outb_tight
+        reg2_min_sec5_outb = reg2_min_sec5_outb_tight
+        reg2_max_sec5_outb = reg2_max_sec5_outb_tight
+        reg2_min_sec6_outb = reg2_min_sec6_outb_tight
+        reg2_max_sec6_outb = reg2_max_sec6_outb_tight
+
 	}
 
 	if( dcr3_cut_lvl == 0 ) {
@@ -332,18 +768,99 @@ class ElectronFromEvent {
 	    heightR3_outb = heightR3_outb.collect{it + dcR3_loose }
 	    radiusR3_inb+=dcR3_loose
 	    radiusR3_outb+=dcR3_loose
+
+        reg3_min_sec1_inb = reg3_min_sec1_inb_loose
+        reg3_max_sec1_inb = reg3_max_sec1_inb_loose
+        reg3_min_sec2_inb = reg3_min_sec2_inb_loose
+        reg3_max_sec2_inb = reg3_max_sec2_inb_loose
+        reg3_min_sec3_inb = reg3_min_sec3_inb_loose
+        reg3_max_sec3_inb = reg3_max_sec3_inb_loose
+        reg3_min_sec4_inb = reg3_min_sec4_inb_loose
+        reg3_max_sec4_inb = reg3_max_sec4_inb_loose
+        reg3_min_sec5_inb = reg3_min_sec5_inb_loose
+        reg3_max_sec5_inb = reg3_max_sec5_inb_loose
+        reg3_min_sec6_inb = reg3_min_sec6_inb_loose
+        reg3_max_sec6_inb = reg3_max_sec6_inb_loose
+
+        reg3_min_sec1_outb = reg3_min_sec1_outb_loose
+        reg3_max_sec1_outb = reg3_max_sec1_outb_loose
+        reg3_min_sec2_outb = reg3_min_sec2_outb_loose
+        reg3_max_sec2_outb = reg3_max_sec2_outb_loose
+        reg3_min_sec3_outb = reg3_min_sec3_outb_loose
+        reg3_max_sec3_outb = reg3_max_sec3_outb_loose
+        reg3_min_sec4_outb = reg3_min_sec4_outb_loose
+        reg3_max_sec4_outb = reg3_max_sec4_outb_loose
+        reg3_min_sec5_outb = reg3_min_sec5_outb_loose
+        reg3_max_sec5_outb = reg3_max_sec5_outb_loose
+        reg3_min_sec6_outb = reg3_min_sec6_outb_loose
+        reg3_max_sec6_outb = reg3_max_sec6_outb_loose
+
 	}
 	else if( dcr3_cut_lvl == 1 ) {
 	    heightR3_inb = heightR3_inb.collect{it + dcR3_med }
 	    heightR3_outb = heightR3_outb.collect{it + dcR3_med }
 	    radiusR3_inb+=dcR3_med
 	    radiusR3_outb+=dcR3_med
+
+        reg3_min_sec1_inb = reg3_min_sec1_inb_med
+        reg3_max_sec1_inb = reg3_max_sec1_inb_med
+        reg3_min_sec2_inb = reg3_min_sec2_inb_med
+        reg3_max_sec2_inb = reg3_max_sec2_inb_med
+        reg3_min_sec3_inb = reg3_min_sec3_inb_med
+        reg3_max_sec3_inb = reg3_max_sec3_inb_med
+        reg3_min_sec4_inb = reg3_min_sec4_inb_med
+        reg3_max_sec4_inb = reg3_max_sec4_inb_med
+        reg3_min_sec5_inb = reg3_min_sec5_inb_med
+        reg3_max_sec5_inb = reg3_max_sec5_inb_med
+        reg3_min_sec6_inb = reg3_min_sec6_inb_med
+        reg3_max_sec6_inb = reg3_max_sec6_inb_med
+
+        reg3_min_sec1_outb = reg3_min_sec1_outb_med
+        reg3_max_sec1_outb = reg3_max_sec1_outb_med
+        reg3_min_sec2_outb = reg3_min_sec2_outb_med
+        reg3_max_sec2_outb = reg3_max_sec2_outb_med
+        reg3_min_sec3_outb = reg3_min_sec3_outb_med
+        reg3_max_sec3_outb = reg3_max_sec3_outb_med
+        reg3_min_sec4_outb = reg3_min_sec4_outb_med
+        reg3_max_sec4_outb = reg3_max_sec4_outb_med
+        reg3_min_sec5_outb = reg3_min_sec5_outb_med
+        reg3_max_sec5_outb = reg3_max_sec5_outb_med
+        reg3_min_sec6_outb = reg3_min_sec6_outb_med
+        reg3_max_sec6_outb = reg3_max_sec6_outb_med
+
 	}
 	else if( dcr3_cut_lvl == 2 ) {
 	    heightR3_inb = heightR3_inb.collect{it + dcR3_tight }
 	    heightR3_outb = heightR3_outb.collect{it + dcR3_tight }
 	    radiusR3_inb+=dcR3_tight
 	    radiusR3_outb+=dcR3_tight
+
+        reg3_min_sec1_inb = reg3_min_sec1_inb_tight
+        reg3_max_sec1_inb = reg3_max_sec1_inb_tight
+        reg3_min_sec2_inb = reg3_min_sec2_inb_tight
+        reg3_max_sec2_inb = reg3_max_sec2_inb_tight
+        reg3_min_sec3_inb = reg3_min_sec3_inb_tight
+        reg3_max_sec3_inb = reg3_max_sec3_inb_tight
+        reg3_min_sec4_inb = reg3_min_sec4_inb_tight
+        reg3_max_sec4_inb = reg3_max_sec4_inb_tight
+        reg3_min_sec5_inb = reg3_min_sec5_inb_tight
+        reg3_max_sec5_inb = reg3_max_sec5_inb_tight
+        reg3_min_sec6_inb = reg3_min_sec6_inb_tight
+        reg3_max_sec6_inb = reg3_max_sec6_inb_tight
+
+        reg3_min_sec1_outb = reg3_min_sec1_outb_tight
+        reg3_max_sec1_outb = reg3_max_sec1_outb_tight
+        reg3_min_sec2_outb = reg3_min_sec2_outb_tight
+        reg3_max_sec2_outb = reg3_max_sec2_outb_tight
+        reg3_min_sec3_outb = reg3_min_sec3_outb_tight
+        reg3_max_sec3_outb = reg3_max_sec3_outb_tight
+        reg3_min_sec4_outb = reg3_min_sec4_outb_tight
+        reg3_max_sec4_outb = reg3_max_sec4_outb_tight
+        reg3_min_sec5_outb = reg3_min_sec5_outb_tight
+        reg3_max_sec5_outb = reg3_max_sec5_outb_tight
+        reg3_min_sec6_outb = reg3_min_sec6_outb_tight
+        reg3_max_sec6_outb = reg3_max_sec6_outb_tight
+
 	}	    	
 	
     }
@@ -379,6 +896,44 @@ class ElectronFromEvent {
 	    p1sigma = p1sigma_outb
 	    p_min=0.2381 + 0.11905*ebeam
 	    anti_pion_threshold = 0.2
+
+        reg1_min_sec1 = reg1_min_sec1_outb
+        reg1_max_sec1 = reg1_max_sec1_outb
+        reg2_min_sec1 = reg2_min_sec1_outb
+        reg2_max_sec1 = reg2_max_sec1_outb
+        reg3_min_sec1 = reg3_min_sec1_outb
+        reg3_max_sec1 = reg3_max_sec1_outb
+        reg1_min_sec2 = reg1_min_sec2_outb
+        reg1_max_sec2 = reg1_max_sec2_outb
+        reg2_min_sec2 = reg2_min_sec2_outb
+        reg2_max_sec2 = reg2_max_sec2_outb
+        reg3_min_sec2 = reg3_min_sec2_outb
+        reg3_max_sec2 = reg3_max_sec2_outb
+        reg1_min_sec3 = reg1_min_sec3_outb
+        reg1_max_sec3 = reg1_max_sec3_outb
+        reg2_min_sec3 = reg2_min_sec3_outb
+        reg2_max_sec3 = reg2_max_sec3_outb
+        reg3_min_sec3 = reg3_min_sec3_outb
+        reg3_max_sec3 = reg3_max_sec3_outb
+        reg1_min_sec4 = reg1_min_sec4_outb
+        reg1_max_sec4 = reg1_max_sec4_outb
+        reg2_min_sec4 = reg2_min_sec4_outb
+        reg2_max_sec4 = reg2_max_sec4_outb
+        reg3_min_sec4 = reg3_min_sec4_outb
+        reg3_max_sec4 = reg3_max_sec4_outb
+        reg1_min_sec5 = reg1_min_sec5_outb
+        reg1_max_sec5 = reg1_max_sec5_outb
+        reg2_min_sec5 = reg2_min_sec5_outb
+        reg2_max_sec5 = reg2_max_sec5_outb
+        reg3_min_sec5 = reg3_min_sec5_outb
+        reg3_max_sec5 = reg3_max_sec5_outb
+        reg1_min_sec6 = reg1_min_sec6_outb
+        reg1_max_sec6 = reg1_max_sec6_outb
+        reg2_min_sec6 = reg2_min_sec6_outb
+        reg2_max_sec6 = reg2_max_sec6_outb
+        reg3_min_sec6 = reg3_min_sec6_outb
+        reg3_max_sec6 = reg3_max_sec6_outb
+
 	}
 	else if( magnetic_field_config == "inbending" ){
 	    println('[ElectronFromEvent::setElectronCutParameters] -> setting parameters for inbending')
@@ -409,6 +964,44 @@ class ElectronFromEvent {
 	    p1sigma = p1sigma_inb	
 	    p_min=0.2381 + 0.11905*ebeam
 	    anti_pion_threshold=0.2
+
+        reg1_min_sec1 = reg1_min_sec1_inb
+        reg1_max_sec1 = reg1_max_sec1_inb
+        reg2_min_sec1 = reg2_min_sec1_inb
+        reg2_max_sec1 = reg2_max_sec1_inb
+        reg3_min_sec1 = reg3_min_sec1_inb
+        reg3_max_sec1 = reg3_max_sec1_inb
+        reg1_min_sec2 = reg1_min_sec2_inb
+        reg1_max_sec2 = reg1_max_sec2_inb
+        reg2_min_sec2 = reg2_min_sec2_inb
+        reg2_max_sec2 = reg2_max_sec2_inb
+        reg3_min_sec2 = reg3_min_sec2_inb
+        reg3_max_sec2 = reg3_max_sec2_inb
+        reg1_min_sec3 = reg1_min_sec3_inb
+        reg1_max_sec3 = reg1_max_sec3_inb
+        reg2_min_sec3 = reg2_min_sec3_inb
+        reg2_max_sec3 = reg2_max_sec3_inb
+        reg3_min_sec3 = reg3_min_sec3_inb
+        reg3_max_sec3 = reg3_max_sec3_inb
+        reg1_min_sec4 = reg1_min_sec4_inb
+        reg1_max_sec4 = reg1_max_sec4_inb
+        reg2_min_sec4 = reg2_min_sec4_inb
+        reg2_max_sec4 = reg2_max_sec4_inb
+        reg3_min_sec4 = reg3_min_sec4_inb
+        reg3_max_sec4 = reg3_max_sec4_inb
+        reg1_min_sec5 = reg1_min_sec5_inb
+        reg1_max_sec5 = reg1_max_sec5_inb
+        reg2_min_sec5 = reg2_min_sec5_inb
+        reg2_max_sec5 = reg2_max_sec5_inb
+        reg3_min_sec5 = reg3_min_sec5_inb
+        reg3_max_sec5 = reg3_max_sec5_inb
+        reg1_min_sec6 = reg1_min_sec6_inb
+        reg1_max_sec6 = reg1_max_sec6_inb
+        reg2_min_sec6 = reg2_min_sec6_inb
+        reg2_max_sec6 = reg2_max_sec6_inb
+        reg3_min_sec6 = reg3_min_sec6_inb
+        reg3_max_sec6 = reg3_max_sec6_inb
+
 	}
 
 
@@ -613,6 +1206,174 @@ class ElectronFromEvent {
 	return false
     }
 
-    
+    def passElectronDCR1_updated = { event, index ->
+    if (event.dc1_status.contains(index)){
+        def sec = event.dc_sector.get(index)-1
+        def hit = event.dc1.get(index).find{ hit -> hit.layer == 6}
+            if (hit){
+                def (theta_DC, phi_DC) = DCthetaphi([hit.x, hit.y, hit.z], sec)
+                def (phi_DC_min, phi_DC_max) = DCR1phimaxmin(theta_DC, sec)
+                return phi_DC > phi_DC_min && phi_DC < phi_DC_max
+            } else {
+                return false
+            }
+    }
+    return false
+    }
+
+    def passElectronDCR2_updated = { event, index ->
+    if (event.dc1_status.contains(index)){
+        def sec = event.dc_sector.get(index)-1
+        def hit = event.dc2.get(index).find{ hit -> hit.layer == 18}
+            if (hit){
+                def (theta_DC, phi_DC) = DCthetaphi([hit.x, hit.y, hit.z], sec)
+                def (phi_DC_min, phi_DC_max) = DCR2phimaxmin(theta_DC, sec)      
+                return phi_DC > phi_DC_min && phi_DC < phi_DC_max
+            } else {
+                return false
+            }
+    }
+    return false
+    }
+
+    def passElectronDCR3_updated = { event, index ->
+    if (event.dc1_status.contains(index)){
+        def sec = event.dc_sector.get(index)-1
+        def hit = event.dc3.get(index).find{ hit -> hit.layer == 36}
+            if (hit){
+                def (theta_DC, phi_DC) = DCthetaphi([hit.x, hit.y, hit.z], sec)
+                def (phi_DC_min, phi_DC_max) = DCR3phimaxmin(theta_DC, sec)      
+                return phi_DC > phi_DC_min && phi_DC < phi_DC_max
+            } else {
+                return false
+            }
+    }
+    return false
+    }
+
+
+    def DCthetaphi(hit, sec){
+        def theta_DC = Math.toDegrees(
+            Math.acos(hit.get(2)/Math.sqrt(hit.get(0)*hit.get(0) + hit.get(1)*hit.get(1) + hit.get(2)*hit.get(2))))
+        def phi_DC_raw = Math.toDegrees(Math.atan2(hit.get(1), hit.get(0)))
+        def phi_DC = 0;
+        if(sec+1 == 1) phi_DC = phi_DC_raw;
+        if(sec+1 == 2) phi_DC = phi_DC_raw - 60;
+        if(sec+1 == 3) phi_DC = phi_DC_raw - 120;
+        if(sec+1 == 4 && phi_DC_raw > 0) phi_DC = phi_DC_raw - 180;
+        if(sec+1 == 4 && phi_DC_raw < 0) phi_DC = phi_DC_raw + 180;
+        if(sec+1 == 5) phi_DC = phi_DC_raw + 120;
+        if(sec+1 == 6) phi_DC = phi_DC_raw + 60;
+        return [theta_DC, phi_DC]
+    }
+
+    def DCR1phimaxmin(theta_DC, sec){
+
+    if(sec+1 == 1){
+      p0_min = reg1_min_sec1[0]; p1_min = reg1_min_sec1[1]; p2_min = reg1_min_sec1[2]; p3_min = reg1_min_sec1[3]; p4_min = reg1_min_sec1[4];
+      p0_max = reg1_max_sec1[0]; p1_max = reg1_max_sec1[1]; p2_max = reg1_max_sec1[2]; p3_max = reg1_max_sec1[3]; p4_max = reg1_max_sec1[4];
+    }
+    if(sec+1 == 2){
+      p0_min = reg1_min_sec2[0]; p1_min = reg1_min_sec2[1]; p2_min = reg1_min_sec2[2]; p3_min = reg1_min_sec2[3]; p4_min = reg1_min_sec2[4];
+      p0_max = reg1_max_sec2[0]; p1_max = reg1_max_sec2[1]; p2_max = reg1_max_sec2[2]; p3_max = reg1_max_sec2[3]; p4_max = reg1_max_sec2[4];
+    }
+    if(sec+1 == 3){
+      p0_min = reg1_min_sec3[0]; p1_min = reg1_min_sec3[1]; p2_min = reg1_min_sec3[2]; p3_min = reg1_min_sec3[3]; p4_min = reg1_min_sec3[4];
+      p0_max = reg1_max_sec3[0]; p1_max = reg1_max_sec3[1]; p2_max = reg1_max_sec3[2]; p3_max = reg1_max_sec3[3]; p4_max = reg1_max_sec3[4];
+    }
+    if(sec+1 == 4){
+      p0_min = reg1_min_sec4[0]; p1_min = reg1_min_sec4[1]; p2_min = reg1_min_sec4[2]; p3_min = reg1_min_sec4[3]; p4_min = reg1_min_sec4[4];
+      p0_max = reg1_max_sec4[0]; p1_max = reg1_max_sec4[1]; p2_max = reg1_max_sec4[2]; p3_max = reg1_max_sec4[3]; p4_max = reg1_max_sec4[4];
+    }
+    if(sec+1 == 5){
+      p0_min = reg1_min_sec5[0]; p1_min = reg1_min_sec5[1]; p2_min = reg1_min_sec5[2]; p3_min = reg1_min_sec5[3]; p4_min = reg1_min_sec5[4];
+      p0_max = reg1_max_sec5[0]; p1_max = reg1_max_sec5[1]; p2_max = reg1_max_sec5[2]; p3_max = reg1_max_sec5[3]; p4_max = reg1_max_sec5[4];
+    }
+    if(sec+1 == 6){
+      p0_min = reg1_min_sec6[0]; p1_min = reg1_min_sec6[1]; p2_min = reg1_min_sec6[2]; p3_min = reg1_min_sec6[3]; p4_min = reg1_min_sec6[4];
+      p0_max = reg1_max_sec6[0]; p1_max = reg1_max_sec6[1]; p2_max = reg1_max_sec6[2]; p3_max = reg1_max_sec6[3]; p4_max = reg1_max_sec6[4];
+    }
+
+    def phi_DC_min = p0_min + p1_min * Math.log(theta_DC) + p2_min * theta_DC + p3_min * theta_DC*theta_DC + p4_min * theta_DC*theta_DC*theta_DC;
+    def phi_DC_max = p0_max + p1_max * Math.log(theta_DC) + p2_max * theta_DC + p3_max * theta_DC*theta_DC + p4_max * theta_DC*theta_DC*theta_DC;
+
+    if(phi_DC_min < -25.5) phi_DC_min = -25.5;
+    if(phi_DC_max > +25.5) phi_DC_max = +25.5;
+
+    return [phi_DC_min, phi_DC_max];
+    }
+
+    def DCR2phimaxmin(theta_DC, sec){
+
+    if(sec+1 == 1){
+      p0_min = reg2_min_sec1[0]; p1_min = reg2_min_sec1[1]; p2_min = reg2_min_sec1[2]; p3_min = reg2_min_sec1[3]; p4_min = reg2_min_sec1[4];
+      p0_max = reg2_max_sec1[0]; p1_max = reg2_max_sec1[1]; p2_max = reg2_max_sec1[2]; p3_max = reg2_max_sec1[3]; p4_max = reg2_max_sec1[4];
+    }
+    if(sec+1 == 2){
+      p0_min = reg2_min_sec2[0]; p1_min = reg2_min_sec2[1]; p2_min = reg2_min_sec2[2]; p3_min = reg2_min_sec2[3]; p4_min = reg2_min_sec2[4];
+      p0_max = reg2_max_sec2[0]; p1_max = reg2_max_sec2[1]; p2_max = reg2_max_sec2[2]; p3_max = reg2_max_sec2[3]; p4_max = reg2_max_sec2[4];
+    }
+    if(sec+1 == 3){
+      p0_min = reg2_min_sec3[0]; p1_min = reg2_min_sec3[1]; p2_min = reg2_min_sec3[2]; p3_min = reg2_min_sec3[3]; p4_min = reg2_min_sec3[4];
+      p0_max = reg2_max_sec3[0]; p1_max = reg2_max_sec3[1]; p2_max = reg2_max_sec3[2]; p3_max = reg2_max_sec3[3]; p4_max = reg2_max_sec3[4];
+    }
+    if(sec+1 == 4){
+      p0_min = reg2_min_sec4[0]; p1_min = reg2_min_sec4[1]; p2_min = reg2_min_sec4[2]; p3_min = reg2_min_sec4[3]; p4_min = reg2_min_sec4[4];
+      p0_max = reg2_max_sec4[0]; p1_max = reg2_max_sec4[1]; p2_max = reg2_max_sec4[2]; p3_max = reg2_max_sec4[3]; p4_max = reg2_max_sec4[4];
+    }
+    if(sec+1 == 5){
+      p0_min = reg2_min_sec5[0]; p1_min = reg2_min_sec5[1]; p2_min = reg2_min_sec5[2]; p3_min = reg2_min_sec5[3]; p4_min = reg2_min_sec5[4];
+      p0_max = reg2_max_sec5[0]; p1_max = reg2_max_sec5[1]; p2_max = reg2_max_sec5[2]; p3_max = reg2_max_sec5[3]; p4_max = reg2_max_sec5[4];
+    }
+    if(sec+1 == 6){
+      p0_min = reg2_min_sec6[0]; p1_min = reg2_min_sec6[1]; p2_min = reg2_min_sec6[2]; p3_min = reg2_min_sec6[3]; p4_min = reg2_min_sec6[4];
+      p0_max = reg2_max_sec6[0]; p1_max = reg2_max_sec6[1]; p2_max = reg2_max_sec6[2]; p3_max = reg2_max_sec6[3]; p4_max = reg2_max_sec6[4];
+    }
+
+    def phi_DC_min = p0_min + p1_min * Math.log(theta_DC) + p2_min * theta_DC + p3_min * theta_DC*theta_DC + p4_min * theta_DC*theta_DC*theta_DC;
+    def phi_DC_max = p0_max + p1_max * Math.log(theta_DC) + p2_max * theta_DC + p3_max * theta_DC*theta_DC + p4_max * theta_DC*theta_DC*theta_DC;
+
+    if(phi_DC_min < -25.5) phi_DC_min = -25.5;
+    if(phi_DC_max > +25.5) phi_DC_max = +25.5;
+
+    return [phi_DC_min, phi_DC_max];
+    }
+
+    def DCR3phimaxmin(theta_DC, sec){
+
+    if(sec+1 == 1){
+      p0_min = reg3_min_sec1[0]; p1_min = reg3_min_sec1[1]; p2_min = reg3_min_sec1[2]; p3_min = reg3_min_sec1[3]; p4_min = reg3_min_sec1[4];
+      p0_max = reg3_max_sec1[0]; p1_max = reg3_max_sec1[1]; p2_max = reg3_max_sec1[2]; p3_max = reg3_max_sec1[3]; p4_max = reg3_max_sec1[4];
+    }
+    if(sec+1 == 2){
+      p0_min = reg3_min_sec2[0]; p1_min = reg3_min_sec2[1]; p2_min = reg3_min_sec2[2]; p3_min = reg3_min_sec2[3]; p4_min = reg3_min_sec2[4];
+      p0_max = reg3_max_sec2[0]; p1_max = reg3_max_sec2[1]; p2_max = reg3_max_sec2[2]; p3_max = reg3_max_sec2[3]; p4_max = reg3_max_sec2[4];
+    }
+    if(sec+1 == 3){
+      p0_min = reg3_min_sec3[0]; p1_min = reg3_min_sec3[1]; p2_min = reg3_min_sec3[2]; p3_min = reg3_min_sec3[3]; p4_min = reg3_min_sec3[4];
+      p0_max = reg3_max_sec3[0]; p1_max = reg3_max_sec3[1]; p2_max = reg3_max_sec3[2]; p3_max = reg3_max_sec3[3]; p4_max = reg3_max_sec3[4];
+    }
+    if(sec+1 == 4){
+      p0_min = reg3_min_sec4[0]; p1_min = reg3_min_sec4[1]; p2_min = reg3_min_sec4[2]; p3_min = reg3_min_sec4[3]; p4_min = reg3_min_sec4[4];
+      p0_max = reg3_max_sec4[0]; p1_max = reg3_max_sec4[1]; p2_max = reg3_max_sec4[2]; p3_max = reg3_max_sec4[3]; p4_max = reg3_max_sec4[4];
+    }
+    if(sec+1 == 5){
+      p0_min = reg3_min_sec5[0]; p1_min = reg3_min_sec5[1]; p2_min = reg3_min_sec5[2]; p3_min = reg3_min_sec5[3]; p4_min = reg3_min_sec5[4];
+      p0_max = reg3_max_sec5[0]; p1_max = reg3_max_sec5[1]; p2_max = reg3_max_sec5[2]; p3_max = reg3_max_sec5[3]; p4_max = reg3_max_sec5[4];
+    }
+    if(sec+1 == 6){
+      p0_min = reg3_min_sec6[0]; p1_min = reg3_min_sec6[1]; p2_min = reg3_min_sec6[2]; p3_min = reg3_min_sec6[3]; p4_min = reg3_min_sec6[4];
+      p0_max = reg3_max_sec6[0]; p1_max = reg3_max_sec6[1]; p2_max = reg3_max_sec6[2]; p3_max = reg3_max_sec6[3]; p4_max = reg3_max_sec6[4];
+    }
+
+    def phi_DC_min = p0_min + p1_min * Math.log(theta_DC) + p2_min * theta_DC + p3_min * theta_DC*theta_DC + p4_min * theta_DC*theta_DC*theta_DC;
+    def phi_DC_max = p0_max + p1_max * Math.log(theta_DC) + p2_max * theta_DC + p3_max * theta_DC*theta_DC + p4_max * theta_DC*theta_DC*theta_DC;
+
+    if(phi_DC_min < -25.5) phi_DC_min = -25.5;
+    if(phi_DC_max > +25.5) phi_DC_max = +25.5;
+
+    return [phi_DC_min, phi_DC_max];
+    }
+
 
 }

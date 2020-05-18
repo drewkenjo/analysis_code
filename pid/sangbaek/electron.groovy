@@ -53,9 +53,9 @@ class electron{
       this.electron_candidate.passElectronVertexCut,
       this.electron_candidate.passElectronPCALFiducialCut,
       this.electron_candidate.passElectronEIEOCut,
-      this.electron_candidate.passElectronDCR1,
-      this.electron_candidate.passElectronDCR2,
-      this.electron_candidate.passElectronDCR3,
+      this.electron_candidate.passElectronDCR1_updated,
+      this.electron_candidate.passElectronDCR2_updated,
+      this.electron_candidate.passElectronDCR3_updated,
       this.electron_candidate.passElectronAntiPionCut
     ]
 
