@@ -211,7 +211,6 @@ class dvcs{
         // fill t dependence on 2 fold binning (xB, Q2)
         int xBbin = 1 + 2 * Math.floor(xB/0.2)
         int Q2bin = 1 + 2 * Math.floor(Q2/2)
-        if (xB>1) continue
 
         hists.computeIfAbsent("/epg/corr/tmin",h_Q2_xB).fill(xB,Q2,tmin)
         hists.computeIfAbsent("/epg/corr/tcol",h_Q2_xB).fill(xB,Q2,tcol)
@@ -223,7 +222,7 @@ class dvcs{
         hists.computeIfAbsent("/epg/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(gam.phi()-ele.phi()), Math.toDegrees(gam.theta()))
 
         // exclusive cuts
-        if (DVCS.KineCuts(Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+        if (DVCS.KineCuts(xB, Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
 
           hists.computeIfAbsent("/dvcs/corr/tmin",h_Q2_xB).fill(xB,Q2,tmin)
           hists.computeIfAbsent("/dvcs/corr/tcol",h_Q2_xB).fill(xB,Q2,tcol)
