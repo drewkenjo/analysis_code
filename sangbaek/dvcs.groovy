@@ -12,6 +12,7 @@ import pid.electron.ElectronSelector
 import pid.sangbaek.electron
 import run.Run
 import java.util.concurrent.ConcurrentHashMap
+import org.jlab.clas.pdg.PDGDatabase
 
 
 class dvcs{
@@ -26,8 +27,11 @@ class dvcs{
   // angle between planes
   def h_angle = {new H1F("$it", "$it", 190, -5 ,185)}
 
-  // kinematic variables (momentum vs theta)
-  def h_mom_theta = {new H2F("$it", "$it", 300, 0, 120, 100, 0, 12)}
+  // kinematic variables (correlation)
+  def h_theta_mom = {new H2F("$it", "$it", 120, 0, 12, 100, 0, 100)}
+  def h_phi_mom = {new H2F("$it", "$it", 120, 0, 12, 360, -180, 180)}
+  def h_theta_phi = {new H2F("$it", "$it", 360, -180, 180, 100, 0, 100)}
+
 
   def h_Q2_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 12)}
   def h_t_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 2)}
@@ -126,9 +130,9 @@ class dvcs{
         hists.computeIfAbsent("/epg/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
         hists.computeIfAbsent("/epg/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
-        hists.computeIfAbsent("/epg/elec_mom_theta_sec"+ele_sec, h_mom_theta).fill(Math.toDegrees(ele.theta()),ele.p())
-        hists.computeIfAbsent("/epg/prot_mom_theta", h_mom_theta).fill(Math.toDegrees(pro.theta()),pro.p())
-        hists.computeIfAbsent("/epg/gam_mom_theta", h_mom_theta).fill(Math.toDegrees(gam.theta()),gam.p())
+        hists.computeIfAbsent("/epg/elec_theta_mom_sec"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
+        hists.computeIfAbsent("/epg/prot_theta_mom", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+        hists.computeIfAbsent("/epg/gam_theta_mom", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
 
         // Trento like angle from ep and eg plane
         hists.computeIfAbsent("/epg/hangle_ep_ep", h_angle).fill(KinTool.Vangle(ele.vect().cross(pro.vect()), ele.vect().cross(gam.vect())))
@@ -193,24 +197,47 @@ class dvcs{
           }
         }
 
-
-
         hists.computeIfAbsent("/epg/h_Q2_xB_sec"+ele_sec, h_Q2_xB).fill(xB,Q2)
         hists.computeIfAbsent("/epg/h_W_sec"+ele_sec, h_W).fill(W)
         hists.computeIfAbsent("/epg/h_t_sec"+ele_sec, h_t).fill(t)
         hists.computeIfAbsent("/epg/h_phi_sec"+ele_sec, h_cross_section).fill(TrentoAng) 
         hists.computeIfAbsent("/epg/h_y_sec"+ele_sec, h_y).fill(KinTool.calcY(beam, ele))
 
+        //calc tcol tmin
+        def E = 10.6
+        def M = PDGDatabase.getParticleMass(2212)
+        def tmin = M*M*xB*xB/(1-xB+xB*M*M/Q2)
+        def tcol = Q2*(Q2-2*xB*M*E)/xB/(Q2-2*M*E)
+        // fill t dependence on 2 fold binning (xB, Q2)
+        int xBbin = 1 + 2 * Math.floor(xB/0.2)
+        int Q2bin = 1 + 2 * Math.floor(Q2/2)
+
+        hists.computeIfAbsent("/epg/corr/tmin",h_Q2_xB).fill(xB,Q2,tmin)
+        hists.computeIfAbsent("/epg/corr/tcol",h_Q2_xB).fill(xB,Q2,tcol)
+        hists.computeIfAbsent("/epg/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+        hists.computeIfAbsent("/epg/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), Math.toDegrees(pro.phi()-ele.phi()))
+        hists.computeIfAbsent("/epg/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(pro.phi()-ele.phi()), Math.toDegrees(pro.theta()))
+        hists.computeIfAbsent("/epg/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), Math.toDegrees(gam.phi()-ele.phi()))
+        hists.computeIfAbsent("/epg/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+        hists.computeIfAbsent("/epg/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(gam.phi()-ele.phi()), Math.toDegrees(gam.theta()))
+
         // exclusive cuts
         if (DVCS.KineCuts(Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+
+          hists.computeIfAbsent("/dvcs/corr/tmin",h_Q2_xB).fill(xB,Q2,tmin)
+          hists.computeIfAbsent("/dvcs/corr/tcol",h_Q2_xB).fill(xB,Q2,tcol)
+
+          hists.computeIfAbsent("/dvcs/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+          hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), Math.toDegrees(pro.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(pro.phi()-ele.phi()), Math.toDegrees(pro.theta()))
+          hists.computeIfAbsent("/dvcs/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), Math.toDegrees(gam.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+          hists.computeIfAbsent("/dvcs/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(gam.phi()-ele.phi()), Math.toDegrees(gam.theta()))
 
           hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
           hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
           hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
-          // fill t dependence on 2 fold binning (xB, Q2)
-          int xBbin = Math.floor(xB/0.1)
-          int Q2bin = 5* Math.floor(Q2/0.5)
 
           hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
           hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
