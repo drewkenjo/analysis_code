@@ -29,8 +29,8 @@ class dvcs{
 
   // kinematic variables (correlation)
   def h_theta_mom = {new H2F("$it", "$it", 120, 0, 12, 100, 0, 100)}
-  def h_phi_mom = {new H2F("$it", "$it", 120, 0, 12, 360, -180, 180)}
-  def h_theta_phi = {new H2F("$it", "$it", 360, -180, 180, 100, 0, 100)}
+  def h_phi_mom = {new H2F("$it", "$it", 120, 0, 12, 720, -360, 360)}
+  def h_theta_phi = {new H2F("$it", "$it", 720, -360, 360, 100, 0, 100)}
 
 
   def h_Q2_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 12)}
@@ -211,6 +211,7 @@ class dvcs{
         // fill t dependence on 2 fold binning (xB, Q2)
         int xBbin = 1 + 2 * Math.floor(xB/0.2)
         int Q2bin = 1 + 2 * Math.floor(Q2/2)
+        if (xB>1) continue
 
         hists.computeIfAbsent("/epg/corr/tmin",h_Q2_xB).fill(xB,Q2,tmin)
         hists.computeIfAbsent("/epg/corr/tcol",h_Q2_xB).fill(xB,Q2,tcol)
