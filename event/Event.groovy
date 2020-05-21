@@ -2,6 +2,7 @@ package event
 import org.jlab.detector.base.DetectorType
 import event.DCHit
 import event.FtofHit
+import event.ECHit
 import event.CovarianceMatrix
 
 class Event {
@@ -35,6 +36,7 @@ class Event {
     HashMap<Integer, Float> ecal_inner_u, ecal_outer_u, pcal_u
     HashMap<Integer, Float> ecal_inner_v, ecal_outer_v, pcal_v
     HashMap<Integer, Float> ecal_inner_w, ecal_outer_w, pcal_w
+    HashMap<Integer, ArrayList<DCHit>> pcal, ecal_inner, ecal_outer
 
     // REC::Scintillator
     HashMap<Integer, Short> tof_sector, tof_paddle, tof_layer
@@ -111,6 +113,9 @@ class Event {
         pcal_u = new HashMap<Integer, Float>()
         pcal_v = new HashMap<Integer, Float>()
         pcal_w = new HashMap<Integer, Float>()
+        pcal = new HashMap<Integer, ArrayList<ECHit>>()
+        ecal_inner = new HashMap<Integer, ArrayList<ECHit>>()
+        ecal_outer = new HashMap<Integer, ArrayList<ECHit>>()
 
         // REC::Scintillator
         tof = new HashMap<Integer, ArrayList<FtofHit>>()
