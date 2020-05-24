@@ -2,121 +2,94 @@ package pid.sangbaek
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
+import pid.proton.ProtonFromEvent
+import event.Event
+import org.jlab.clas.physics.Vector3
 
 class proton{
 
-  //1) default pid cut provided by EB (pid==11)
-	static def find_byPID = { pid ->
-    pid==2212
+  def event
+  def proton_candidate = new ProtonFromEvent()
+
+  def protonCutStrategies_Stefan
+  def protonCutStrategies_Custom
+
+  def protonCutResults_Stefan
+  def protonCutResults_Custom
+
+  def proton(){
+    this.initalizeCustomProCuts()
   }
 
-  //status check for trigger electron
-  static def find_bySTATUS = { status ->
-    status>0
+  def proton(event){
+    this.event = event
+    this.initalizeCustomProCuts()
+    this.getGoodProton(event)
+    this.getGoodProtonCustom(event)
   }
 
-  //2) charge check
-  static def find_byCHARGE = {charge ->
-    charge>0
+  def applyCuts_Stefan(event){
+    this.getGoodProton(event)
+    return this.protonCutResults_Stefan
   }
 
-  //3) NPhe cut
-  static def find_byNPhe = {nphe ->
-    nphe>2
+  def applyCuts_Custom(event){
+    this.getGoodProtonCustom(event)
+    return this.protonCutResults_Custom
   }
 
-  //4) EC Inner vs EC outer cut
-  // static def find_by_EC = { 
 
-  // }
+  def initalizeCustomProCuts(){
+    this.protonCutStrategies_Stefan = [
+      this.proton_candidate.passProtonEBPIDCut,
+      this.proton_candidate.passProtonDCR1,
+      this.proton_candidate.passProtonDCR2,
+      this.proton_candidate.passProtonDCR3,
+    ]
 
+    // this.protonCutStrategies_Custom = [
+    //   this.find_byFTOF,
+    //   this.find_byMOM
+    // ]
 
-  //6) PCAL Fiducial
-  // static def find_by_PCAL = { 
+    // def field_setting = "inbending"
+    // cut lvl meanings: 0 loose, 1 med, 2 tight
+    // def pro_cut_strictness_lvl=[
+    //            "dcr1_cut_lvl":1,
+    //            "dcr2_cut_lvl":1,
+    //            "dcr3_cut_lvl":1,
+    // ]
 
-  // }
+    // this.proton_candidate.setProtonCutStrictness(pro_cut_strictness_lvl)
+    // this.proton_candidate.setProtonCutParameters("inbending")
 
-  //7) DC R1, R2, R3 cut
-  // static def find_by_DC = { 
-
-  // }
-
-  //8) Vertex-z positon cut
-  static def find_byVZ = {vz, sec ->
-    def vnom= -3 // for 5038
-    def vstd = 5
-    // switch(sec){
-    //   case 1: vnom=-2.202; vstd=4.058
-    //   case 2: vnom=-2.124; vstd=4.173
-    //   case 3: vnom=-2.172; vstd=4.313
-    //   case 4: vnom=-2.159; vstd=4.324
-    //   case 5: vnom=-2.316; vstd=4.29
-    //   case 6: vnom=-2.258; vstd=4.29
-    // }
-    Math.abs(vz-vnom) < 2.5*vstd
   }
 
-  // FTOF Hit Response
-  static def find_byFTOF = {tbank, ind_p ->
-    def res = false
-    tbank.getInt("pindex").each{pindex  ->  if (ind_p==pindex) res = true}
-    return res
+
+  def getGoodProton(event){
+    //return a list of REC::Particle indices for tracks passing all proton cuts
+    def pro_cut_result = (0..<event.npart).findAll{event.charge[it]>0}.collect{ ii -> [ii, this.protonCutStrategies_Stefan.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
+    this.protonCutResults_Stefan = pro_cut_result.findResults{el_indx, cut_result -> !cut_result.contains(false) ? el_indx : null}
   }
 
-  // momentum cut
-  static def find_byMOM = {mom, theta ->
-    mom > 1.5 && theta>17*(1-mom/7)
-  }
-
-  static def find_byBANK = {pbank ->
-    return (0..pbank.rows())
-      .find{ ind->
-        def pid = pbank.getInt('pid',ind)
-        def status = pbank.getShort('status',ind)
-        def charge = pbank.getByte('charge',ind)
-        this.find_byPID(pid) && this.find_bySTATUS(status) && this.find_byCHARGE(charge)
-      }
-  }
-
-  static def find_byEVENT = { event ->
-
-    def pbank = event.getBank("REC::Particle")
-    // Default pid, status, charge cut
-    if (this.find_byBANK(pbank)==null) return null
-    if (!event.hasBank("REC::Calorimeter") || !event.hasBank("REC::Cherenkov") || !event.hasBank("REC::Scintillator")) return null
-    
-    // kinematics cut
-    def ind = this.find_byBANK(pbank)
-    def mom = ['x','y','z'].collect{pbank.getFloat("p"+it,ind)}.sum()
-    def pz = pbank.getFloat("pz", ind);
-    def theta = Math.toDegrees(Math.acos(pz/mom))
-    def vz = pbank.getFloat("vz",ind)
-    def evc = event.getBank("REC::Calorimeter")
-    def e_ecal_E = 0
-
-    //sampling fraction
-    evc.getInt("pindex").eachWithIndex{ pindex, ind_c ->
-      if (pindex==ind){
-        def det = evc.getInt("layer", ind_c);
-        e_ecal_E+=evc.getFloat("energy",ind_c)
-        def sec = evc.getInt("sector",ind_c);
-      }
+  def getGoodProtonCustom(event){
+    this.protonCutResults_Custom = this.protonCutResults_Stefan.findResults{ index ->
+      this.protonCutStrategies_Custom.collect{custom_test -> !custom_test(event,index)}.contains(false)? index : null
     }
-    def sampl_frac = e_ecal_E/mom
-
-    //nphe
-    def nphe = 0
-    def evh = event.getBank("REC::Cherenkov")
-    evh.getInt("pindex").eachWithIndex{pindex, ind_h ->
-      if(evh.getInt("detector",ind_h)==15 && pindex==ind) {
-        nphe = evh.getFloat("nphe",ind_h)
-      }
-    }
-
-    def evs = event.getBank("REC::Scintillator")
-
-
-    if(this.find_byMOM(mom,theta) && this.find_byVZ(vz,sec) && this.find_byNPhe(nphe) && this.find_byFTOF(evs,ind)) return ind
-    else return null
   }
+
+  // // FTOF Hit Response
+  // def find_byFTOF = {event, index ->
+  //   return event.tof_status.contains(index)
+  // }
+
+  // // momentum cut
+  // def find_byMOM = {event, index ->
+  //   def lv = new Vector3(event.px[index], event.py[index], event.pz[index])
+  //   def p = lv.mag()
+  //   def vz = event.vz[index]
+  //   def theta = Math.toDegrees(lv.theta())
+  //   def phi = Math.toDegrees(lv.phi())
+  //   return p > 1.5 && theta>17*(1-p/7)
+  // }
 }

@@ -10,6 +10,8 @@ import event.Event
 import event.EventConverter
 import pid.electron.ElectronSelector
 import pid.sangbaek.electron
+import pid.sangbaek.proton
+import pid.sangbaek.gamma
 import run.Run
 import java.util.concurrent.ConcurrentHashMap
 import org.jlab.clas.pdg.PDGDatabase
@@ -76,6 +78,8 @@ class dvcs{
   }
 
   def electron_selector = new electron()
+  def proton_selector = new proton()
+  def gamma_selector = new gamma()
   def beam = LorentzVector.withPID(11, 0, 0, 10.6)
   def target = LorentzVector.withPID(2212, 0, 0, 0)
 
@@ -101,7 +105,7 @@ class dvcs{
         }
       }      
       // get epg coincidence, no exclusive cut applied. electron cut from Brandon's package
-      def dsets = DVCS.getEPG(event, electron_selector)
+      def dsets = DVCS.getEPG(event, electron_selector, proton_selector, gamma_selector)
       def (ele, pro, gam) = dsets*.particle.collect{it ? it.vector() : null} 
       // process only if there's a epg set in coincidence
       if(ele!=null) {
