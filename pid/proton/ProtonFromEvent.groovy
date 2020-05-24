@@ -237,7 +237,7 @@ class ProtonFromEvent {
 
   def passProtonDCR1 = { event, index ->
 
-  if (event.status[index]<4000) return true
+  if (event.status[index]>4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
@@ -255,7 +255,7 @@ class ProtonFromEvent {
 
   def passProtonDCR2 = { event, index ->
 
-  if (event.status[index]<4000) return true
+  if (event.status[index]>4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
@@ -273,7 +273,7 @@ class ProtonFromEvent {
 
   def passProtonDCR3 = { event, index ->
 
-  if (event.status[index]<4000) return true
+  if (event.status[index]>4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
