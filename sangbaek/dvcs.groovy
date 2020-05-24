@@ -31,12 +31,12 @@ class dvcs{
 
   // kinematic variables (correlation)
   def h_theta_mom = {new H2F("$it", "$it", 120, 0, 12, 100, 0, 100)}
-  def h_phi_mom = {new H2F("$it", "$it", 120, 0, 12, 720, -360, 360)}
-  def h_theta_phi = {new H2F("$it", "$it", 720, -360, 360, 100, 0, 100)}
+  def h_phi_mom = {new H2F("$it", "$it", 120, 0, 12, 360, -180, 180)}
+  def h_theta_phi = {new H2F("$it", "$it", 360, -180, 180, 100, 0, 100)}
   def h_theta_t = {new H2F("$it", "$it", 100, 0, 4, 100, 0, 100)}
-  def h_phi_t = {new H2F("$it", "$it", 100, 0, 4, 720, -360, 360)}
+  def h_phi_t = {new H2F("$it", "$it", 100, 0, 4, 360, -180, 180)}
   def h_theta_trento = {new H2F("$it", "$it", 360, 0, 360, 100, 0, 100)}
-  def h_phi_trento = {new H2F("$it", "$it", 360, 0, 360, 720, -360, 360)}
+  def h_phi_trento = {new H2F("$it", "$it", 360, 0, 360, 360, -180, 180)}
 
   def h_Q2_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 12)}
   def h_t_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 2)}
@@ -75,6 +75,13 @@ class dvcs{
     int tbin = t_array.findIndexOf{ t < it} -1
     if (tbin==-1) tbin = 8
     return 21*tbin + xBQbin
+  }
+
+  def phi_convention = {phi ->
+    phi=phi + 180
+    if (phi>180) phi = phi - 360
+    if (phi<-180) phi = phi + 360
+    return phi
   }
 
   def electron_selector = new electron()
@@ -234,21 +241,24 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
           hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
 
+          def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
+          def gam_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
+
           hists.computeIfAbsent("/dvcs/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), Math.toDegrees(pro.phi()-ele.phi()))
-          hists.computeIfAbsent("/dvcs/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(pro.phi()-ele.phi()), Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), Math.toDegrees(gam.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), pro_phi_convention)
+          hists.computeIfAbsent("/dvcs/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(pro_phi_convention, Math.toDegrees(pro.theta()))
+          hists.computeIfAbsent("/dvcs/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), gam_phi_convention)
           hists.computeIfAbsent("/dvcs/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(gam.phi()-ele.phi()), Math.toDegrees(gam.theta()))
+          hists.computeIfAbsent("/dvcs/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(gam_phi_convention, Math.toDegrees(gam.theta()))
 
           hists.computeIfAbsent("/dvcs/corr/prot_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, Math.toDegrees(pro.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/prot_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, pro_phi_convention)
           hists.computeIfAbsent("/dvcs/corr/prot_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, Math.toDegrees(pro.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/prot_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, pro_phi_convention)
           hists.computeIfAbsent("/dvcs/corr/gam_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, Math.toDegrees(gam.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/gam_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, gam_phi_convention)
           hists.computeIfAbsent("/dvcs/corr/gam_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, Math.toDegrees(gam.phi()-ele.phi()))
+          hists.computeIfAbsent("/dvcs/corr/gam_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, gam_phi_convention)
 
 
           hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
