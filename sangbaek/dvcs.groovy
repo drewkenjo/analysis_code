@@ -242,7 +242,7 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
 
           def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
-          def gam_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
+          def gam_phi_convention = phi_convention(Math.toDegrees(gam.phi()-ele.phi()))
 
           hists.computeIfAbsent("/dvcs/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
           hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), pro_phi_convention)
