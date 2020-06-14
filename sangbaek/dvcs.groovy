@@ -244,8 +244,8 @@ class dvcs{
         if (xB<1 && W>2 && Q2>1 && gam.e() >1){
           hists.computeIfAbsent("/excl/gam_e", h_excl_gam_e).fill(gam.e())
           hists.computeIfAbsent("/excl/cone_angle", h_excl_angles).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-          hists.computeIfAbsent("/excl/missing_energy", hmm2).fill(VMiss.e())
-          hists.computeIfAbsent("/excl/missing_mass_epg", hmm2).fill(VMiss.mass2())
+          hists.computeIfAbsent("/excl/missing_energy", hmm2).fill(VMISS.e())
+          hists.computeIfAbsent("/excl/missing_mass_epg", hmm2).fill(VMISS.mass2())
           hists.computeIfAbsent("/excl/missing_mass_eg", hmm2).fill(VMissP.mass2())
           hists.computeIfAbsent("/excl/missing_mass_ep", hmm2).fill(VMissG.mass2())
           hists.computeIfAbsent("/excl/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
