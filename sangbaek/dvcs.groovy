@@ -63,6 +63,11 @@ class dvcs{
   def h_t = {new H1F("$it","$it",100,0,4)}
   def h_y = {new H1F("$it",100,0,1)}
 
+  // exclusivity cuts
+
+  def h_excl_gam_e = {new H1F("$it","$it", 100, 0, 12)}
+  def h_excl_angles = {new H1F("$it","$it", 720, -360, 360)}
+
   //binning
   def xB_array = [0.1, 0.14, 0.17, 0.2, 0.23, 0.26, 0.29, 0.32, 0.35, 0.38, 0.42, 0.58]
   def t_array = [0.09, 0.13, 0.18, 0.23, 0.3, 0.39, 0.52, 0.72, 1.1, 2]
@@ -235,103 +240,117 @@ class dvcs{
         // hists.computeIfAbsent("/epg/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
         // hists.computeIfAbsent("/epg/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(Math.toDegrees(gam.phi()-ele.phi()), Math.toDegrees(gam.theta()))
 
+
+        if (xB<1 && W>2 && Q2>1 && gam.e() >1){
+          hists.computeIfAbsent("/excl/gam_e", h_excl_gam_e).fill(gam.e())
+          hists.computeIfAbsent("/excl/cone_angle", h_excl_angles).fill(KinTool.Vangle(gam.vect(),ele.vect()))
+          hists.computeIfAbsent("/excl/missing_energy", hmm2).fill(VMiss.e())
+          hists.computeIfAbsent("/excl/missing_mass_epg", hmm2).fill(VMiss.mass2())
+          hists.computeIfAbsent("/excl/missing_mass_eg", hmm2).fill(VMissP.mass2())
+          hists.computeIfAbsent("/excl/missing_mass_ep", hmm2).fill(VMissG.mass2())
+          hists.computeIfAbsent("/excl/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+          hists.computeIfAbsent("/excl/coplanarity", h_excl_angles).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+          hists.computeIfAbsent("/excl/recon_gam_angle", h_excl_angles).fill(KinTool.Vangle(Vhad2,Vhadr))
+        }
+
         // exclusive cuts
-        if (DVCS.KineCuts(xB, Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+        // if (DVCS.KineCuts(xB, Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
 
-          hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
-          hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
+        //   hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
+        //   hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
+        //   hists.computeIfAbsent("/dvcs/corr/pure", h_Q2_xB).fill(xB,Q2)
 
-          def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
-          def gam_phi_convention = phi_convention(Math.toDegrees(gam.phi()-ele.phi()))
+        //   def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
+        //   def gam_phi_convention = phi_convention(Math.toDegrees(gam.phi()-ele.phi()))
 
-          hists.computeIfAbsent("/dvcs/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), pro_phi_convention)
-          hists.computeIfAbsent("/dvcs/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(pro_phi_convention, Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), gam_phi_convention)
-          hists.computeIfAbsent("/dvcs/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(gam_phi_convention, Math.toDegrees(gam.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/prot_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/prot_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(pro.p(), pro_phi_convention)
+        //   hists.computeIfAbsent("/dvcs/corr/prot_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(pro_phi_convention, Math.toDegrees(pro.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/gam_phi_mom_xB_${xBbin}_Q2_${Q2bin}", h_phi_mom).fill(gam.p(), gam_phi_convention)
+        //   hists.computeIfAbsent("/dvcs/corr/gam_theta_mom_xB_${xBbin}_Q2_${Q2bin}", h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/gam_theta_phi_xB_${xBbin}_Q2_${Q2bin}", h_theta_phi).fill(gam_phi_convention, Math.toDegrees(gam.theta()))
 
-          hists.computeIfAbsent("/dvcs/corr/prot_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, pro_phi_convention)
-          hists.computeIfAbsent("/dvcs/corr/prot_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/corr/prot_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, pro_phi_convention)
-          hists.computeIfAbsent("/dvcs/corr/gam_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, gam_phi_convention)
-          hists.computeIfAbsent("/dvcs/corr/gam_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/dvcs/corr/gam_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, gam_phi_convention)
-
-
-          hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
-          hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/prot_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(pro.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/prot_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, pro_phi_convention)
+        //   hists.computeIfAbsent("/dvcs/corr/prot_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(pro.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/prot_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, pro_phi_convention)
+        //   hists.computeIfAbsent("/dvcs/corr/gam_theta_t_xB_${xBbin}_Q2_${Q2bin}", h_theta_t).fill(t, Math.toDegrees(gam.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/gam_phi_t_xB_${xBbin}_Q2_${Q2bin}", h_phi_t).fill(t, gam_phi_convention)
+        //   hists.computeIfAbsent("/dvcs/corr/gam_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(gam.theta()))
+        //   hists.computeIfAbsent("/dvcs/corr/gam_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, gam_phi_convention)
 
 
-          hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-          hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
-          if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-            hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-          hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
-          }
-          else if (event.status[dsets.pindex[1]]>=1000){
-            hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-            hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
-          }
+        //   hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
+        //   hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
+        //   hists.computeIfAbsent("/dvcs/gam_polar", h_polar_rate).fill(Math.toDegrees(gam.theta()))
 
-          if (event.status[dsets.pindex[1]]>=4000){
-            hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-            hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
-            if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-              hists.computeIfAbsent("/events/events", h_events).fill(7.5)  
-            }
-            else if (event.status[dsets.pindex[1]]>=1000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-              hists.computeIfAbsent("/events/events", h_events).fill(8.5)  
-            }
-          }
-          else if (event.status[dsets.pindex[1]]>=2000){
-            hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-            hists.computeIfAbsent("/events/events", h_events).fill(9.5)  
-            if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-              hists.computeIfAbsent("/events/events", h_events).fill(10.5)  
-            }
-            else if (event.status[dsets.pindex[1]]>=1000){
-              hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
-              hists.computeIfAbsent("/events/events", h_events).fill(11.5)  
-            }
-          }
 
-          // fill phi dependence on 3 fold binning (xB, Q2, t)
-          def bin_number = binnumber(xB, ele.theta(), t)
-          hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
-          hists.computeIfAbsent("/dvcs/h_Q2_xB_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
+        //   hists.computeIfAbsent("/dvcs/tdep/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //   hists.computeIfAbsent("/events/events", h_events).fill(3.5)  
+        //   if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+        //     hists.computeIfAbsent("/dvcs/tdep/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //   hists.computeIfAbsent("/events/events", h_events).fill(4.5)  
+        //   }
+        //   else if (event.status[dsets.pindex[1]]>=1000){
+        //     hists.computeIfAbsent("/dvcs/tdep/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //     hists.computeIfAbsent("/events/events", h_events).fill(5.5)  
+        //   }
+
+        //   if (event.status[dsets.pindex[1]]>=4000){
+        //     hists.computeIfAbsent("/dvcs/tdep/pro_cd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //     hists.computeIfAbsent("/events/events", h_events).fill(6.5)  
+        //     if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+        //       hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //       hists.computeIfAbsent("/events/events", h_events).fill(7.5)  
+        //     }
+        //     else if (event.status[dsets.pindex[1]]>=1000){
+        //       hists.computeIfAbsent("/dvcs/tdep/pro_cd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //       hists.computeIfAbsent("/events/events", h_events).fill(8.5)  
+        //     }
+        //   }
+        //   else if (event.status[dsets.pindex[1]]>=2000){
+        //     hists.computeIfAbsent("/dvcs/tdep/pro_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //     hists.computeIfAbsent("/events/events", h_events).fill(9.5)  
+        //     if (event.status[dsets.pindex[1]]<4000 && event.status[dsets.pindex[1]]>=2000){
+        //       hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_fd/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //       hists.computeIfAbsent("/events/events", h_events).fill(10.5)  
+        //     }
+        //     else if (event.status[dsets.pindex[1]]>=1000){
+        //       hists.computeIfAbsent("/dvcs/tdep/pro_fd/gam_ft/h_xB_${xBbin}_Q2_${Q2bin}", h_t).fill(t)
+        //       hists.computeIfAbsent("/events/events", h_events).fill(11.5)  
+        //     }
+        //   }
+
+        //   // fill phi dependence on 3 fold binning (xB, Q2, t)
+        //   def bin_number = binnumber(xB, ele.theta(), t)
+        //   hists.computeIfAbsent("/dvcs/h_phi_bin_$bin_number", h_cross_section).fill(TrentoAng)
+        //   hists.computeIfAbsent("/dvcs/h_Q2_xB_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
           
-          if (event.status[dsets.pindex[1]]>=4000){
-            hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
-            hists.computeIfAbsent("/dvcs/h_phi_pro_CD_bin_$bin_number", h_cross_section).fill(TrentoAng)
-          }
+        //   if (event.status[dsets.pindex[1]]>=4000){
+        //     hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
+        //     hists.computeIfAbsent("/dvcs/h_phi_pro_CD_bin_$bin_number", h_cross_section).fill(TrentoAng)
+        //   }
 
-          if (event.status[dsets.pindex[2]]<2000){
-            hists.computeIfAbsent("/dvcs/h_Q2_xB_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
-            hists.computeIfAbsent("/dvcs/h_phi_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
-          }
+        //   if (event.status[dsets.pindex[2]]<2000){
+        //     hists.computeIfAbsent("/dvcs/h_Q2_xB_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
+        //     hists.computeIfAbsent("/dvcs/h_phi_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
+        //   }
 
-          if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
-            hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
-            hists.computeIfAbsent("/dvcs/h_phi_pro_CD_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
-            hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2_2).fill(VMISS.mass2())
-          }            
+        //   if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
+        //     hists.computeIfAbsent("/dvcs/h_Q2_xB_pro_CD_gam_FT_bin_$bin_number", h_Q2_xB).fill(xB,Q2)
+        //     hists.computeIfAbsent("/dvcs/h_phi_pro_CD_gam_FT_bin_$bin_number", h_cross_section).fill(TrentoAng)
+        //     hists.computeIfAbsent("/dvcs/hmm2_epg", hmm2_2).fill(VMISS.mass2())
+        //   }            
 
-          if (event.status[dsets.pindex[1]]>=4000){
-            hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-            hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
-          }
-          else if (event.status[dsets.pindex[1]]<4000){
-            hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-            hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
-          }
-        } // exclusivity cuts ended
+        //   if (event.status[dsets.pindex[1]]>=4000){
+        //     hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
+        //     hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
+        //   }
+        //   else if (event.status[dsets.pindex[1]]<4000){
+        //     hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
+        //     hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
+        //   }
+        // } // exclusivity cuts ended
         //add here for analysis
       }// event with e, p, g
     }// event with particles
