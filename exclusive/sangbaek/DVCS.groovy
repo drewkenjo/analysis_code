@@ -66,8 +66,11 @@ class DVCS {
     }
 
     def parts = [11,2212,22].withIndex()
-      .collect{pid,i -> new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
+      .collect{pid,i -> 
+        if(event.px[ind]&& event.py[ind]&& event.pz[ind]) new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
     }
+
+    if (parts.contains(null)) return [null, null, null]
 
     return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
   }
