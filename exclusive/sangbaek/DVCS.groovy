@@ -67,7 +67,7 @@ class DVCS {
 
     def parts = [11,2212,22].withIndex()
       .collect{pid,i -> 
-        if(event.px[ind]&& event.py[ind]&& event.pz[ind]) new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
+        if(event.px[inds[i]]&& event.py[inds[i]]&& event.pz[inds[i]]) new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
     }
 
     if (parts.contains(null)) return [null, null, null]
