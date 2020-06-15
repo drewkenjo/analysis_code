@@ -20,19 +20,22 @@ class DVCS {
     def findElectron = { ev ->
       def electron_candidate = electron_ind.applyCuts_Brandon(ev)
       if(electron_candidate) electron_candidate
-      .max{ind -> (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
+      .max{ind -> 
+        if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
 
     def findProton = { ev ->
       def proton_candidate = proton_ind.applyCuts_Stefan(ev)
       if(proton_candidate) proton_candidate
-      .max{ind -> (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
+      .max{ind -> 
+        if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
 
     def findGamma = { ev ->
       def gamma_candidate = gamma_ind.applyCuts_Stefan(ev)
       if(gamma_candidate) gamma_candidate
-      .max{ind -> (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
+      .max{ind -> 
+        if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
 
 
