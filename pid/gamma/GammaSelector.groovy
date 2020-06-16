@@ -15,6 +15,7 @@ class GammaSelector {
  	this.gammaCutStrategies = [
 	    gammaCuts.passGammaEBPIDCut,
 	    gammaCuts.passGammaPCALFiducialCut,
+        gammaCuts.passGammaBetaCut
 	]
     }
 

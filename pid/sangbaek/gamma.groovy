@@ -42,7 +42,8 @@ class gamma{
   def initalizeCustomGamCuts(){
     this.gammaCutStrategies_Stefan = [
       this.gamma_candidate.passGammaEBPIDCut,
-      this.gamma_candidate.passGammaPCALFiducialCut
+      this.gamma_candidate.passGammaPCALFiducialCut,
+      this.gamma_candidate.passGammaBetaCut
     ]
 
     this.gammaCutStrategies_Custom = [

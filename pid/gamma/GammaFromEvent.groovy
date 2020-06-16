@@ -238,6 +238,12 @@ class GammaFromEvent {
     return false
   }
 
+  def passGammaBetaCut = { event, index ->
+
+    event.beta[index] < 1.1 && event.beta[index]>0.9
+  }
+
+
   def thetaphifromhit(hit, sec){
       def theta_PCAL = Math.toDegrees(
           Math.acos(hit.get(2)/Math.sqrt(hit.get(0)*hit.get(0) + hit.get(1)*hit.get(1) + hit.get(2)*hit.get(2))))
