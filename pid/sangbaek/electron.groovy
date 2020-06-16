@@ -80,11 +80,8 @@ class electron{
                "dcr3_cut_lvl":1,
                "anti_pion_cut_lvl":1
     ]
-    // this.electron_selector.setElectronCutStrictness(el_cut_strictness_lvl)
-    // this.electron_selector.setCutParameterFromMagField("inbending")
-
     this.electron_candidate.setElectronCutStrictness(el_cut_strictness_lvl)
-    this.electron_candidate.setElectronCutParameters("inbending")
+    this.electron_candidate.setElectronCutParameters(field_setting)
 
   }
 

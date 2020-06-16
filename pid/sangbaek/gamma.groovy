@@ -54,11 +54,9 @@ class gamma{
     def field_setting = "inbending"
     // cut lvl meanings: 0 loose, 1 med, 2 tight
     def gam_cut_strictness_lvl=["pcal_fiducial_cut_lvl":1]
-    // this.gamma_selector.setGammaCutStrictness(gam_cut_strictness_lvl)
-    // this.gamma_selector.setCutParameterFromMagField("inbending")
 
     this.gamma_candidate.setGammaCutStrictness(gam_cut_strictness_lvl)
-    this.gamma_candidate.setGammaCutParameters("inbending")
+    this.gamma_candidate.setGammaCutParameters(field_setting)
 
   }
 
