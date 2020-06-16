@@ -151,14 +151,13 @@ class DVCS {
 
 
 
-  static def KineCuts(xB, Q2, W, VG1){
-      xB<1 && W>2 && Q2>1 && VG1.e() >1
+  static def KineCuts(xB, Q2, W, VE, VG1){
+      xB<1 && W>2 && Q2>1 && VE.e()>2 && VG1.e() >3
   }
 
   static def ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2){
     // haz_g2==-1&& 
-     (VG1.e() > 3 
-     && KinTool.Vangle(VG1.vect(),VE.vect())>4
+     (KinTool.Vangle(VG1.vect(),VE.vect())>4
      && VMISS.e()<1.5 
      && VMISS.mass2() <0.2 && VMISS.mass2() >-0.2 
      && VmissP.mass2() < 3 && VmissP.mass2() > -0.25
