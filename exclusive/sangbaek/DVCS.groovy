@@ -152,7 +152,7 @@ class DVCS {
 
 
   static def KineCuts(xB, Q2, W, VE, VG1){
-      xB<1 && W>2 && Q2>1 && VE.e()>2 && VG1.e() >3
+      xB<1 && W>2 && Q2>1 && VE.e()>2.1 && VG1.e() >3
   }
 
   static def ExclCuts(VG1, VE, VMISS, VmissP, VmissG, Vhadr, Vhad2){
