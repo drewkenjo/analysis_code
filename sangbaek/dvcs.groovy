@@ -362,7 +362,7 @@ class dvcs{
         }
 
         // exclusive cuts
-        if (DVCS.KineCuts(xB, Q2, W, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
+        if (DVCS.KineCuts(xB, Q2, W, ele, gam) && DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
 
           hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
           hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
