@@ -1,4 +1,4 @@
-package sangbaek
+pacㅗage sangbaek
 
 import org.jlab.clas.physics.LorentzVector
 import org.jlab.clas.physics.Vector3
@@ -367,7 +367,7 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
           hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
           hists.computeIfAbsent("/dvcs/binning/h_Q2_xB", h_Q2_xB).fill(xB,Q2)
-          hists.computeIfAbsent("/dvcs/binning/h_phi_t", h_phi_t).fill(TrentoAng,t)
+          hists.computeIfAbsent("/dvcs/binning/h_phi_t", h_phi_t).fill(t, phi)
           hists.computeIfAbsent("/dvcs/binning/h_Q2_t", h_Q2_t).fill(t,Q2)
 
           def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
