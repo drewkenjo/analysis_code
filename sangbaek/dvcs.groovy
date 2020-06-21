@@ -23,11 +23,11 @@ class dvcs{
   def hists = new ConcurrentHashMap()
 
   // missing mass
-  def hmm2 = {new H1F("$it", "$it", 100, -2, 4)}
+  def hmm2 = {new H1F("$it", "$it", 1500, -2, 4)}
   def hmm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
 
   // angle between planes
-  def h_angle = {new H1F("$it", "$it", 190, -5 ,185)}
+  def h_angle = {new H1F("$it", "$it", 1900, -5 ,185)}
 
   // kinematic variables (correlation)
   def h_theta_mom = {new H2F("$it", "$it", 120, 0, 12, 100, 0, 100)}
@@ -367,7 +367,7 @@ class dvcs{
           hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
           hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
           hists.computeIfAbsent("/dvcs/binning/h_Q2_xB", h_Q2_xB).fill(xB,Q2)
-          hists.computeIfAbsent("/dvcs/binning/h_phi_t", h_phi_t).fill(t, phi)
+          hists.computeIfAbsent("/dvcs/binning/h_phi_t", h_phi_t).fill(t, TrentoAng)
           hists.computeIfAbsent("/dvcs/binning/h_Q2_t", h_Q2_t).fill(t,Q2)
 
           def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
