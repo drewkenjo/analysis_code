@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap
 import org.jlab.clas.pdg.PDGDatabase
 
 
-class dvcs{
+class dvcs_corr{
 
   //defining histograms
   def hists = new ConcurrentHashMap()
@@ -144,6 +144,9 @@ class dvcs{
       if(ele!=null) {
         // event number histograms
         hists.computeIfAbsent("/events/events", h_events).fill(2.5)  
+
+        // gamma correction, energy by 250 MeV
+        gam.setPxPyPzE(gam.px(), gam.py(), gam.pz(), gam.e()+0.25)
 
         // get sector
         def (ele_sec, pro_sec, gam_sec) = dsets*.sector
