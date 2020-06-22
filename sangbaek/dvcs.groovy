@@ -76,19 +76,19 @@ class dvcs{
 
   def xB_bin = {xB ->
     int xBbin = xB_array.findIndexOf{ xB < it} -1
-    if (xBbin == -1) xBbin = xBbin + xB_array.length
+    if (xBbin == -1) xBbin = xBbin + xB_array.size() //length
     return xBbin
   }
 
   def Q2_bin = {Q2 ->
     int Q2bin = Q2_array.findIndexOf{ Q2 < it} -1
-    if (Q2bin == -1) Q2bin = Q2bin + Q2_array.length
+    if (Q2bin == -1) Q2bin = Q2bin + Q2_array.size() //length
     return Q2bin
   }
 
   def t_bin = {t ->
     int tbin = t_array.findIndexOf{ t < it} -1
-    if (tbin == -1) tbin = tbin + t_array.length
+    if (tbin == -1) tbin = tbin + t_array.size() //length
     return tbin
   }
 
@@ -487,15 +487,6 @@ class dvcs{
             hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_pro_CD_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/heli_$helicity/h_trento_pro_CD_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_cross_section).fill(TrentoAng)
           }            
-
-          if (event.status[dsets.pindex[1]]>=4000){
-            // hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-            // hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
-          }
-          else if (event.status[dsets.pindex[1]]<4000){
-            // hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-            // hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
-          }
         } // exclusivity cuts ended
         //add here for analysis
       }// event with e, p, g
