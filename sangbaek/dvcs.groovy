@@ -76,19 +76,19 @@ class dvcs{
 
   def xB_bin = {xB ->
     int xBbin = xB_array.findIndexOf{ xB < it} -1
-    if (xBbin == -1) xBbin = xBbin + xB_array.size() //length
+    if (xBbin == -2) xBbin = xBbin + xB_array.size() +1 //length
     return xBbin
   }
 
   def Q2_bin = {Q2 ->
     int Q2bin = Q2_array.findIndexOf{ Q2 < it} -1
-    if (Q2bin == -1) Q2bin = Q2bin + Q2_array.size() //length
+    if (Q2bin == -2) Q2bin = Q2bin + Q2_array.size() +1 //length
     return Q2bin
   }
 
   def t_bin = {t ->
     int tbin = t_array.findIndexOf{ t < it} -1
-    if (tbin == -1) tbin = tbin + t_array.size() //length
+    if (tbin == -2) tbin = tbin + t_array.size() +1 //length
     return tbin
   }
 
