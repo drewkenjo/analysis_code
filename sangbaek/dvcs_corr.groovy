@@ -172,7 +172,7 @@ class dvcs_corr{
         def nu = KinTool.calcNu(beam, ele)
         def M = PDGDatabase.getParticleMass(2212)
         def costheta = VGS.vect().dot(gam.vect())/VGS.vect().mag()/gam.vect().mag()
-        def t2 = - (M*Q2+2*M*nu*(nu-Math.sqrt(nu*nu+Q2)*costheta))/(M+nu-Math.sqrt(nu*nu+Q2)*costheta)
+        def t2 = (M*Q2+2*M*nu*(nu-Math.sqrt(nu*nu+Q2)*costheta))/(M+nu-Math.sqrt(nu*nu+Q2)*costheta)
 
         // Fill Histogram
         hists.computeIfAbsent("/epg/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
