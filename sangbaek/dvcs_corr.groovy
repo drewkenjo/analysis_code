@@ -40,6 +40,8 @@ class dvcs_corr{
 
   def h_t_trento =  {new H2F("$it", "$it", 360, 0, 360, 100, 0 , 4)}
 
+  def h_t_t = {new H2F("$it", "$it", 100,0,4, 100,0,4)}
+
   def h_Q2_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 12)}
   def h_t_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 2)}
   def h_Q2_t = {new H2F("$it", "$it", 100, 0, 4,100, 0, 12)}
@@ -167,6 +169,10 @@ class dvcs_corr{
         def Q2 = KinTool.calcQ2(beam, ele)
         def TrentoAng = KinTool.calcPhiTrento(beam, ele, pro); // phi
         def t = KinTool.calcT(pro) //-t
+        def nu = KinTool.calcNu(beam, ele)
+        def M = PDGDatabase.getParticleMass(2212)
+        def costheta = VGS.vect().dot(gam.vect())/VGS.vect().mag()/gam.vect().mag()
+        def t2 = - (M*Q2+2*M*nu*(nu-Math.sqrt(nu*nu+Q2)*costheta))/(M+nu-Math.sqrt(nu*nu+Q2)*costheta)
 
         // Fill Histogram
         hists.computeIfAbsent("/epg/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
@@ -248,7 +254,6 @@ class dvcs_corr{
 
         //calc tcol tmin
         def E = 10.6
-        def M = PDGDatabase.getParticleMass(2212)
         def tmin = M*M*xB*xB/(1-xB+xB*M*M/Q2)
         def tcol = Q2*(Q2-2*xB*M*E)/xB/(Q2-2*M*E)
         // fill t dependence on 2 fold binning (xB, Q2)
@@ -414,6 +419,9 @@ class dvcs_corr{
           hists.computeIfAbsent("/dvcs/corr/gam_theta_trento_xB_${xBbin}_Q2_${Q2bin}", h_theta_trento).fill(TrentoAng, Math.toDegrees(gam.theta()))
           hists.computeIfAbsent("/dvcs/corr/gam_phi_trento_xB_${xBbin}_Q2_${Q2bin}", h_phi_trento).fill(TrentoAng, gam_phi_convention)
 
+          hists.computeIfAbsent("/dvcs/corr/h_t_t", h_t_t).fill(t, t2)
+          hists.computeIfAbsent("/dvcs/corr/h_Q2_xB_t1", h_Q2_xB).fill(xB,Q2,t)
+          hists.computeIfAbsent("/dvcs/corr/h_Q2_xB_t2", h_Q2_xB).fill(xB,Q2,t2)
 
         //   hists.computeIfAbsent("/dvcs/elec_polar_sec"+ele_sec, h_polar_rate).fill(Math.toDegrees(ele.theta()))
         //   hists.computeIfAbsent("/dvcs/prot_polar", h_polar_rate).fill(Math.toDegrees(pro.theta()))
