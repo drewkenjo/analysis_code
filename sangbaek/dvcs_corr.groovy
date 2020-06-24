@@ -148,7 +148,7 @@ class dvcs_corr{
         hists.computeIfAbsent("/events/events", h_events).fill(2.5)  
 
         // gamma correction, energy by 250 MeV
-        gam.setPxPyPzE(gam.px(), gam.py(), gam.pz(), gam.e()+0.25)
+        if (gam.e()>1) gam.setPxPyPzE((gam.e()+0.25)/gam.e()*gam.px(), (gam.e()+0.25)/gam.e()*gam.py(), (gam.e()+0.25)/gam.e()*gam.pz(), gam.e()+0.25)
 
         // get sector
         def (ele_sec, pro_sec, gam_sec) = dsets*.sector
