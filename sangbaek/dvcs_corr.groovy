@@ -42,6 +42,7 @@ class dvcs_corr{
 
   def h_t_t = {new H2F("$it", "$it", 100,0,4, 100,0,4)}
 
+  def h_Q2_xB_logarithmic = {new H2F("$it", "$it", 30, -1.31, -0.096, 30, 0, 1)}
   def h_Q2_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 12)}
   def h_t_xB = {new H2F("$it", "$it", 100, 0, 1,100, 0, 2)}
   def h_Q2_t = {new H2F("$it", "$it", 100, 0, 4,100, 0, 12)}
@@ -399,6 +400,7 @@ class dvcs_corr{
           hists.computeIfAbsent("/dvcs/binning/h_Q2_xB", h_Q2_xB).fill(xB,Q2)
           hists.computeIfAbsent("/dvcs/binning/h_t_trento", h_t_trento).fill(TrentoAng, t)
           hists.computeIfAbsent("/dvcs/binning/h_Q2_t", h_Q2_t).fill(t,Q2)
+          hists.computeIfAbsent("/dvcs/binning/h_Q2_xB_logarithmic", h_Q2_xB).fill(Math.log10(xB), Math.log10(Q2))
 
           def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
           def gam_phi_convention = phi_convention(Math.toDegrees(gam.phi()-ele.phi()))
