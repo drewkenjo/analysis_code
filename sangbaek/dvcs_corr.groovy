@@ -472,7 +472,7 @@ class dvcs_corr{
 
           def xBbin2 = xB_bin(xB)
           def Q2bin2 = Q2_bin(Q2)
-          def tbin = t_bin(t)
+          def tbin = t_bin(t2)
           def helicity = event.helicity
 
           hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
