@@ -145,6 +145,9 @@ class Event {
         dc_ndf = new HashMap<Integer, Short>()
         dc_chi2 = new HashMap<Integer, Float>()
 
+        cvt_ndf = new HashMap<Integer, Short>()
+        cvt_chi2 = new HashMap<Integer, Float>()
+
         mc_pid = new HashMap<Integer, Short>()
         mc_px = new HashMap<Integer, Float>()
         mc_py = new HashMap<Integer, Float>()

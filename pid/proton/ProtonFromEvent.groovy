@@ -1,6 +1,7 @@
 package pid.proton
 
 import org.jlab.detector.base.DetectorType
+import org.jlab.clas.physics.Particle
 import event.Event
 
 class ProtonFromEvent {
