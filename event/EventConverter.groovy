@@ -281,6 +281,13 @@ class EventConverter {
                     event.dc_chi2.put(pindex, track.getFloat('chi2', index))
                     event.dc_ndf.put(pindex, track.getShort('NDF', index))
                 }
+
+                else if (detector == DetectorType.CVT.getDetectorId()){
+                    event.cvt_status.add(pindex)
+                    event.cvt_chi2.put(pindex, track.getFloat('chi2', index))
+                    event.cvt_ndf.put(pindex, track.getShort('NDF', index))
+                }
+
             }
         }
     }
