@@ -3,11 +3,8 @@ package exclusive.sangbaek
 import org.jlab.io.hipo.HipoDataEvent
 import org.jlab.clas.physics.Particle
 import org.jlab.clas.physics.Vector3
-// import pid.proton.Proton
-// import pid.electron.Electron
 import pid.sangbaek.gamma
 import pid.sangbaek.proton
-// import pid.sangbaek.twogamma
 import pid.sangbaek.electron
 import org.jlab.clas.physics.LorentzVector;
 import event.Event
@@ -15,24 +12,24 @@ import utils.KinTool
 
 class DVCS {
 
-  static def getEPG(event, electron_ind, proton_ind, gamma_ind) {
+  static def getEPG(event, electron_selector, proton_selector, gamma_selector) {
 
     def findElectron = { ev ->
-      def electron_candidate = electron_ind.applyCuts_Brandon(ev)
+      def electron_candidate = electron_selector.applyCuts_Brandon(ev)
       if(electron_candidate) electron_candidate
       .max{ind -> 
         if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
 
     def findProton = { ev ->
-      def proton_candidate = proton_ind.applyCuts_Stefan(ev)
+      def proton_candidate = proton_selector.applyCuts_Stefan(ev)
       if(proton_candidate) proton_candidate
       .max{ind -> 
         if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}
     }
 
     def findGamma = { ev ->
-      def gamma_candidate = gamma_ind.applyCuts_Stefan(ev)
+      def gamma_candidate = gamma_selector.applyCuts_Stefan(ev)
       if(gamma_candidate) gamma_candidate
       .max{ind -> 
         if(event.px[ind]&& event.py[ind]&& event.pz[ind]) (new Vector3(*[event.px, event.py, event.pz].collect{it[ind]})).mag2()}

@@ -45,6 +45,9 @@ class proton{
       this.proton_candidate.passProtonDCR1,
       this.proton_candidate.passProtonDCR2,
       this.proton_candidate.passProtonDCR3,
+      this.proton_candidate.passProtonTrackQuality,
+      this.proton_candidate.passProtonCDPolarAngleCut,
+      this.proton_candidate.passProtonVertexCut
     ]
 
     // this.protonCutStrategies_Custom = [
