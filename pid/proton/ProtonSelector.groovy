@@ -21,7 +21,10 @@ class ProtonSelector{
       this.protonCuts.passProtonEBPIDCut,
       this.protonCuts.passProtonDCR1,
       this.protonCuts.passProtonDCR2,
-      this.protonCuts.passProtonDCR3
+      this.protonCuts.passProtonDCR3,
+      this.protonCuts.passProtonTrackQuality,
+      this.protonCuts.passProtonCDPolarAngleCut,
+      this.protonCuts.passProtonVertexCut
     ]
   }
 

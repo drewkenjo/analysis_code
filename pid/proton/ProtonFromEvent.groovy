@@ -237,7 +237,7 @@ class ProtonFromEvent {
 
   def passProtonDCR1 = { event, index ->
 
-  if (event.status[index]>4000) return true
+  if (event.status[index]>=4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
@@ -255,7 +255,7 @@ class ProtonFromEvent {
 
   def passProtonDCR2 = { event, index ->
 
-  if (event.status[index]>4000) return true
+  if (event.status[index]>=4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
@@ -273,7 +273,7 @@ class ProtonFromEvent {
 
   def passProtonDCR3 = { event, index ->
 
-  if (event.status[index]>4000) return true
+  if (event.status[index]>=4000) return true
 
   if (event.dc1_status.contains(index)){
       def sec = event.dc_sector.get(index)-1
@@ -288,6 +288,36 @@ class ProtonFromEvent {
   }
   return false
   }
+
+  def passProtonTrackQuality = { event, index ->
+
+  if (event.status[index]<4000) return true
+
+  if (event.cvt_status.contains(index)){
+    return event.cvt_chi2.get(index)/event.cvt_ndf.get(index) < 30 && event.cvt_ndf.get(index)<10
+  }
+  return false
+  }
+
+  def passProtonCDPolarAngleCut = { event, index ->
+
+  if (event.status[index]<4000) return true
+
+  if (event.cvt_status.contains(index)){
+    def pro_candidate = new Particle(2212, *[event.px, event.py, event.pz].collect{index})
+    return Math.toDegrees(pro_candidate.theta())  < 125
+  }
+  return false
+  }
+
+  def passProtonVertexCut = { event, index ->
+
+  if (event.status[index]<4000 && event.status[index]>=2000) return  event.vz[index].with{ it > -12 && it < 7 }
+  else if (event.status[index] > 4000)  return  event.vz[index].with{ it > -7.5 && it < 1 }
+
+  return false
+  }
+
 
   def thetaphifromhit(hit, sec){
       def theta_DC = Math.toDegrees(
