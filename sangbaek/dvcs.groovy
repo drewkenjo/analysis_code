@@ -25,6 +25,9 @@ class dvcs{
   def hmm2 = {new H1F("$it", "$it", 1500, -2, 4)}
   def hmm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
 
+  // invaraiant mass
+  def h_inv_mass_sq_gg = {new H1F("$it", "$it", 1000, 0, 0.2}
+
   // angle between planes
   def h_angle = {new H1F("$it", "$it", 1900, -5 ,185)}
 
@@ -484,7 +487,7 @@ class dvcs{
               def ind_gam2 = gamma_selector.applyCuts_Stefan(event).max{ind->
                 if (ind!=dsets.pindex[2]) new Vector3(*[event.px, event.py, event.pz].collect{it[ind]}).mag2()}
               def gam2 = LorentzVector.withPID(22, *[event.px, event.py, event.pz].collect{it[ind_gam2]})
-              hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_sq_gg", hmm2).fill((gam + gam2).mass2())
+              hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_sq_gg", h_inv_mass_sq_gg).fill((gam + gam2).mass2())
             }
 
             def xBbin2 = xB_bin(xB)
