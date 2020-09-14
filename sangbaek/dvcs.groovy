@@ -472,18 +472,10 @@ class dvcs{
             if (event.status[dsets.pindex[1]]>=4000){
               hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
               hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
-              if (W>2){
-                hists.computeIfAbsent("/dvcs/prot_polar_CD_W>2", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-                hists.computeIfAbsent("/dvcs/prot_azimuth_CD_W>2", h_azimuth_rate).fill(pro_phi)
-              }
             }
             else if (event.status[dsets.pindex[1]]<4000){
               hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
               hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
-              if (W>2){
-                hists.computeIfAbsent("/dvcs/prot_polar_FD_W>2", h_polar_rate).fill(Math.toDegrees(pro.theta()))
-                hists.computeIfAbsent("/dvcs/prot_azimuth_FD_W>2", h_azimuth_rate).fill(pro_phi)
-              }
             }
 
             def number_of_photons = gamma_selector.applyCuts_Stefan(event).size()
