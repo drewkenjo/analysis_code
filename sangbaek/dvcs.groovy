@@ -26,7 +26,7 @@ class dvcs{
   def hmm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
 
   // invaraiant mass
-  def h_inv_mass_sq_gg = {new H1F("$it", "$it", 1000, 0, 0.2}
+  def h_inv_mass_sq_gg = {new H1F("$it", "$it", 1000, 0, 0.2}}
 
   // angle between planes
   def h_angle = {new H1F("$it", "$it", 1900, -5 ,185)}
