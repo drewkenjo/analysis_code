@@ -61,7 +61,7 @@ class DVCS {
       if(pcal_sector) secs.add(pcal_sector)
       else if(ei_sector) secs.add(ei_sector)
       else if(eo_sector) secs.add(eo_sector)
-      else if (it==1 && event.tof_status[inds[it]]) secs.add(ftof_sectors[inds[it]].sector?.find{true})
+      else if (it==1 && ftof_sectors[inds[it]]) secs.add(ftof_sectors[inds[it]].sector?.find{true})
       else secs.add(null)
     }
 
