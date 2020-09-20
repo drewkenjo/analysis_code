@@ -43,22 +43,25 @@ class DVCS {
       
       // cut by pid
       if(ind == null) return [null, null, null]
-      // if(twogamma.findsecondGamma(event) >0) return [null,null,null]
     }
 
-    def secs1 = event.pcal_sector
-    def secs2 = event.ecal_inner_sector
-    def secs3 = event.ecal_outer_sector
+    def status = (0..2).collect{it -> event.status[inds[it]]}
+
+    def pcal_sectors = event.pcal_sector
+    def ei_sectors = event.ecal_inner_sector
+    def eo_sectors = event.ecal_outer_sector
+    def ftof_sectors = event.tof
 
     def secs = []
 
     (0..<3).each{
-      def sec1 = secs1[inds[it]]
-      def sec2 = secs2[inds[it]]
-      def sec3 = secs3[inds[it]]
-      if(sec1) secs.add(sec1)
-      else if(sec2) secs.add(sec2)
-      else if(sec3) secs.add(sec3)
+      def pcal_sector = pcal_sectors[inds[it]]
+      def ei_sector = ei_sectors[inds[it]]
+      def eo_sector = eo_sectors[inds[it]]
+      if(pcal_sector) secs.add(pcal_sector)
+      else if(ei_sector) secs.add(ei_sector)
+      else if(eo_sector) secs.add(eo_sector)
+      else if (it==1 && event.tof_status[inds[it]]) secs.add(ftof_sectors[inds[it]].sector?.find{true})
       else secs.add(null)
     }
 
@@ -73,9 +76,7 @@ class DVCS {
         if(event.px[inds[i]]&& event.py[inds[i]]&& event.pz[inds[i]]) new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
     }
 
-    if (parts.contains(null)) return [null, null, null]
-
-    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
+    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it], status:status[it]]}
   }
 
   static def getEPG_EB(event) {
@@ -98,27 +99,34 @@ class DVCS {
       // if(twogamma.findsecondGamma(event) >0) return [null,null,null]
     }
 
-    def secs1 = event.pcal_sector
-    def secs2 = event.ecal_inner_sector
-    def secs3 = event.ecal_outer_sector
+    def status = (0..2).collect{it -> event.status[inds[it]]}
 
-    def secs = []
+    def pcal_sector = event.pcal_sector
+    def ftof_sector = event.tof_sector
+    def ei_sector = event.ecal_innerr_sector
+    def eo_sector = event.ecal_outer_sector
 
-    (0..<3).each{
-      def sec1 = secs1[inds[it]]
-      def sec2 = secs2[inds[it]]
-      def sec3 = secs3[inds[it]]
-      if(sec1) secs.add(sec1)
-      else if(sec2) secs.add(sec2)
-      else if(sec3) secs.add(sec3)
-      else secs.add(null)
+    // electron
+    def ele_sec = pcal_sector[inds[0]]
+    // proton
+    def pro_sec = null
+    if (status[inds[1]]>2000 && status[inds[1]]<4000) pro_sec = ftof_sector[inds[1]]
+    // photon
+    def gam_sec = null
+ 
+    if (status[inds[2]]>2000 && status[inds[2]]<4000){
+        if (pcal_sector[inds[2]]) gam_sec = pcal_sector[inds[2]]
+        else if (ei_sector[inds[2]]) gam_sec = ei_sector[inds[2]]
+        else if (eo_sector[inds[2]]) gam_sec = eo_sector[inds[2]]
     }
+
+    def secs = [ele_sec, pro_sec, gam_sec]
 
     def parts = [11,2212,22].withIndex()
       .collect{pid,i -> new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
     }
 
-    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
+    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it], status:status[it]]}
   }
 
   static def getEPG_MC(event) {
