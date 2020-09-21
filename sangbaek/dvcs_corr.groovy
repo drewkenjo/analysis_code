@@ -22,11 +22,12 @@ class dvcs_corr{
   def hists = new ConcurrentHashMap()
 
   // missing mass
-  def hmm2 = {new H1F("$it", "$it", 1500, -2, 4)}
-  def hmm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
+  def h_mm2 = {new H1F("$it", "$it", 1500, -2, 4)}
+  def h_mm2_2 = {new H1F("$it", "$it", 100, -0.2, 0.2)}
+  def h_mm2_me = {new H2F("$it", "$it", 1000, -1, 3, 100, -0.1, 0.1)}
 
   // invaraiant mass
-  def h_inv_mass_sq_gg = {new H1F("$it", "$it", 1000, 0, 0.2)}
+  def h_inv_mass_gg = {new H1F("$it", "$it", 1000, 0, 0.2)}
 
   // angle between planes
   def h_angle = {new H1F("$it", "$it", 1900, -5 ,185)}
@@ -70,10 +71,7 @@ class dvcs_corr{
   def h_W = {new H1F("$it","$it",100,0,10)}
   def h_t = {new H1F("$it","$it",100,0,4)}
   def h_y = {new H1F("$it",100,0,1)}
-
-  // exclusivity cuts
-
-  def h_excl_gam_e = {new H1F("$it","$it", 100, 0, 12)}
+  def h_Q2_W = {new H2F("$it","$it",100, 0, 10, 100, 0, 12)}
 
   //binning
   def xB_array = [0, 0.1, 0.15, 0.2, 0.3, 0.4, 1]
@@ -103,6 +101,9 @@ class dvcs_corr{
   def h_vz_theta = {new H2F("$it", "$it",100,0,100,800,-40,40)} //vz vs p
   def h_pcalecal = {new H2F("$it","$it",100,0,0.5,100,0,0.5)}   //ecal/p vs pcal/p
   def h_Sampl_mom =  {new H2F("$it", "$it",110,0,11,100,0,1)}   //Sampling fraction vs p
+
+  def h_theta_phi_ft = {new H2F("$it", "$it", 360, -180, 180, 100, 1, 6)}
+  def h_theta_mom_ft = {new H2F("$it", "$it", 120, 0, 12, 100, 1, 6)}
 
   def phi_convention = {phi ->
     phi=phi + 180
@@ -149,8 +150,10 @@ class dvcs_corr{
         // gamma correction, energy by 250 MeV
         if (gam.e()>1) gam.setPxPyPzE(gam.px(), gam.py(), gam.pz(), gam.e()+0.25)
 
-        // get sector
+        // get pindex, sector, status
+        def (ele_ind, pro_ind, gam_ind) = dsets*.pindex
         def (ele_sec, pro_sec, gam_sec) = dsets*.sector
+        def (ele_status, pro_status, gam_status) = dsets*.status
         
         // get 4 momentum variables!
         def VmissG = beam + target - ele - pro
@@ -161,7 +164,6 @@ class dvcs_corr{
         def Vlept = (beam.vect()).cross(ele.vect());
         def Vhadr = (pro.vect()).cross(VGS.vect());
         def Vhad2 = (VGS.vect()).cross(gam.vect());
-
 
         // Now kinematics used to cross sections
         def xB = KinTool.calcXb(beam, ele)
@@ -204,16 +206,21 @@ class dvcs_corr{
         hists.computeIfAbsent("/epg/h_ep_polar", h_ep_polar).fill(Math.toDegrees(pro.theta()),Math.toDegrees(ele.theta()))
 
         // check missing mass
-        hists.computeIfAbsent("/epg/hmm2_ep", hmm2).fill(VmissG.mass2())
-        hists.computeIfAbsent("/epg/hmm2_eg", hmm2).fill(VmissP.mass2())
-        hists.computeIfAbsent("/epg/hmm2_epg", hmm2_2).fill(VMISS.mass2())
-
+        hists.computeIfAbsent("/epg/h_mm2_ep", h_mm2).fill(VmissG.mass2())
+        hists.computeIfAbsent("/epg/h_mm2_eg", h_mm2).fill(VmissP.mass2())
+        hists.computeIfAbsent("/epg/h_mm2_epg", h_mm2_2).fill(VMISS.mass2())
 
         // kinematic range
         hists.computeIfAbsent("/epg/h_Q2_xB", h_Q2_xB).fill(xB,Q2)
         hists.computeIfAbsent("/epg/h_Q2_t", h_Q2_t).fill(t,Q2)
         hists.computeIfAbsent("/epg/h_t_xB", h_t_xB).fill(xB,t)
         hists.computeIfAbsent("/epg/h_Q2_theta", h_Q2_theta).fill(Math.toDegrees(ele.theta()),Q2);
+        hists.computeIfAbsent("/epg/h_Q2_xB_sec"+ele_sec, h_Q2_xB).fill(xB,Q2)
+        hists.computeIfAbsent("/epg/h_W_sec"+ele_sec, h_W).fill(W)
+        hists.computeIfAbsent("/epg/h_t_sec"+ele_sec, h_t).fill(t)
+        hists.computeIfAbsent("/epg/h_phi_sec"+ele_sec, h_cross_section).fill(TrentoAng) 
+        hists.computeIfAbsent("/epg/h_y_sec"+ele_sec, h_y).fill(KinTool.calcY(beam, ele))
+        hists.computeIfAbsent("/epg/h_Q2_W_sec"+ele_sec, h_Q2_W).fill(W, Q2)
 
         // working on binning // don't have to fill this because binning is over.
         // double theta_e = Math.toDegrees(ele.theta()) /5
@@ -221,14 +228,9 @@ class dvcs_corr{
         // h_Q2_xB_cond[theta_label].fill(xB,Q2)
         if (W>2)  hists.computeIfAbsent("/epg/h_Q2_xB_W>2", h_Q2_xB).fill(xB,Q2)
         else hists.computeIfAbsent("/epg/h_Q2_xB_W<2", h_Q2_xB).fill(xB,Q2)
-        
-
-        if (event.status[dsets.pindex[1]]>=4000) hists.computeIfAbsent("/epg/h_t_xB_pro_CD", h_Q2_xB).fill(xB,Q2)
-        if (event.status[dsets.pindex[2]]<2000) hists.computeIfAbsent("/epg/h_t_xB_gam_FT", h_Q2_xB).fill(xB,Q2)
-
 
         // check CD alignment
-        if (event.status[dsets.pindex[1]]>=4000){
+        if (pro_status>=4000){
           hists.computeIfAbsent("/epg/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
           hists.computeIfAbsent("/epg/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
           if (W>2){
@@ -236,7 +238,7 @@ class dvcs_corr{
             hists.computeIfAbsent("/epg/prot_azimuth_CD_W>2", h_azimuth_rate).fill(pro_phi)
           }
         }
-        else if (event.status[dsets.pindex[1]]<4000){
+        else if (pro_status<4000){
           hists.computeIfAbsent("/epg/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
           hists.computeIfAbsent("/epg/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
           if (W>2){
@@ -245,160 +247,155 @@ class dvcs_corr{
           }
         }
 
-        hists.computeIfAbsent("/epg/h_Q2_xB_sec"+ele_sec, h_Q2_xB).fill(xB,Q2)
-        hists.computeIfAbsent("/epg/h_W_sec"+ele_sec, h_W).fill(W)
-        hists.computeIfAbsent("/epg/h_t_sec"+ele_sec, h_t).fill(t)
-        hists.computeIfAbsent("/epg/h_phi_sec"+ele_sec, h_cross_section).fill(TrentoAng) 
-        hists.computeIfAbsent("/epg/h_y_sec"+ele_sec, h_y).fill(KinTool.calcY(beam, ele))
+        def eidep=0
+        def eodep = 0
+        def pcaldep = 0
+        if( event.ecal_inner_status.contains(ele_ind) )  eidep = event.ecal_inner_energy[ele_ind]
+        if( event.ecal_outer_status.contains(ele_ind) )  eodep = event.ecal_outer_energy[ele_ind]
+        if( event.pcal_status.contains(ele_ind) )        pcaldep = event.pcal_energy[ele_ind]
+        def edep = eidep + eodep + pcaldep
+
+        //electron pid
+        hists.computeIfAbsent("/epg/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[ele_ind])
+        hists.computeIfAbsent("/epg/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[ele_ind])
+        hists.computeIfAbsent("/epg/pid/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(eidep/ele.p(), pcaldep/ele.p())
+        hists.computeIfAbsent("/epg/pid/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
+        hists.computeIfAbsent("/epg/pid/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
+        hists.computeIfAbsent("/epg/pid/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
+
+        //proton pid
+        def pro_string = ''
+        if (pro_status>=4000) pro_string = 'cd'
+        else if (pro_status>=2000) pro_string = 'fd_S'+pro_sec 
+
+        hists.computeIfAbsent("/epg/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind])
+        hists.computeIfAbsent("/epg/pid/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind]-event.vz[ele_ind])
+        hists.computeIfAbsent("/epg/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[pro_ind])
+        hists.computeIfAbsent("/epg/pid/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
+        hists.computeIfAbsent("/epg/pid/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+
+        //gamma pid
+        def gam_string = ''
+        if (gam_status<4000 && gam_status>=2000) gam_string = 'fd_S'+gam_sec
+        else if (gam_status>=1000 && gam_status<2000) gam_string = 'ft' 
+
+        if (gam_string == 'ft'){
+          hists.computeIfAbsent("/epg/pid/gam/theta_phi_"+gam_string, h_theta_phi_ft).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
+          hists.computeIfAbsent("/epg/pid/gam/theta_mom_"+gam_string, h_theta_mom_ft).fill(gam.p(), Math.toDegrees(gam.theta()))
+        }
+        else{
+          hists.computeIfAbsent("/epg/pid/gam/theta_phi_"+gam_string, h_theta_phi).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
+          hists.computeIfAbsent("/epg/pid/gam/theta_mom_"+gam_string, h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+        }
 
         if (DVCS.KineCuts(xB, Q2, W, ele, gam)){
 
-          def eidep=0
-          def eodep = 0
-          def pcaldep = 0
-          if( event.ecal_inner_status.contains(dsets[0].pindex) )  eidep = event.ecal_inner_energy[dsets[0].pindex]
-          if( event.ecal_outer_status.contains(dsets[0].pindex) )  eodep = event.ecal_outer_energy[dsets[0].pindex]
-          if( event.pcal_status.contains(dsets[0].pindex) )        pcaldep = event.pcal_energy[dsets[0].pindex]
-          def edep = eidep + eodep + pcaldep
-
-          //electron pid
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[dsets[0].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[dsets[0].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(event.ecal_inner_energy[dsets[0].pindex]/ele.p(), event.pcal_energy[dsets[0].pindex]/ele.p())
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
-          hists.computeIfAbsent("/excl/pid/kine_cuts/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
-
-          //proton pid
-          def pro_status = event.status[dsets[1].pindex]
-          def pro_string = ''
-          if (pro_status>=4000) pro_string = 'cd'
-          else if (pro_status>=2000) pro_string = 'fd_S'+pro_sec 
-
-          hists.computeIfAbsent("/excl/pid/kine_cuts/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[dsets[1].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[dsets[1].pindex]-event.vz[dsets[0].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[dsets[1].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
-          hists.computeIfAbsent("/excl/pid/kine_cuts/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
-
-          //gamma pid
-          def gam_status = event.status[dsets[2].pindex]
-          def gam_string = ''
-          if (gam_status<4000 && gam_status>=2000) gam_string = 'fd_S'+gam_sec
-          else if (gam_status>=1000 && gam_status<2000) gam_string = 'ft' 
-
-          hists.computeIfAbsent("/excl/pid/kine_cuts/gam/vz_mom_"+gam_string, h_vz_mom).fill(gam.p(), event.vz[dsets[2].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/gam/vzdiff_mom_"+gam_string, h_vz_mom).fill(gam.p(), event.vz[dsets[2].pindex]-event.vz[dsets[0].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/gam/vz_theta_"+gam_string, h_vz_theta).fill(Math.toDegrees(gam.theta()), event.vz[dsets[2].pindex])
-          hists.computeIfAbsent("/excl/pid/kine_cuts/gam/theta_phi_"+gam_string, h_theta_phi).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
-          hists.computeIfAbsent("/excl/pid/kine_cuts/gam/theta_mom_"+gam_string, h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
-
           //excl cuts
-          hists.computeIfAbsent("/excl/gam_e", h_excl_gam_e).fill(gam.e())
           hists.computeIfAbsent("/excl/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-          hists.computeIfAbsent("/excl/missing_energy", hmm2).fill(VMISS.e())
-          hists.computeIfAbsent("/excl/missing_mass_epg", hmm2).fill(VMISS.mass2())
-          hists.computeIfAbsent("/excl/missing_mass_eg", hmm2).fill(VmissP.mass2())
-          hists.computeIfAbsent("/excl/missing_mass_ep", hmm2).fill(VmissG.mass2())
-          hists.computeIfAbsent("/excl/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-          hists.computeIfAbsent("/excl/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+          hists.computeIfAbsent("/excl/missing_energy", h_mm2).fill(VMISS.e())
+          hists.computeIfAbsent("/excl/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+          hists.computeIfAbsent("/excl/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+          hists.computeIfAbsent("/excl/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+          hists.computeIfAbsent("/excl/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+          hists.computeIfAbsent("/excl/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
           hists.computeIfAbsent("/excl/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+          hists.computeIfAbsent("/excl/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
 
           if (KinTool.Vangle(gam.vect(),ele.vect())>4){
-            hists.computeIfAbsent("/excl/cuts/cone_angle/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/cone_angle/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/cone_angle/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/cone_angle/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/cone_angle/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/cone_angle/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/cone_angle/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (VMISS.e()<1.5){
-            hists.computeIfAbsent("/excl/cuts/missing_energy/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/missing_energy/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/missing_energy/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_energy/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/missing_energy/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/missing_energy/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/missing_energy/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (VMISS.mass2() <0.2 && VMISS.mass2() >-0.2 ){
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/missing_mass_epg/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/missing_mass_epg/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_epg/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (VmissP.mass2() < 3 && VmissP.mass2() > -0.25){
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/missing_mass_eg/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/missing_mass_eg/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_eg/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (VmissG.mass2() < 1 && VmissG.mass2() > -1){
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/missing_mass_ep/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/missing_mass_ep/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/missing_mass_ep/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()) < 0.3){
-            hists.computeIfAbsent("/excl/cuts/missing_pt/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/missing_pt/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/missing_pt/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/missing_pt/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/missing_pt/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/missing_pt/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/missing_pt/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (KinTool.Vangle(gam.vect(),VmissG.vect()) < 3){
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/gam_e", h_excl_gam_e).fill(gam.e())
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
-            hists.computeIfAbsent("/excl/cuts/recon_gam_con_angle/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/recon_gam_cone_angle/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
           }
 
           if (KinTool.Vangle(Vhad2,Vhadr) < 4){
-            hists.computeIfAbsent("/excl/cuts/coplanarity/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/coplanarity/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/coplanarity/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/coplanarity/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/coplanarity/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/coplanarity/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
-          }
+            hists.computeIfAbsent("/excl/cuts/coplanarity/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
+         }
 
           if (DVCS.ExclCuts(gam, ele, VMISS, VmissP, VmissG, Vhadr, Vhad2)){
             //calc tcol tmin
@@ -410,45 +407,57 @@ class dvcs_corr{
             int Q2bin = 1 + 2 * Math.floor(Q2/2)
 
             //electron pid
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[dsets[0].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[dsets[0].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(event.ecal_inner_energy[dsets[0].pindex]/ele.p(), event.pcal_energy[dsets[0].pindex]/ele.p())
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
-            hists.computeIfAbsent("/excl/pid/excl_cuts/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
+            hists.computeIfAbsent("/excl/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[ele_ind])
+            hists.computeIfAbsent("/excl/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[ele_ind])
+            hists.computeIfAbsent("/excl/pid/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(eidep/ele.p(), pcaldep/ele.p())
+            hists.computeIfAbsent("/excl/pid/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
+            hists.computeIfAbsent("/excl/pid/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
+            hists.computeIfAbsent("/excl/pid/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
 
             //proton pid
-            hists.computeIfAbsent("/excl/pid/excl_cuts/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[dsets[1].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[dsets[1].pindex]-event.vz[dsets[0].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[dsets[1].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
-            hists.computeIfAbsent("/excl/pid/excl_cuts/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
+            hists.computeIfAbsent("/excl/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind])
+            hists.computeIfAbsent("/excl/pid/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind]-event.vz[ele_ind])
+            hists.computeIfAbsent("/excl/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[pro_ind])
+            hists.computeIfAbsent("/excl/pid/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
+            hists.computeIfAbsent("/excl/pid/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
 
             //gamma pid
-            hists.computeIfAbsent("/excl/pid/excl_cuts/gam/vz_mom_"+gam_string, h_vz_mom).fill(gam.p(), event.vz[dsets[2].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/gam/vzdiff_mom_"+gam_string, h_vz_mom).fill(gam.p(), event.vz[dsets[2].pindex]-event.vz[dsets[0].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/gam/vz_theta_"+gam_string, h_vz_theta).fill(Math.toDegrees(gam.theta()), event.vz[dsets[2].pindex])
-            hists.computeIfAbsent("/excl/pid/excl_cuts/gam/theta_phi_"+gam_string, h_theta_phi).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
-            hists.computeIfAbsent("/excl/pid/excl_cuts/gam/theta_mom_"+gam_string, h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+            if (gam_string == 'ft'){
+              hists.computeIfAbsent("/excl/pid/gam/theta_phi_"+gam_string, h_theta_phi_ft).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
+              hists.computeIfAbsent("/excl/pid/gam/theta_mom_"+gam_string, h_theta_mom_ft).fill(gam.p(), Math.toDegrees(gam.theta()))
+            }
+            else{
+              hists.computeIfAbsent("/excl/pid/gam/theta_phi_"+gam_string, h_theta_phi).fill(Math.toDegrees(gam.phi()), Math.toDegrees(gam.theta()))
+              hists.computeIfAbsent("/excl/pid/gam/theta_mom_"+gam_string, h_theta_mom).fill(gam.p(), Math.toDegrees(gam.theta()))
+            }
 
             //excl cuts
-            hists.computeIfAbsent("/excl/cuts/all/gam_e", h_excl_gam_e).fill(gam.e())
             hists.computeIfAbsent("/excl/cuts/all/cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),ele.vect()))
-            hists.computeIfAbsent("/excl/cuts/all/missing_energy", hmm2).fill(VMISS.e())
-            hists.computeIfAbsent("/excl/cuts/all/missing_mass_epg", hmm2).fill(VMISS.mass2())
-            hists.computeIfAbsent("/excl/cuts/all/missing_mass_eg", hmm2).fill(VmissP.mass2())
-            hists.computeIfAbsent("/excl/cuts/all/missing_mass_ep", hmm2).fill(VmissG.mass2())
-            hists.computeIfAbsent("/excl/cuts/all/missing_pt", hmm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
-            hists.computeIfAbsent("/excl/cuts/all/recon_gam_con_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
+            hists.computeIfAbsent("/excl/cuts/all/missing_energy", h_mm2).fill(VMISS.e())
+            hists.computeIfAbsent("/excl/cuts/all/missing_mass_epg", h_mm2).fill(VMISS.mass2())
+            hists.computeIfAbsent("/excl/cuts/all/missing_mass_eg", h_mm2).fill(VmissP.mass2())
+            hists.computeIfAbsent("/excl/cuts/all/missing_mass_ep", h_mm2).fill(VmissG.mass2())
+            hists.computeIfAbsent("/excl/cuts/all/missing_pt", h_mm2).fill(Math.sqrt(VMISS.px()*VMISS.px()+VMISS.py()*VMISS.py()))
+            hists.computeIfAbsent("/excl/cuts/all/recon_gam_cone_angle", h_angle).fill(KinTool.Vangle(gam.vect(),VmissG.vect()))
             hists.computeIfAbsent("/excl/cuts/all/coplanarity", h_angle).fill(KinTool.Vangle(Vhad2,Vhadr))
+            hists.computeIfAbsent("/excl/cuts/all/mm2epg_me", h_mm2_me).fill(VMISS.e(), VMISS.mass2())
 
             hists.computeIfAbsent("/dvcs/corr/tmin", h_Q2_xB).fill(xB,Q2,tmin)
             hists.computeIfAbsent("/dvcs/corr/tcol", h_Q2_xB).fill(xB,Q2,tcol)
             hists.computeIfAbsent("/dvcs/binning/h_Q2_xB", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/binning/h_t_trento", h_t_trento).fill(TrentoAng, t)
             hists.computeIfAbsent("/dvcs/binning/h_Q2_t", h_Q2_t).fill(t,Q2)
-            hists.computeIfAbsent("/dvcs/binning/h_Q2_xB_logarithmic", h_Q2_xB_logarithmic).fill(Math.log10(xB), Math.log10(Q2))
-            hists.computeIfAbsent("/dvcs/binning/h_t_trento_logarithmic", h_t_trento_logarithmic).fill(TrentoAng, Math.log10(t2))
+            hists.computeIfAbsent("/dvcs/binning/h_Q2_xB_logarithmic", h_Q2_xB_logarithmic).fill(Math.log10(xB), Math.log10(Q2), 1/Q2/xB)
+            hists.computeIfAbsent("/dvcs/binning/h_t_trento_logarithmic", h_t_trento_logarithmic).fill(TrentoAng, Math.log10(t2), 1/t2)
+
+            hists.computeIfAbsent("/dvcs/binning/h_t_xB", h_t_xB).fill(xB,t)
+            hists.computeIfAbsent("/dvcs/binning/h_Q2_theta", h_Q2_theta).fill(Math.toDegrees(ele.theta()),Q2);
+            hists.computeIfAbsent("/dvcs/binning/h_Q2_xB_sec"+ele_sec, h_Q2_xB).fill(xB,Q2)
+            hists.computeIfAbsent("/dvcs/binning/h_W_sec"+ele_sec, h_W).fill(W)
+            hists.computeIfAbsent("/dvcs/binning/h_t_sec"+ele_sec, h_t).fill(t)
+            hists.computeIfAbsent("/dvcs/binning/h_phi_sec"+ele_sec, h_cross_section).fill(TrentoAng) 
+            hists.computeIfAbsent("/dvcs/binning/h_y_sec"+ele_sec, h_y).fill(KinTool.calcY(beam, ele))
+            hists.computeIfAbsent("/dvcs/binning/h_Q2_W_sec"+ele_sec, h_Q2_W).fill(W, Q2)
 
             def pro_phi_convention = phi_convention(Math.toDegrees(pro.phi()-ele.phi()))
             def gam_phi_convention = phi_convention(Math.toDegrees(gam.phi()-ele.phi()))
@@ -474,11 +483,11 @@ class dvcs_corr{
             hists.computeIfAbsent("/dvcs/corr/h_Q2_xB_t2", h_Q2_xB).fill(xB,Q2,t2)
 
             // check CD alignment
-            if (event.status[dsets.pindex[1]]>=4000){
+            if (pro_status>=4000){
               hists.computeIfAbsent("/dvcs/prot_polar_CD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
               hists.computeIfAbsent("/dvcs/prot_azimuth_CD", h_azimuth_rate).fill(pro_phi)
             }
-            else if (event.status[dsets.pindex[1]]<4000){
+            else if (pro_status<4000 && pro_status>2000){
               hists.computeIfAbsent("/dvcs/prot_polar_FD", h_polar_rate).fill(Math.toDegrees(pro.theta()))
               hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
             }
@@ -489,7 +498,7 @@ class dvcs_corr{
               def ind_gam2 = gamma_selector.applyCuts_Stefan(event).max{ind->
                 if (ind!=dsets.pindex[2]) new Vector3(*[event.px, event.py, event.pz].collect{it[ind]}).mag2()}
               def gam2 = LorentzVector.withPID(22, *[event.px, event.py, event.pz].collect{it[ind_gam2]})
-              hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_sq_gg", h_inv_mass_sq_gg).fill((gam + gam2).mass2())
+              hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_gg", h_inv_mass_gg).fill((gam + gam2).mass())
             }
 
             def xBbin2 = xB_bin(xB)
@@ -500,17 +509,17 @@ class dvcs_corr{
             hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
             hists.computeIfAbsent("/dvcs/heli_$helicity/h_trento_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_cross_section).fill(TrentoAng)
             
-            if (event.status[dsets.pindex[1]]>=4000){
+            if (pro_status>=4000){
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_pro_CD_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_trento_pro_CD_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_cross_section).fill(TrentoAng)
             }
 
-            if (event.status[dsets.pindex[2]]<2000){
+            if (gam_status<2000){
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_trento_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_cross_section).fill(TrentoAng)
             }
 
-            if (event.status[dsets.pindex[1]]>=4000 && event.status[dsets.pindex[2]]<2000){
+            if (pro_status>=4000 && gam_status<2000){
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_Q2_xB_pro_CD_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_Q2_xB).fill(xB,Q2)
               hists.computeIfAbsent("/dvcs/heli_$helicity/h_trento_pro_CD_gam_FT_xB_${xBbin2}_Q2_${Q2bin2}_t_${tbin}", h_cross_section).fill(TrentoAng)
             }            

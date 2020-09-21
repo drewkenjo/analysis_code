@@ -150,14 +150,22 @@ class DVCS {
     }
 
     def secs = parts.collect{
-      def phi = Math.toDegrees(it.theta())
+      def phi = Math.toDegrees(it.phi())
       phi += 20;
       if (phi<0) phi+=180;
       int sec = (int) phi/60;
       return sec
     }
 
-    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it]]}
+    def status = parts.collect{
+      def theta = Math.toDegrees(it.theta())
+      if (theta>2.5 && theta<5) return 1500 
+      else if (theta<35) return 2500
+      else return 4500
+    }
+
+
+    return (0..<3).collect{[particle:parts[it], pindex:inds[it], sector:secs[it], status:status[it]]}
   }
 
 
