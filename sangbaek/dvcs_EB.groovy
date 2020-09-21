@@ -112,9 +112,6 @@ class dvcs_EB{
     return phi
   }
 
-  def electron_selector = new electron()
-  def proton_selector = new proton()
-  def gamma_selector = new gamma()
   def beam = LorentzVector.withPID(11, 0, 0, 10.6)
   def target = LorentzVector.withPID(2212, 0, 0, 0)
 
@@ -140,7 +137,7 @@ class dvcs_EB{
         }
       }      
       // get epg coincidence, no exclusive cut applied. electron cut from Brandon's package
-      def dsets = DVCS.getEPG_EB(event, electron_selector, proton_selector, gamma_selector)
+      def dsets = DVCS.getEPG_EB(event)
       def (ele, pro, gam) = dsets*.particle.collect{it ? it.vector() : null} 
       // process only if there's a epg set in coincidence
       if(ele!=null) {
