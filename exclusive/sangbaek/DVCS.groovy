@@ -147,7 +147,7 @@ class DVCS {
     }
 
     def secs = parts.collect{
-      def phi = Math.toDegrees(it.theta())
+      def phi = Math.toDegrees(it.phi())
       phi += 20;
       if (phi<0) phi+=360;
       int sec = (int) phi/60;
