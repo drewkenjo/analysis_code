@@ -245,19 +245,9 @@ class dvcs_gen{
           }
         }
 
-        def eidep=0
-        def eodep = 0
-        def pcaldep = 0
-        if( event.ecal_inner_status.contains(ele_ind) )  eidep = event.ecal_inner_energy[ele_ind]
-        if( event.ecal_outer_status.contains(ele_ind) )  eodep = event.ecal_outer_energy[ele_ind]
-        if( event.pcal_status.contains(ele_ind) )        pcaldep = event.pcal_energy[ele_ind]
-        def edep = eidep + eodep + pcaldep
-
         //electron pid
-        hists.computeIfAbsent("/epg/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[ele_ind])
-        hists.computeIfAbsent("/epg/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[ele_ind])
-        hists.computeIfAbsent("/epg/pid/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(eidep/ele.p(), pcaldep/ele.p())
-        hists.computeIfAbsent("/epg/pid/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
+        hists.computeIfAbsent("/epg/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.mc_vz[ele_ind])
+        hists.computeIfAbsent("/epg/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.mc_vz[ele_ind])
         hists.computeIfAbsent("/epg/pid/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
         hists.computeIfAbsent("/epg/pid/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
 
@@ -266,9 +256,8 @@ class dvcs_gen{
         if (pro_status>=4000) pro_string = 'cd'
         else if (pro_status>=2000) pro_string = 'fd_S'+pro_sec 
 
-        hists.computeIfAbsent("/epg/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind])
-        hists.computeIfAbsent("/epg/pid/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind]-event.vz[ele_ind])
-        hists.computeIfAbsent("/epg/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[pro_ind])
+        hists.computeIfAbsent("/epg/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.mc_vz[pro_ind])
+        hists.computeIfAbsent("/epg/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.mc_vz[pro_ind])
         hists.computeIfAbsent("/epg/pid/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
         hists.computeIfAbsent("/epg/pid/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
 
@@ -410,17 +399,14 @@ class dvcs_gen{
             int Q2bin = 1 + 2 * Math.floor(Q2/2)
 
             //electron pid
-            hists.computeIfAbsent("/excl/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.vz[ele_ind])
-            hists.computeIfAbsent("/excl/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.vz[ele_ind])
-            hists.computeIfAbsent("/excl/pid/ele/pcalecal_S"+ele_sec, h_pcalecal).fill(eidep/ele.p(), pcaldep/ele.p())
-            hists.computeIfAbsent("/excl/pid/ele/Sampl_mom_S"+ele_sec, h_Sampl_mom).fill(ele.p(), edep/ele.p())
+            hists.computeIfAbsent("/excl/pid/ele/vz_mom_S"+ele_sec, h_vz_mom).fill(ele.p(), event.mc_vz[ele_ind])
+            hists.computeIfAbsent("/excl/pid/ele/vz_theta_S"+ele_sec, h_vz_theta).fill(Math.toDegrees(ele.theta()), event.mc_vz[ele_ind])
             hists.computeIfAbsent("/excl/pid/ele/theta_phi_S"+ele_sec, h_theta_phi).fill(Math.toDegrees(ele.phi()), Math.toDegrees(ele.theta()))
             hists.computeIfAbsent("/excl/pid/ele/theta_mom_S"+ele_sec, h_theta_mom).fill(ele.p(), Math.toDegrees(ele.theta()))
 
             //proton pid
-            hists.computeIfAbsent("/excl/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind])
-            hists.computeIfAbsent("/excl/pid/pro/vzdiff_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.vz[pro_ind]-event.vz[ele_ind])
-            hists.computeIfAbsent("/excl/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.vz[pro_ind])
+            hists.computeIfAbsent("/excl/pid/pro/vz_mom_"+pro_string, h_vz_mom).fill(pro.p(), event.mc_vz[pro_ind])
+            hists.computeIfAbsent("/excl/pid/pro/vz_theta_"+pro_string, h_vz_theta).fill(Math.toDegrees(pro.theta()), event.mc_vz[pro_ind])
             hists.computeIfAbsent("/excl/pid/pro/theta_phi_"+pro_string, h_theta_phi).fill(Math.toDegrees(pro.phi()), Math.toDegrees(pro.theta()))
             hists.computeIfAbsent("/excl/pid/pro/theta_mom_"+pro_string, h_theta_mom).fill(pro.p(), Math.toDegrees(pro.theta()))
 
@@ -499,12 +485,12 @@ class dvcs_gen{
               hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
             }
 
-            def number_of_photons = gamma_selector.applyCuts_Stefan(event).size()
+            def number_of_photons = (0..<event.mc_npart).findAll{event.mc_pid[it]==22}.size()
             hists.computeIfAbsent("/dvcs/number_of_photons", h_events).fill(number_of_photons)
             if (number_of_photons>1){
-              def ind_gam2 = gamma_selector.applyCuts_Stefan(event).max{ind->
-                if (ind!=dsets.pindex[2]) new Vector3(*[event.px, event.py, event.pz].collect{it[ind]}).mag2()}
-              def gam2 = LorentzVector.withPID(22, *[event.px, event.py, event.pz].collect{it[ind_gam2]})
+              def ind_gam2 = (0..<event.mc_npart).findAll{event.mc_pid[it]==22}.max{ind->
+                if (ind!=gam_ind) new Vector3(*[event.mc_px, event.mc_py, event.mc_pz].collect{it[ind]}).mag2()}
+              def gam2 = LorentzVector.withPID(22, *[event.mc_px, event.mc_py, event.mc_pz].collect{it[ind_gam2]})
               hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_gg", h_inv_mass_gg).fill((gam + gam2).mass())
             }
 

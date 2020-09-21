@@ -8,10 +8,6 @@ import exclusive.sangbaek.DVCS
 import utils.KinTool
 import event.Event
 import event.EventConverter
-import pid.electron.ElectronSelector
-import pid.sangbaek.electron
-import pid.sangbaek.proton
-import pid.sangbaek.gamma
 import run.Run
 import java.util.concurrent.ConcurrentHashMap
 import org.jlab.clas.pdg.PDGDatabase
@@ -495,10 +491,10 @@ class dvcs_EB{
               hists.computeIfAbsent("/dvcs/prot_azimuth_FD", h_azimuth_rate).fill(pro_phi)
             }
 
-            def number_of_photons = gamma_selector.applyCuts_Stefan(event).size()
+            def number_of_photons = (0..<event.npart).findAll{event.pid[it]==22}.size()
             hists.computeIfAbsent("/dvcs/number_of_photons", h_events).fill(number_of_photons)
             if (number_of_photons>1){
-              def ind_gam2 = gamma_selector.applyCuts_Stefan(event).max{ind->
+              def ind_gam2 = (0..<event.npart).findAll{event.pid[it]==2212}.max{ind->
                 if (ind!=dsets.pindex[2]) new Vector3(*[event.px, event.py, event.pz].collect{it[ind]}).mag2()}
               def gam2 = LorentzVector.withPID(22, *[event.px, event.py, event.pz].collect{it[ind_gam2]})
               hists.computeIfAbsent("/dvcs/pi0/h_inv_mass_gg", h_inv_mass_gg).fill((gam + gam2).mass())
