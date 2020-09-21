@@ -146,8 +146,8 @@ class DVCS {
       .collect{pid,i -> new Particle(pid, *[event.mc_px, event.mc_py, event.mc_pz].collect{it[inds[i]]})
     }
 
-    def secs = {it ->
-      def phi = Math.toDegrees(it)
+    def secs = parts.collect{
+      def phi = Math.toDegrees(it.theta())
       phi += 20;
       if (phi<0) phi+=360;
       int sec = (int) phi/60;
