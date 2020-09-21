@@ -101,26 +101,23 @@ class DVCS {
 
     def status = (0..2).collect{it -> event.status[inds[it]]}
 
-    def pcal_sector = event.pcal_sector
-    def ftof_sector = event.tof_sector
-    def ei_sector = event.ecal_inner_sector
-    def eo_sector = event.ecal_outer_sector
+    def pcal_sectors = event.pcal_sector
+    def ei_sectors = event.ecal_inner_sector
+    def eo_sectors = event.ecal_outer_sector
+    def ftof_sectors = event.tof
 
-    // electron
-    def ele_sec = pcal_sector[inds[0]]
-    // proton
-    def pro_sec = null
-    if (status[inds[1]]>2000 && status[inds[1]]<4000) pro_sec = ftof_sector[inds[1]]
-    // photon
-    def gam_sec = null
- 
-    if (status[inds[2]]>2000 && status[inds[2]]<4000){
-        if (pcal_sector[inds[2]]) gam_sec = pcal_sector[inds[2]]
-        else if (ei_sector[inds[2]]) gam_sec = ei_sector[inds[2]]
-        else if (eo_sector[inds[2]]) gam_sec = eo_sector[inds[2]]
+    def secs = []
+
+    (0..<3).each{
+      def pcal_sector = pcal_sectors[inds[it]]
+      def ei_sector = ei_sectors[inds[it]]
+      def eo_sector = eo_sectors[inds[it]]
+      if(pcal_sector) secs.add(pcal_sector)
+      else if(ei_sector) secs.add(ei_sector)
+      else if(eo_sector) secs.add(eo_sector)
+      else if (it==1 && ftof_sectors[inds[it]]) secs.add(ftof_sectors[inds[it]].sector?.find{true})
+      else secs.add(null)
     }
-
-    def secs = [ele_sec, pro_sec, gam_sec]
 
     def parts = [11,2212,22].withIndex()
       .collect{pid,i -> new Particle(pid, *[event.px, event.py, event.pz].collect{it[inds[i]]})
@@ -149,12 +146,12 @@ class DVCS {
       .collect{pid,i -> new Particle(pid, *[event.mc_px, event.mc_py, event.mc_pz].collect{it[inds[i]]})
     }
 
-    def secs = parts.collect{
-      def phi = Math.toDegrees(it.phi())
+    def secs = {it ->
+      def phi = Math.toDegrees(it)
       phi += 20;
-      if (phi<0) phi+=180;
+      if (phi<0) phi+=360;
       int sec = (int) phi/60;
-      return sec
+      return sec+1
     }
 
     def status = parts.collect{
