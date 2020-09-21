@@ -103,7 +103,7 @@ class DVCS {
 
     def pcal_sector = event.pcal_sector
     def ftof_sector = event.tof_sector
-    def ei_sector = event.ecal_innerr_sector
+    def ei_sector = event.ecal_inner_sector
     def eo_sector = event.ecal_outer_sector
 
     // electron
