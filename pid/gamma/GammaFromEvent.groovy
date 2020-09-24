@@ -16,6 +16,9 @@ class GammaFromEvent {
   }
 
   def passGammaPCALFiducialCut = { event, index ->
+
+    if (event.status[index]<2000) return true
+
     if (event.pcal_status.contains(index)){   
         return ( event.pcal_v[index] > min_v  && event.pcal_w[index] > min_w)
     }
