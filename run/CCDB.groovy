@@ -58,5 +58,5 @@ class CCDB {
 			if(verboseLevel>0) println(String.format("Target Position %d, %f",this.run_number,this.targetTable.getDoubleValue("position",0,0,0)));
 			if(verboseLevel>0) println(String.format("Target Length %d, %f",this.run_number,this.targetTable.getDoubleValue("length",0,0,0)));
 		}
-    }
+	}
 }

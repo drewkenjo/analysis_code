@@ -1,5 +1,6 @@
 package utils
 import org.jlab.clas.physics.LorentzVector
+import org.jlab.clas.physics.Vector3
 import org.jlab.clas.pdg.PDGDatabase
 
 
@@ -52,8 +53,10 @@ class KinTool{
 	return Math.toDegrees((calc_theta  - measured_el.theta() ))
     }
 
-    
-    
+    static def Vangle = {v1, v2 -> 
+        if( v1.mag() * v2.mag() !=0 && v1.dot(v2)<v1.mag()*v2.mag() ) return Math.toDegrees( Math.acos(v1.dot(v2)/(v1.mag()*v2.mag()) ) ); 
+        else return 0
+    }
 
 }
 
