@@ -27,6 +27,9 @@ class ProtonSelector{
       this.protonCuts.passProtonVertexCut
     ]
   }
+  def setCutParameterFromMagField( field_config ){
+    protonCuts.setProtonCutParameters(field_config)
+  }
 
   def getGoodProtonWithCuts(event){
     //return a list of REC::Particle indices for tracks passing all proton cuts
