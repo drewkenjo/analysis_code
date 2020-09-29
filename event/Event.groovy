@@ -14,7 +14,7 @@ class Event {
     Boolean mc_status
 
     // All detector status variables collected together
-    HashSet<Integer> cherenkov_status, ecal_inner_status, ecal_outer_status, pcal_status, ctof_status
+    HashSet<Integer> cherenkov_status, ecal_inner_status, ecal_outer_status, pcal_status, ctof_status, cvt_status
     HashSet<Integer> dc1_status, dc2_status, dc3_status, tof_status, covariance_status
 
     // REC::Cherenkov
@@ -51,6 +51,10 @@ class Event {
     HashMap<Integer, Float> dc_chi2
     HashMap<Integer, Short> dc_sector, dc_ndf
 
+    HashMap<Integer, Float> cvt_chi2
+    HashMap<Integer, Short> cvt_ndf
+
+
     // MC::Particle
     HashMap<Integer, Short> mc_pid
     HashMap<Integer, Float> mc_px, mc_py, mc_pz, mc_p, mc_vx, mc_vy, mc_vz, mc_vt
@@ -65,6 +69,7 @@ class Event {
         dc3_status = new HashSet<Integer>()
         tof_status = new HashSet<Integer>()
         ctof_status = new HashSet<Integer>()
+        cvt_status = new HashSet<Integer>()
         covariance_status = new HashSet<Integer>()
 
         // REC::Particle
@@ -139,6 +144,9 @@ class Event {
         dc_sector = new HashMap<Integer, Short>()
         dc_ndf = new HashMap<Integer, Short>()
         dc_chi2 = new HashMap<Integer, Float>()
+
+        cvt_ndf = new HashMap<Integer, Short>()
+        cvt_chi2 = new HashMap<Integer, Float>()
 
         mc_pid = new HashMap<Integer, Short>()
         mc_px = new HashMap<Integer, Float>()

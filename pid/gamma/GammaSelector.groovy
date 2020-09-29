@@ -15,17 +15,9 @@ class GammaSelector {
  	this.gammaCutStrategies = [
 	    gammaCuts.passGammaEBPIDCut,
 	    gammaCuts.passGammaPCALFiducialCut,
+        gammaCuts.passGammaBetaCut
 	]
     }
-
-    def setCutParameterFromMagField( field_config ){
-		gammaCuts.setGammaCutParameters(field_config)
-    }
-
-    def setGammaCutStrictness(gam_cut_strictness){
-		gammaCuts.setGammaCutStrictness(gam_cut_strictness)
-    }
-
 
     def getGoodGammaWithCuts(event){
 	//return map - key is index of track in REC::Particle and value is list of booleans for the cuts

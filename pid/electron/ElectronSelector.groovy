@@ -23,12 +23,9 @@ class ElectronSelector {
 	    electronCuts.passElectronVertexCut,
 	    electronCuts.passElectronPCALFiducialCut,
 	    electronCuts.passElectronEIEOCut,
-	    // electronCuts.passElectronDCR1,
-	    // electronCuts.passElectronDCR2,
-	    // electronCuts.passElectronDCR3,
-	    electronCuts.passElectronDCR1_updated,
-	    electronCuts.passElectronDCR2_updated,
-	    electronCuts.passElectronDCR3_updated,
+	    electronCuts.passElectronDCR1,
+	    electronCuts.passElectronDCR2,
+	    electronCuts.passElectronDCR3,
 	    electronCuts.passElectronAntiPionCut
 	]
     }
