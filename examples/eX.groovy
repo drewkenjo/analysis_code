@@ -48,7 +48,7 @@ def myElectronCutStrategies = [
     electron.passElectronNpheCut,
     electron.passElectronVertexCut,
     electron.passElectronPCALFiducialCut,
-    electron.passElectronEIEOCut,
+    electron.passElectronPCALEdepCut,
     electron.passElectronDCR1,
     electron.passElectronDCR2,
     electron.passElectronDCR3,
