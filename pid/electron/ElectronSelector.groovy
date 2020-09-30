@@ -22,7 +22,7 @@ class ElectronSelector {
 	    electronCuts.passElectronNpheCut,
 	    electronCuts.passElectronVertexCut,
 	    electronCuts.passElectronPCALFiducialCut,
-	    electronCuts.passElectronEIEOCut,
+	    electronCuts.passElectronPCALEdepCut,
 	    electronCuts.passElectronDCR1,
 	    electronCuts.passElectronDCR2,
 	    electronCuts.passElectronDCR3,

@@ -16,10 +16,10 @@ class ElectronFromEvent {
     /// def min_vz = -12
     /// def max_vz = 9
 
-    def min_ecal_inner_dep = 0.06
-    def ecal_inner_dep_loose = -0.01
-    def ecal_inner_dep_med = 0.0
-    def ecal_inner_dep_tight = 0.01
+    def min_pcal_dep = 0.06
+    def pcal_dep_loose = -0.01
+    def pcal_dep_med = 0.0
+    def pcal_dep_tight = 0.01
 
     // minimum v and w for PCAL fiducial cuts
     def min_v = 9.0
@@ -145,11 +145,11 @@ class ElectronFromEvent {
     def vz_med  = 0
     def vz_loose = 1
 
-    def vz_min_sect_inb = [-12, -12, -12, -12, -12, -12]
-    def vz_max_sect_inb = [9, 9, 9, 9, 9, 9]
+    def vz_min_sect_inb = [-13, -13, -13, -13, -13, -13]
+    def vz_max_sect_inb = [12, 12, 12, 12, 12, 12]
     
-    def vz_min_sect_outb = [-14, -14, -14, -14, -14, -14]
-    def vz_max_sect_outb = [5, 5, 5, 5, 5, 5]
+    def vz_min_sect_outb = [-18, -18, -18, -18, -18, -18]
+    def vz_max_sect_outb = [10, 10, 10, 10, 10, 10]
       
     def min_vz=null
     def max_vz=null
@@ -173,9 +173,9 @@ class ElectronFromEvent {
 	println("[ElectronFromEvent::setElectronCutStrictness] -> nphe_cut_lvl " + nphe_cut_lvl)
 	println("[ElectronFromEvent::setElectronCutStrictness] -> vz_cut_lvl " + vz_cut_lvl)
 		
-	if( ecal_cut_lvl == 0 ) { min_ecal_inner_dep += ecal_inner_dep_loose }
-	else if( ecal_cut_lvl == 1 ) { min_ecal_inner_dep += ecal_inner_dep_med }
-	else if( ecal_cut_lvl == 2 ) { min_ecal_inner_dep += ecal_inner_dep_tight }
+	if( ecal_cut_lvl == 0 ) { min_pcal_dep += pcal_dep_loose }
+	else if( ecal_cut_lvl == 1 ) { min_pcal_dep += pcal_dep_med }
+	else if( ecal_cut_lvl == 2 ) { min_pcal_dep += pcal_dep_tight }
 
 	if( nphe_cut_lvl == 0 ){ min_nphe += nphe_loose }
 	else if( nphe_cut_lvl == 1 ){ min_nphe += nphe_med }
@@ -245,7 +245,7 @@ class ElectronFromEvent {
 
 
 	println('[ElectronFromEvent::setElectronCutParameters] -> electron pdg pid ' + ebPID )
-	println('[ElectronFromEvent::setElectronCutParameters] -> min pcal edep ' + min_ecal_inner_dep )
+	println('[ElectronFromEvent::setElectronCutParameters] -> min pcal edep ' + min_pcal_dep )
 	println('[ElectronFromEvent::setElectronCutParameters] -> min nphe htcc ' + min_nphe )
 
 	println('[ElectronFromEvent::setElectronCutParameters] -> min vertexZ limits per sector ' + min_vz )
@@ -359,8 +359,8 @@ class ElectronFromEvent {
 	return (event.p[index] > p_min )
     }
 
-    def passElectronEIEOCut = { event, index ->
-	return (event.ecal_inner_status.contains(index)) ? event.ecal_inner_energy[index] > min_ecal_inner_dep : false
+    def passElectronPCALEdepCut = { event, index ->
+	return (event.pcal_status.contains(index)) ? event.pcal_energy[index] > min_pcal_dep : false
     }
 
     //detector layer r1-6, r2-18, r3-36
