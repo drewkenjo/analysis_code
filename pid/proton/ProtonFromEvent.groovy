@@ -315,7 +315,7 @@ class ProtonFromEvent {
 
   if (event.cvt_status.contains(index)){
     def pro_candidate = new Particle(2212, *[event.px, event.py, event.pz].collect{index})
-    return Math.toDegrees(pro_candidate.theta())  < 125
+    return Math.toDegrees(pro_candidate.theta())  < 75
   }
   return false
   }
