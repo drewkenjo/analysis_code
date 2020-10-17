@@ -21,11 +21,7 @@ class KinTool{
 	return 2.0*PDGDatabase.getParticleMass(2212)*(measured_prot.e()-PDGDatabase.getParticleMass(2212))
     }
 
-    static def calcT2(LorentzVector measured_el, LorentzVector measured_gam){
-    return 2.0*PDGDatabase.getParticleMass(2212)*(measured_prot.e()-PDGDatabase.getParticleMass(2212))
-    }
-
-    //used for DVCS
+    //used for DVCS.
     static def calcT2(LorentzVector beam, LorentzVector measured_el, LorentzVector measured_gam){
         def Q2 = calcQ2(beam, measured_el)
         def nu = calcNu(beam, measured_el)
