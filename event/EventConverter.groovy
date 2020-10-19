@@ -27,7 +27,7 @@ class EventConverter {
             event.start_time = evt.getFloat("startTime",0)
             event.rf_time = evt.getFloat("RFTime",0)
             event.helicity = evt.getByte("helicity",0)
-            event.beamCharge = evt.getByte("beamCharge",0)
+            event.beamCharge = evt.getFloat("beamCharge",0)
         }
         if (dataEvent.hasBank("RUN::config")){
             def conf = dataEvent.getBank("RUN::config")
