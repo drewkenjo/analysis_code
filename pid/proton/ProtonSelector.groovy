@@ -33,12 +33,12 @@ class ProtonSelector{
 
   def getGoodProtonWithCuts(event){
     //return a list of REC::Particle indices for tracks passing all proton cuts
-    (0..<event.npart).findAll{event.charge[it]>0}.collect{ ii -> [ii, this.protonCutStrategies.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
+    (0..<event.npart).findAll{event.charge[it]>0}.collect{ ii -> [ii, this.protonCutStrategies.collect{ pro_test -> pro_test(event,ii) } ] }.collectEntries()
   }
 
   def getGoodProton(event){
     //return a list of REC::Particle indices for tracks passing all proton cuts
-    def pro_cut_result = (0..<event.npart).findAll{event.charge[it]>0}.collect{ ii -> [ii, this.protonCutStrategies.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()
-    return pro_cut_result.findResults{el_indx, cut_result -> !cut_result.contains(false) ? el_indx : null}
+    def pro_cut_result = (0..<event.npart).findAll{event.charge[it]>0}.collect{ ii -> [ii, this.protonCutStrategies.collect{ pro_test -> pro_test(event,ii) } ] }.collectEntries()
+    return pro_cut_result.findResults{pro_indx, cut_result -> !cut_result.contains(false) ? pro_indx : null}
   }
 }
