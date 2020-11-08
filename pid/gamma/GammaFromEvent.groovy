@@ -8,8 +8,8 @@ class GammaFromEvent {
   def ebeam = 10.6
   def ebPID = 22
 
-  def min_v = 9
-  def min_w = 9
+  def min_v = 14
+  def min_w = 14
 
   def passGammaEBPIDCut = { event, index ->
     return (event.pid[index] == ebPID)

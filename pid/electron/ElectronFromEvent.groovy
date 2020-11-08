@@ -348,7 +348,7 @@ class ElectronFromEvent {
     }
 
     def passElectronAntiPionCut = { event, index ->
-	if( event.ecal_inner_status.contains(index) && event.pcal_status.contains(index) ){
+	if( event.ecal_inner_status.contains(index) && event.pcal_status.contains(index) && event.p[index]>4.5){
 	    return  -event.pcal_energy[index]/event.p[index] + anti_pion_threshold < event.ecal_inner_energy[index]/event.p[index]
 	}
 	return false

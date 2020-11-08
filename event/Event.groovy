@@ -10,7 +10,7 @@ class Event {
     // Scalars
     Short npart, mc_npart, helicity
     Long event_number, run_number
-    Float start_time, rf_time
+    Float start_time, rf_time, beamCharge
     Boolean mc_status
 
     // All detector status variables collected together
