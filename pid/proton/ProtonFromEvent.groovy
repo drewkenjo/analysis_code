@@ -215,11 +215,11 @@ class ProtonFromEvent {
     else if (pid==321)  pid_ind=4
     else if (pid==-321) pid_ind=5
     else pid_ind==0
-    def calc_phi_min = minparams[pid_ind][sec-1][region][0] + minparams[pid_ind][sec-1][region][1] * Math.log(theta_DC) 
-                          + minparams[pid_ind][sec-1][region][2] * theta_DC + minparams[pid_ind][sec-1][region][3] * theta_DC * theta_DC;
+    def calc_phi_min = minparams[pid_ind][sec-1][region][0] + minparams[pid_ind][sec-1][region][1] * Math.log(theta_DC) +
+                          minparams[pid_ind][sec-1][region][2] * theta_DC + minparams[pid_ind][sec-1][region][3] * theta_DC * theta_DC;
 
-    def calc_phi_max = maxparams[pid_ind][sec-1][region][0] + maxparams[pid_ind][sec-1][region][1] * Math.log(theta_DC) 
-                          + maxparams[pid_ind][sec-1][region][2] * theta_DC + maxparams[pid_ind][sec-1][region][3] * theta_DC * theta_DC;
+    def calc_phi_max = maxparams[pid_ind][sec-1][region][0] + maxparams[pid_ind][sec-1][region][1] * Math.log(theta_DC) +
+                          maxparams[pid_ind][sec-1][region][2] * theta_DC + maxparams[pid_ind][sec-1][region][3] * theta_DC * theta_DC;
 
     return [calc_phi_min, calc_phi_max];
   }
