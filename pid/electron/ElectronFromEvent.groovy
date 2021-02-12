@@ -16,10 +16,10 @@ class ElectronFromEvent {
     /// def min_vz = -12
     /// def max_vz = 9
 
-    def min_pcal_dep = 0.06
+    def min_pcal_dep = 0.07
     def pcal_dep_loose = -0.01
     def pcal_dep_med = 0.0
-    def pcal_dep_tight = 0.01
+    def pcal_dep_tight = 0.02
 
     // minimum v and w for PCAL fiducial cuts
     def min_v = 9.0
@@ -28,27 +28,13 @@ class ElectronFromEvent {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    def sigma_range = 5.0
-    def p0mean_inb = [0.105631, 0.11551, 0.112799, 0.109937, 0.116249, 0.119057]
-    def p1mean_inb = [-0.153951, -0.0253273, -0.125718, 0.165414, 0.0768411, 0.0555026]
-    def p2mean_inb = [0.00860091, 0.00706291, 0.00908884, 0.00499666, 0.00448701, 0.00558927]
-    def p3mean_inb = [-0.000821675, -0.000711488, -0.000930922, -0.000298311, -0.000455716, -0.000657084]
-    def p0sigma_inb = [0.0149613, 0.0115116, 0.00580737, 0.0106817, 0.012667, 0.00553471]
-    def p1sigma_inb = [0.00700773, 0.0116193, 0.0202375, 0.0126958, 0.00892239, 0.0216206]
-    
-    def p0mean_outb = [0.105467, 0.115261, 0.127793, 0.113359, 0.112263, 0.113507]
-    def p1mean_outb = [-0.135178, 0.135808, 0.903412, 0.598274, -0.0466815, 0.0550123]
-    def p2mean_outb = [0.00996842, 0.00672508, -0.00035721, 0.00470925, 0.00588451, 0.00923385]
-    def p3mean_outb = [-0.000754536, -0.000515365, -0.000108273, -0.000447278, -0.000358148, -0.00074643]
-    def p0sigma_outb = [0.00683747, 0.0065199, 0.00297734, 0.00759701, 0.0093309, 0.00591988]
-    def p1sigma_outb = [0.0180228, 0.0183979, 0.0250332, 0.0155001, 0.0137594, 0.0215643]
-
-    def p0mean = null
-    def p1mean = null
-    def p2mean = null
-    def p3mean = null
-    def p0sigma = null
-    def p1sigma = null
+    def sigma_range = 3.5
+    def ecal_e_sampl_mu = [[0.2531, 0.2550, 0.2514, 0.2494, 0.2528, 0.2521 ],
+    [-0.6502, -0.7472, -0.7674, -0.4913, -0.3988, -0.703  ],
+    [ 4.939, 5.350, 5.102, 6.440, 6.149, 4.957  ]]
+    def ecal_e_sampl_sigm = [[2.726e-3, 4.157e-3, 5.222e-3, 5.398e-3, 8.453e-3, 6.533e-3 ],
+    [ 1.062, 0.859, 0.5564, 0.6576, 0.3242, 0.4423   ],
+    [-4.089, -3.318, -2.078, -2.565, -0.8223, -1.274]]
 
     //dcr1,2,3 fiducial cut
     //require functional form
@@ -160,7 +146,7 @@ class ElectronFromEvent {
     def nphe_cut_lvl = null
     def vz_cut_lvl = null
 
-    def anti_pion_threshold=null
+    def anti_pion_threshold = 0.2
             
     void setElectronCutStrictness(el_cut_strictness){
 	el_cut_strictness_lvl=el_cut_strictness
@@ -212,15 +198,6 @@ class ElectronFromEvent {
 	    min_vz=vz_min_sect_outb
 	    max_vz=vz_max_sect_outb
 
-	    p0mean  = p0mean_outb
-	    p1mean  = p1mean_outb
-	    p2mean  = p2mean_outb
-	    p3mean  = p3mean_outb
-	    p0sigma = p0sigma_outb
-	    p1sigma = p1sigma_outb
-	    p_min=0.2381 + 0.11905*ebeam
-	    anti_pion_threshold = 0.2
-
         maxparams = maxparams_out
         minparams = minparams_out
 	}
@@ -229,15 +206,6 @@ class ElectronFromEvent {
 
 	    min_vz=vz_min_sect_inb
 	    max_vz=vz_max_sect_inb
-
-	    p0mean  = p0mean_inb
-	    p1mean  = p1mean_inb
-	    p2mean  = p2mean_inb
-	    p3mean  = p3mean_inb
-	    p0sigma = p0sigma_inb
-	    p1sigma = p1sigma_inb	
-	    p_min=0.2381 + 0.11905*ebeam
-	    anti_pion_threshold=0.2
 
         maxparams = maxparams_in
         minparams = minparams_in
@@ -250,14 +218,6 @@ class ElectronFromEvent {
 
 	println('[ElectronFromEvent::setElectronCutParameters] -> min vertexZ limits per sector ' + min_vz )
 	println('[ElectronFromEvent::setElectronCutParameters] -> max vertexZ limits per sector ' + max_vz )
-
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p0 mean ' + p0mean )
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p1 mean ' + p1mean )
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p2 mean ' + p2mean )
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p3 mean ' + p3mean )
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p1 sigma ' + p0sigma )
-	println('[ElectronFromEvent::setElectronCutParameters] -> ec sampling fraction p2 sigma ' + p1sigma )
-
     }
 
     //////////////////////////////////////////////
@@ -334,9 +294,18 @@ class ElectronFromEvent {
 	    def edep = eidep + eodep + pcaldep 
 	    if( sector >= 0 ){
 		
-		def p = event.p[index]			
-		def mean = p0mean[sector] * (1 + p/Math.sqrt(p*p + p1mean[sector])) + p2mean[sector]*p + p3mean[sector]*p*p
-		def sigma = p0sigma[sector] + p1sigma[sector]/Math.sqrt(p)
+		def p = event.p[index]
+        if (event.mc_status){
+        ecal_e_sampl_mu = [[0.248605, 0.248605, 0.248605, 0.248605, 0.248605, 0.248605 ],
+        [-0.844221, -0.844221, -0.844221, -0.844221, -0.844221, -0.844221  ],
+        [ 4.87777, 4.87777, 4.87777, 4.87777, 4.87777, 4.87777  ]]
+        ecal_e_sampl_sigm = [[7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3, 7.41575e-3 ],
+        [ 0.215861, 0.215861, 0.215861, 0.215861, 0.215861, 0.215861   ],
+        [-0.319801, -0.319801, -0.319801, -0.319801, -0.319801, -0.319801]]
+        }
+
+        def mean = ecal_e_sampl_mu[0][sector] + ecal_e_sampl_mu[1][sector]/1000*Math.pow(p-ecal_e_sampl_mu[2][sector],2);
+        def sigma = ecal_e_sampl_sigm[0][sector] + ecal_e_sampl_sigm[1][sector]/(10*(p-ecal_e_sampl_sigm[2][sector]));
 
 		def upper_cut = mean + sigma_range * sigma
 		def lower_cut = mean - sigma_range * sigma
@@ -355,9 +324,9 @@ class ElectronFromEvent {
     }
 	
 
-    def passElectronMinMomentum = { event, index ->
-	return (event.p[index] > p_min )
-    }
+ //    def passElectronMinMomentum = { event, index ->
+	// return (event.p[index] > p_min )
+ //    }
 
     def passElectronPCALEdepCut = { event, index ->
 	return (event.pcal_status.contains(index)) ? event.pcal_energy[index] > min_pcal_dep : false

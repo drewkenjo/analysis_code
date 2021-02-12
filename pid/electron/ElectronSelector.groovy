@@ -16,7 +16,7 @@ class ElectronSelector {
 	    electronCuts.passElectronStatus,
 	    electronCuts.passElectronChargeCut,
 	    electronCuts.passElectronTrackQualityCut,
-	    electronCuts.passElectronMinMomentum,
+	    // electronCuts.passElectronMinMomentum,
 	    electronCuts.passElectronEBPIDCut,
 	    electronCuts.passElectronSamplingFractionCut,
 	    electronCuts.passElectronNpheCut,
@@ -38,6 +38,9 @@ class ElectronSelector {
 	electronCuts.setElectronCutStrictness(el_cut_strictness)
     }
 
+    def setMC(){
+    electronCuts.setMC()
+    }
 
     def getGoodElectronWithCuts(event){
 	//return map - key is index of track in REC::Particle and value is list of booleans for the cuts
