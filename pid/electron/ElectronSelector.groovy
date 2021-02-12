@@ -38,10 +38,6 @@ class ElectronSelector {
 	electronCuts.setElectronCutStrictness(el_cut_strictness)
     }
 
-    def setMC(){
-    electronCuts.setMC()
-    }
-
     def getGoodElectronWithCuts(event){
 	//return map - key is index of track in REC::Particle and value is list of booleans for the cuts
 	def el_cut_result = (0..<event.npart).findAll{event.charge[it]<0}.collect{ ii -> [ii, electronCutStrategies.collect{ el_test -> el_test(event,ii) } ] }.collectEntries()	  		
