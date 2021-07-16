@@ -36,7 +36,7 @@ class Event {
     HashMap<Integer, Float> ecal_inner_u, ecal_outer_u, pcal_u
     HashMap<Integer, Float> ecal_inner_v, ecal_outer_v, pcal_v
     HashMap<Integer, Float> ecal_inner_w, ecal_outer_w, pcal_w
-    HashMap<Integer, ArrayList<DCHit>> pcal, ecal_inner, ecal_outer
+    HashMap<Integer, ArrayList<ECHit>> pcal, ecal_inner, ecal_outer
 
     // REC::Scintillator
     HashMap<Integer, Short> tof_sector, tof_paddle, tof_layer
